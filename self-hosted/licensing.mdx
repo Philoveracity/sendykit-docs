@@ -1,0 +1,108 @@
+---
+title: "Licensing"
+description: "How SendyKit self-hosted licensing works"
+---
+
+## Overview
+
+SendyKit self-hosted uses **EDD Software Licensing-powered license verification**. Your license key determines your edition (Standard or Pro) and unlocks the corresponding features. Human checkout, licensing, and subscription mechanics run through Easy Digital Downloads on sendykit.dev.
+
+## How It Works
+
+<Steps>
+  <Step title="Purchase">
+    Buy a license at [sendykit.dev/pricing](https://sendykit.dev/pricing). You receive a license key: `sk_lic_xxxxxxxxxxxxx`
+  </Step>
+  <Step title="Install">
+    ```bash
+    curl -sSL https://install.sendykit.dev | bash
+    ```
+    The installer prompts for your license key and validates it.
+  </Step>
+  <Step title="Validate">
+    On first launch, the Go binary contacts the SendyKit licensing API to verify your key and download your entitlements (edition, features, metered service access).
+  </Step>
+  <Step title="Run">
+    The binary caches your entitlements locally. Weekly heartbeat checks for updates. 30-day offline grace if the licensing server is unreachable.
+  </Step>
+</Steps>
+
+## Safety Guarantees
+
+We take these seriously. SendyKit will **never** brick your installation.
+
+| Guarantee | What It Means |
+|-----------|---------------|
+| **Fail-open** | If the licensing server is down, your binary keeps running with cached entitlements. It never stops working. |
+| **30-day offline grace** | After 30 days without a heartbeat: you see a warning banner. Not a shutdown. All features keep working. |
+| **No data exfiltration** | Zero customer data leaves your server. No emails, subscriber lists, campaign content, API keys, or PII are ever transmitted. |
+| **Transparent logging** | Every phone-home request is logged to `sendykit.log`. You can audit exactly what's sent. |
+| **Auditable payload** | The heartbeat sends only: `license_key`, `version`, `os`, `arch`, `subscriber_tier` (a range, not exact count), `uptime_days`. Nothing else. |
+| **Fully disable-able** | Set `SENDYKIT_OFFLINE=true` to disable all phone-home. License cached indefinitely. No nag screens. |
+| **No kill switch** | The binary never self-disables. Even with an expired or revoked license: warning banner only. All features keep working. |
+| **Open heartbeat spec** | The heartbeat format is documented here so you can firewall-verify what's transmitted. |
+
+## Heartbeat Payload
+
+```json
+{
+  "license_key": "sk_lic_xxxxx",
+  "version": "1.2.0",
+  "os": "linux",
+  "arch": "amd64",
+  "subscriber_tier": "1k-5k",
+  "feature_flags_hash": "a1b2c3d4",
+  "uptime_days": 42
+}
+```
+
+<Warning>
+  The `subscriber_tier` is a range bucket (e.g., "1k-5k"), not an exact count. We never know your actual subscriber count.
+</Warning>
+
+## Editions
+
+| Feature | Standard | Pro |
+|---------|----------|-----|
+| REST API (125 endpoints) | ✅ | ✅ |
+| CLI (240+ commands) | ✅ | ✅ |
+| Analytics Intelligence | ✅ | ✅ |
+| Health Doctor (68 checks) | ✅ | ✅ |
+| SMTP Overlay | ✅ | ✅ |
+| Audit Trail | ✅ | ✅ |
+| Admin UI (7 pages) | ✅ | ✅ |
+| Visual Editor (GrapeJS) | ✅ | ✅ |
+| AI Authoring | — | ✅ |
+| Sequences & Funnels | — | ✅ |
+| Automations | — | ✅ |
+| Priority Support | — | ✅ |
+| White Label | — | ✅ |
+
+## Metered Add-Ons
+
+Self-hosted customers can optionally purchase metered services that run through SendyKit's infrastructure:
+
+| Service | What | Pricing |
+|---------|------|---------|
+| **SMTP Pool Overflow** | When your SES quota is exhausted, SendyKit routes overflow emails through our managed SMTP providers | $3-5/1000 emails |
+| **AI Content Credits** | AI requests proxied through SendyKit's API — no need for your own OpenAI/Anthropic key | $0.002/generation |
+| **Deliverability Shield** | Continuous DNS/reputation monitoring from SendyKit's servers | $49/year |
+| **Priority Support** | Faster response times, dedicated support queue | $99/year |
+
+Usage is tracked natively by SendyKit. Human purchases and add-on checkout run through EDD on sendykit.dev, using the card attached to your customer account when applicable.
+
+## Offline Mode
+
+For air-gapped or restricted environments:
+
+```bash .env
+SENDYKIT_OFFLINE=true
+SENDYKIT_LICENSE_KEY=sk_lic_xxxxxxxxxxxxx
+```
+
+In offline mode:
+- No network requests to SendyKit servers
+- License validated from local cache only
+- Metered add-ons (SMTP pool, AI credits) unavailable
+- All installed features work normally
+- No update notifications
