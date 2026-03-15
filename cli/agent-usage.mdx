@@ -1,0 +1,93 @@
+---
+title: "Agent Integration"
+description: "How AI agents use SendyKit CLI for autonomous email marketing"
+---
+
+## Why CLI-First?
+
+SendyKit chose **CLI over MCP** for agent integration. Here's why:
+
+| Factor | CLI | MCP Server |
+|--------|-----|------------|
+| **Setup** | Zero — agents already have `bash` | Install server, configure transport |
+| **Debugging** | Visible request/response | Opaque protocol layer |
+| **Composability** | Pipes, loops, `jq`, `grep` | Single tool calls |
+| **Compatibility** | Every agent with shell access | Only MCP-compatible agents |
+| **Maintenance** | None — CLI is the product | Separate codebase to maintain |
+
+Agents with shell access (Claude Code, Pi, Letta, OpenCode, Cursor) can use SendyKit's full power through the same CLI humans use.
+
+## Example Agent Workflows
+
+### "Add this lead to the onboarding drip"
+
+```bash
+sendykit subscribers add \
+  --email lead@example.com \
+  --name "Jane Smith" \
+  --list onboarding \
+  --brand 2
+```
+
+### "Show me the best performing campaign this month"
+
+```bash
+sendykit campaigns list \
+  --brand 2 \
+  --sort open_rate \
+  --limit 1 \
+  --json | jq '.data[0] | {subject, open_rate, click_rate, recipients}'
+```
+
+### "Create a re-engagement campaign for inactive subscribers"
+
+```bash
+# Find inactive subscribers (no opens in 90 days)
+sendykit analytics engagement --brand 2 --tier ghost --json | jq '.data | length'
+
+# Create the campaign
+sendykit campaigns create \
+  --brand 2 \
+  --subject "We miss you! Here's 20% off" \
+  --list inactive-90d \
+  --template re-engage
+```
+
+### "Run a full health check and fix what you can"
+
+```bash
+sendykit doctor --auto-fix --json | jq '.results[] | select(.severity == "critical")'
+```
+
+### "What's my deliverability looking like?"
+
+```bash
+sendykit analytics dashboard --brand 2 --json | \
+  jq '{health_score, bounce_rate, complaint_rate, open_rate}'
+```
+
+## Skill File
+
+For structured agent integration, add a `SKILL.md` to your agent's skills directory:
+
+```markdown
+# SendyKit Email Management
+
+Use SendyKit CLI for email marketing operations.
+
+## Available Operations
+- `sendykit brands list` — List all brands
+- `sendykit subscribers add --email X --list Y` — Add subscriber
+- `sendykit campaigns list --brand X --json` — List campaigns
+- `sendykit campaigns create --brand X --subject "..." --list Y` — Create campaign
+- `sendykit analytics dashboard --brand X --json` — Get analytics
+- `sendykit doctor` — Run 68 health checks
+- `sendykit plans show` — View current plan
+- `sendykit health` — Quick health check
+
+## All output supports --json for structured parsing
+```
+
+## Machine Payments
+
+For agents without shell access, SendyKit’s current machine-paid path is Stripe-native machine payments. Use `X-Stripe-Machine-Payment` proofs for premium actions; direct x402 should not be treated as the live customer path.
