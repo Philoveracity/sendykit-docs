@@ -1,9 +1,9 @@
-<svg width="340" height="44" viewBox="0 0 340 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="334" height="44" viewBox="0 0 334 44" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g transform="translate(0,7)">
     <rect x="2.5" y="5.5" width="29" height="22" rx="3.5" stroke="#D4A843" stroke-width="2.5"/>
     <path d="M4.5 9L17 18.5L29.5 9" stroke="#D4A843" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
   <text x="40" y="30" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="-0.02em">
-    <tspan fill="#111111">Sendy</tspan><tspan fill="#D4A843">Kit</tspan>
+    <tspan fill="#111111">Sendy</tspan><tspan dx="-1.4" fill="#D4A843">Kit</tspan>
   </text>
 </svg>
