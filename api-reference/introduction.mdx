@@ -1,33 +1,80 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "API Introduction"
+description: "SendyKit REST API v2 — 125 endpoints for complete email marketing automation"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Base URL
 
-## Welcome
+```
+https://your-server.com/sendykit/api/v2
+```
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
-
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+For SaaS: `https://api.sendykit.dev/v2`
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API requests require authentication via one of:
+
+### API Key (recommended for integrations)
+
+```bash
+curl -H "X-API-Key: sk_a1b2c3d4..." \
+  https://your-server.com/sendykit/api/v2/brands
+```
+
+API keys are SHA-256 hashed at rest, scoped (`read`, `write`, `admin`), and individually revocable.
+
+### JWT Token (for sessions)
+
+```bash
+# Get a token
+curl -X POST https://your-server.com/sendykit/api/v2/auth/token \
+  -d '{"username": "admin", "password": "..."}'
+
+# Use it
+curl -H "Authorization: Bearer eyJ..." \
+  https://your-server.com/sendykit/api/v2/brands
+```
+
+### Machine Payments (for agents)
+
+For premium actions, SendyKit can require Stripe-native machine-payment proof:
+
+```bash
+curl -H "X-Stripe-Machine-Payment: <payment-proof-or-intent-ref>" \
+  https://your-server.com/sendykit/api/v2/campaigns
+```
+
+Use API keys for standard authenticated automation. Treat raw/direct x402 as historical exploration, not the live customer path.
+
+## Response Format
+
+All responses use a consistent JSON envelope:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
+{
+  "data": { ... },
+  "meta": {
+    "page": 1,
+    "per_page": 25,
+    "total": 142
   }
-]
+}
 ```
+
+## Idempotency
+
+For write operations (POST, PUT, DELETE), include an `Idempotency-Key` header to prevent duplicate processing.
+
+## Endpoint Categories
+
+- Brands
+- Lists
+- Subscribers
+- Campaigns
+- Templates
+- Analytics
+- AI
+- Webhooks
+- System
+- Billing

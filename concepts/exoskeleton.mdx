@@ -1,0 +1,71 @@
+---
+title: "The Exoskeleton Model"
+description: "How SendyKit wraps around Sendy without modifying it"
+---
+
+## Why "Exoskeleton"?
+
+Sendy is a solid, proven email marketing tool — 50K+ licenses sold, reliable SES integration, simple interface. But its API is 7 legacy POST endpoints. No webhooks. No analytics API. No CLI. No AI. No health monitoring.
+
+**SendyKit doesn't replace Sendy. It wraps around it.**
+
+Like an exoskeleton augments a human body — same body, dramatically expanded capabilities:
+
+| Sendy (the body) | SendyKit (the exoskeleton) |
+|-------------------|---------------------------|
+| 7 POST endpoints | 125 REST endpoints |
+| No CLI | 240+ commands |
+| No webhooks | HMAC-signed webhook delivery |
+| No analytics API | Full intelligence engine |
+| No health checks | 68 automated diagnostics |
+| No audit trail | Automatic mutation logging |
+| SES only | Any SMTP provider |
+| No AI | Subject lines, email gen, insights |
+| No visual editor | GrapeJS drag-and-drop |
+| PayPal only (bypassable) | Stripe + cryptographic payment tokens |
+
+## How It Works Technically
+
+### Database Layer
+
+SendyKit reads Sendy's existing tables (`campaigns`, `subscribers`, `lists`, `links`, `login`, `apps`) via **read-only queries**. It never writes to Sendy's core tables.
+
+SendyKit creates its own tables with the `sendykit_` prefix:
+- `sendykit_migrations` — migration tracking
+- `sendykit_feature_flags` — runtime feature toggles
+- `sendykit_webhooks` — webhook endpoint configuration
+- `sendykit_proxy_settings` — proxy and transport settings
+- `sendykit_analytics_events` — enriched event tracking
+- `sendykit_doctor_reports` — health check results
+- `sendykit_audit_log` — mutation audit trail
+- `sendykit_tenants` — multi-tenant SaaS
+- `sendykit_payments` — payment verification
+
+### Proxy Layer
+
+The Sendy admin UI is served through SendyKit's reverse proxy. This allows:
+- CSS injection (dark mode, mobile responsive, design system)
+- Sidebar navigation (SendyKit pages appear in Sendy's nav)
+- Payment interception (Stripe replaces PayPal)
+- Brand switching (unified dropdown)
+
+**Sendy's PHP code is never modified.** The proxy intercepts HTTP responses and injects CSS/JS before serving to the browser.
+
+### Safe Migrations
+
+Every database migration is:
+1. **Versioned** — `v001_foundation.sql` through `v007_billing.sql`
+2. **Non-destructive** — Never ALTERs Sendy tables. Only CREATEs `sendykit_*` tables.
+3. **Tracked** — `sendykit_migrations` table records which migrations have run
+4. **Idempotent** — Safe to run multiple times
+5. **Reversible** — Can DROP all `sendykit_*` tables to fully uninstall
+
+### Fail-Safe Design
+
+If SendyKit stops running:
+- Sendy continues working exactly as before
+- All campaigns continue sending
+- All subscriber management continues
+- The only things lost are SendyKit-specific features (API, CLI, admin pages)
+
+This is the key advantage of the exoskeleton model: **zero risk to the existing system.**

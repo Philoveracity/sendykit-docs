@@ -1,97 +1,86 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "SendyKit Documentation"
+description: "Agent-first, human-friendly email ops. SendyKit wraps around Sendy without modifying core, giving humans and agents a modern API, CLI, analytics, AI, health diagnostics, and managed email operations."
 ---
 
-## Setting up
+## What is SendyKit?
 
-Get your documentation site up and running in minutes.
+SendyKit is **agent-first, human-friendly email ops** — a Go-powered layer that wraps around your existing [Sendy](https://sendy.co) installation without touching core and gives humans and agents a modern API, CLI, analytics, AI, health diagnostics, and managed email operations.
+
+Think Iron Man's suit: Sendy is the person inside. SendyKit is the armor, the HUD, the weapons systems, the AI assistant, and the flight capability.
 
 <Card
-  title="Start here"
+  title="Quick Install"
   icon="rocket"
   href="/quickstart"
   horizontal
 >
-  Follow our three step quickstart guide.
+  Get SendyKit running in under 5 minutes with one command.
 </Card>
 
-## Make it yours
+## Why SendyKit?
 
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<Columns cols={3}>
+  <Card title="125 REST Endpoints" icon="code">
+    Modern JSON API with proper HTTP methods, pagination, filtering, and structured errors. Sendy's 7 legacy POST endpoints → 125 RESTful endpoints.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="240+ CLI Commands" icon="terminal">
+    Full CLI with shell completion. Agent-friendly, composable with pipes. No other email platform has this.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="AI Authoring" icon="wand-magic-sparkles">
+    Generate subject lines, full emails, A/B variants, campaign insights. Bring your own AI provider key.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Analytics Intelligence" icon="chart-mixed">
+    Engagement scoring, geographic breakdown, send-time optimization, bot detection, Apple MPP filtering.
+  </Card>
+  <Card title="Health Doctor" icon="stethoscope">
+    68 automated diagnostic checks across 9 categories. Auto-fix safe issues. Scheduled monitoring with alerts.
+  </Card>
+  <Card title="Multi-Provider SMTP" icon="envelope">
+    Use SendGrid, Brevo, Postmark, or any SMTP — not just SES. Encrypted credentials. Automatic failover.
   </Card>
 </Columns>
 
-## Create beautiful pages
+## How It Works
 
-Everything you need to create world-class documentation.
+```
+┌──────────────────────────────────────────────────────────┐
+│                  SENDYKIT EXOSKELETON                    │
+│                                                          │
+│   REST API  ·  CLI  ·  Admin UI  ·  Visual Editor       │
+│   Analytics · AI · SMTP · Doctor · Audit · Billing       │
+│                         │                                │
+│              reads (never writes core tables)             │
+│                         ▼                                │
+│              ┌───────────────────┐                       │
+│              │  SENDY PHP CORE   │                       │
+│              │  Unchanged · $69  │                       │
+│              └───────────────────┘                       │
+└──────────────────────────────────────────────────────────┘
+```
+
+SendyKit reads Sendy's MySQL database and adds its own tables (prefixed `sendykit_`) via versioned migrations. Sendy keeps working exactly as before.
+
+## Choose Your Path
 
 <Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
+  <Card title="Self-Hosted" icon="server" href="/self-hosted/licensing">
+    One-time purchase. Install on your server alongside Sendy. Full feature access. Optional managed SMTP pool and AI credits.
   </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
+  <Card title="SaaS" icon="cloud" href="https://sendykit.dev/pricing">
+    Managed hosting at sendykit.dev. No Sendy license needed. Subscription pricing with included sending.
   </Card>
 </Columns>
 
-## Need inspiration?
+## For AI Agents
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+SendyKit is the **first email marketing platform built for agents as first-class citizens**. Not a dashboard with an API bolted on — an API with optional dashboards.
+
+```bash
+# Agent manages email with CLI — no dashboard needed
+sendykit subscribers add --email lead@example.com --list onboarding --brand 2
+sendykit campaigns list --brand 2 --sort open_rate --limit 5 --json | jq '.[0]'
+sendykit campaigns create --brand 2 --subject "Re-engagement" --template re-engage.html
+```
+
+Agents can also handle premium actions with Stripe-native machine-payment proofs. Use the API and CLI as the primary surfaces; treat raw/direct x402 as historical exploration, not the live customer path.
