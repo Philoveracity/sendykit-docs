@@ -1,216 +1,1080 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
+    "title": "SendyKit API",
+    "version": "2.1.0-draft",
+    "description": "Canonical API contract for SendyKit v2.\n\nStatus tags on operations:\n- x-status: live\n- x-status: partial\n- x-status: planned\n\nPayment model:\n- Stripe machine payments are the current machine-paid action mechanism.\n- x402 compatibility is roadmap/future mode.\n"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
+      "url": "https://api.sendykit.dev/sendykit/api/v2",
+      "description": "Production"
+    },
     {
-      "bearerAuth": []
+      "url": "http://localhost:8082/sendykit/api/v2",
+      "description": "Local"
     }
   ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
+  "tags": [
+    {
+      "name": "Core"
+    },
+    {
+      "name": "Campaigns"
+    },
+    {
+      "name": "Analytics"
+    },
+    {
+      "name": "Webhooks"
+    },
+    {
+      "name": "AI"
+    },
+    {
+      "name": "Sequences"
+    },
+    {
+      "name": "Funnels"
+    },
+    {
+      "name": "Tags"
+    },
+    {
+      "name": "Goals"
+    },
+    {
+      "name": "Exa"
+    },
+    {
+      "name": "Instantly"
+    },
+    {
+      "name": "Automations"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
       },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
+      "JwtAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "StripeMachinePayment": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Stripe-Machine-Payment"
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
+    "parameters": {
+      "IdempotencyKey": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "required": false,
+        "schema": {
+          "type": "string"
         },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
+        "description": "Required for send/enroll/trigger endpoints. 24h dedupe window."
       }
-    }
-  },
-  "components": {
+    },
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "Envelope": {
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+          "data": {},
+          "meta": {
+            "type": "object",
+            "additionalProperties": true
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "error": {
+            "type": "object",
+            "additionalProperties": true
           }
         }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
       },
       "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
         "type": "object",
         "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
+          "code": {
+            "type": "string"
           },
           "message": {
             "type": "string"
           }
         }
       }
+    }
+  },
+  "paths": {
+    "/campaigns/{id}": {
+      "get": {
+        "tags": [
+          "Campaigns"
+        ],
+        "summary": "Get campaign by ID",
+        "operationId": "getCampaign",
+        "x-status": "live",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign details"
+          }
+        }
+      }
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+    "/campaigns/{id}/send": {
+      "post": {
+        "tags": [
+          "Campaigns"
+        ],
+        "summary": "Mark campaign for immediate send",
+        "operationId": "sendCampaignNow",
+        "x-status": "live",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Send accepted"
+          }
+        }
+      }
+    },
+    "/campaigns/{id}/schedule": {
+      "post": {
+        "tags": [
+          "Campaigns"
+        ],
+        "summary": "Schedule campaign send",
+        "operationId": "scheduleCampaign",
+        "x-status": "live",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schedule accepted"
+          }
+        }
+      }
+    },
+    "/campaigns/{id}/test": {
+      "post": {
+        "tags": [
+          "Campaigns"
+        ],
+        "summary": "Send test emails",
+        "operationId": "testCampaign",
+        "x-status": "live",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test send results"
+          }
+        }
+      }
+    },
+    "/analytics/campaign": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Campaign analytics report",
+        "operationId": "campaignAnalytics",
+        "x-status": "live",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analytics payload"
+          }
+        }
+      }
+    },
+    "/analytics/list": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "List analytics report",
+        "operationId": "listAnalytics",
+        "x-status": "live",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Analytics payload"
+          }
+        }
+      }
+    },
+    "/analytics/summary": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Aggregated baseline analytics",
+        "operationId": "analyticsSummary",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Summary payload"
+          }
+        }
+      }
+    },
+    "/webhooks": {
+      "get": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "List webhook subscriptions",
+        "operationId": "listWebhooks",
+        "x-status": "live",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Webhooks"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Create webhook subscription",
+        "operationId": "createWebhook",
+        "x-status": "live",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Delete webhook subscription",
+        "operationId": "deleteWebhook",
+        "x-status": "live",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/webhooks/events": {
+      "get": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "List registered trigger events",
+        "operationId": "listTriggerEvents",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Events list"
+          }
+        }
+      }
+    },
+    "/webhooks/trigger": {
+      "post": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Trigger machine action event",
+        "operationId": "triggerEvent",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          },
+          {
+            "StripeMachinePayment": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    },
+    "/ai/models": {
+      "get": {
+        "tags": [
+          "AI"
+        ],
+        "summary": "List available AI models",
+        "operationId": "listAiModels",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Models"
+          }
+        }
+      }
+    },
+    "/ai/usage": {
+      "get": {
+        "tags": [
+          "AI"
+        ],
+        "summary": "AI usage and cost report",
+        "operationId": "aiUsage",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usage"
+          }
+        }
+      }
+    },
+    "/ai/subject-lines": {
+      "post": {
+        "tags": [
+          "AI"
+        ],
+        "summary": "Generate subject line variants",
+        "operationId": "aiSubjectLines",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          },
+          {
+            "StripeMachinePayment": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Variants"
+          }
+        }
+      }
+    },
+    "/ai/generate-email": {
+      "post": {
+        "tags": [
+          "AI"
+        ],
+        "summary": "Generate email content from brief",
+        "operationId": "aiGenerateEmail",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          },
+          {
+            "StripeMachinePayment": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generated content"
+          }
+        }
+      }
+    },
+    "/ai/rewrite-for-email": {
+      "post": {
+        "tags": [
+          "AI"
+        ],
+        "summary": "Rewrite post/blog content for email",
+        "operationId": "aiRewriteForEmail",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          },
+          {
+            "StripeMachinePayment": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rewrite result"
+          }
+        }
+      }
+    },
+    "/ai/insights/campaign": {
+      "post": {
+        "tags": [
+          "AI"
+        ],
+        "summary": "Generate campaign insights",
+        "operationId": "aiCampaignInsights",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          },
+          {
+            "StripeMachinePayment": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Insights"
+          }
+        }
+      }
+    },
+    "/ai/insights/weekly": {
+      "get": {
+        "tags": [
+          "AI"
+        ],
+        "summary": "Weekly AI summary insights",
+        "operationId": "aiWeeklyInsights",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Weekly summary"
+          }
+        }
+      }
+    },
+    "/ai/send-time": {
+      "get": {
+        "tags": [
+          "AI"
+        ],
+        "summary": "Recommended send windows",
+        "operationId": "aiSendTime",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recommendations"
+          }
+        }
+      }
+    },
+    "/sequences": {
+      "get": {
+        "tags": [
+          "Sequences"
+        ],
+        "summary": "List sequences",
+        "operationId": "listSequences",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sequence list"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Sequences"
+        ],
+        "summary": "Create sequence",
+        "operationId": "createSequence",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Sequence created"
+          }
+        }
+      }
+    },
+    "/sequences/{id}": {
+      "get": {
+        "tags": [
+          "Sequences"
+        ],
+        "summary": "Get sequence",
+        "operationId": "getSequence",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sequence"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Sequences"
+        ],
+        "summary": "Update sequence",
+        "operationId": "updateSequence",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updated"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Sequences"
+        ],
+        "summary": "Patch sequence",
+        "operationId": "patchSequence",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patched"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Sequences"
+        ],
+        "summary": "Delete sequence",
+        "operationId": "deleteSequence",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          }
+        }
+      }
+    },
+    "/sequences/{id}/enroll": {
+      "post": {
+        "tags": [
+          "Sequences"
+        ],
+        "summary": "Enroll subscriber into sequence",
+        "operationId": "enrollSequence",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Enrollment created"
+          }
+        }
+      }
+    },
+    "/funnels": {
+      "get": {
+        "tags": [
+          "Funnels"
+        ],
+        "summary": "List funnels",
+        "operationId": "listFunnels",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Funnel list"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Funnels"
+        ],
+        "summary": "Create funnel",
+        "operationId": "createFunnel",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Funnel created"
+          }
+        }
+      }
+    },
+    "/funnels/{id}/analytics": {
+      "get": {
+        "tags": [
+          "Funnels"
+        ],
+        "summary": "Funnel analytics",
+        "operationId": "funnelAnalytics",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Funnel analytics"
+          }
+        }
+      }
+    },
+    "/tags/apply": {
+      "post": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Apply tag to subscriber",
+        "operationId": "applyTag",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tag applied"
+          }
+        }
+      }
+    },
+    "/tags/remove": {
+      "post": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "Remove tag from subscriber",
+        "operationId": "removeTag",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tag removed"
+          }
+        }
+      }
+    },
+    "/goals/track": {
+      "post": {
+        "tags": [
+          "Goals"
+        ],
+        "summary": "Track goal event and resolve sequence goals",
+        "operationId": "trackGoal",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Goal accepted"
+          }
+        }
+      }
+    },
+    "/exa/search": {
+      "post": {
+        "tags": [
+          "Exa"
+        ],
+        "summary": "Exa semantic search proxy",
+        "operationId": "exaSearch",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Search results"
+          }
+        }
+      }
+    },
+    "/exa/contents": {
+      "post": {
+        "tags": [
+          "Exa"
+        ],
+        "summary": "Exa contents extraction proxy",
+        "operationId": "exaContents",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contents results"
+          }
+        }
+      }
+    },
+    "/exa/find-similar": {
+      "post": {
+        "tags": [
+          "Exa"
+        ],
+        "summary": "Exa find similar proxy",
+        "operationId": "exaFindSimilar",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Similar results"
+          }
+        }
+      }
+    },
+    "/exa/answer": {
+      "post": {
+        "tags": [
+          "Exa"
+        ],
+        "summary": "Exa answer proxy",
+        "operationId": "exaAnswer",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Answer"
+          }
+        }
+      }
+    },
+    "/instantly/campaigns": {
+      "get": {
+        "tags": [
+          "Instantly"
+        ],
+        "summary": "List Instantly campaigns",
+        "operationId": "instantlyCampaigns",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Instantly campaigns"
+          }
+        }
+      }
+    },
+    "/instantly/campaigns/{id}/analytics": {
+      "get": {
+        "tags": [
+          "Instantly"
+        ],
+        "summary": "Instantly campaign analytics",
+        "operationId": "instantlyCampaignAnalytics",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Campaign analytics"
+          }
+        }
+      }
+    },
+    "/instantly/sync-lead": {
+      "post": {
+        "tags": [
+          "Instantly"
+        ],
+        "summary": "Sync or enrich lead into SendyKit",
+        "operationId": "instantlySyncLead",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Sync accepted"
+          }
+        }
+      }
+    },
+    "/instantly/webhook": {
+      "post": {
+        "tags": [
+          "Instantly"
+        ],
+        "summary": "Receive Instantly webhook events",
+        "operationId": "instantlyWebhook",
+        "x-status": "planned",
+        "security": [],
+        "responses": {
+          "202": {
+            "description": "Event accepted"
+          }
+        }
+      }
+    },
+    "/analytics/unified": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "summary": "Unified cold+warm analytics",
+        "operationId": "unifiedAnalytics",
+        "x-status": "planned",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Unified analytics"
+          }
+        }
       }
     }
   }
