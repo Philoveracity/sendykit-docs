@@ -1,0 +1,57 @@
+---
+title: "Configuration"
+description: "Core SendyKit environment and runtime setup"
+---
+
+## Core environment
+
+Typical self-hosted `.env` values:
+
+```bash
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=sendy_user
+DB_PASS=your_password
+DB_NAME=sendy_database
+
+SENDYKIT_LICENSE_KEY=sk_lic_xxxxxxxxxxxxx
+SENDYKIT_STORE_URL=https://sendykit.dev
+```
+
+## Database rule
+
+SendyKit uses the **same MySQL database** as Sendy.
+
+Use the credentials from Sendy's `includes/config.php` unless you have intentionally separated access.
+
+## Billing-related config
+
+For current billing/machine-payment behavior, the main switches are:
+
+```bash
+SENDYKIT_PAYMENT_SECRET=change-me
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+SENDYKIT_ENFORCE_STRIPE_MACHINE_PAYMENT=true
+```
+
+## Offline mode
+
+If you need an isolated or air-gapped mode:
+
+```bash
+SENDYKIT_OFFLINE=true
+```
+
+That disables phone-home behavior and metered remote services.
+
+## Recommended verification
+
+After changing config:
+
+```bash
+sendykit health
+sendykit doctor
+```
+
+That catches broken DB credentials, missing services, and readiness issues faster than guessing.

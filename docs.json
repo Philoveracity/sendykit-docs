@@ -56,7 +56,14 @@
           {
             "group": "Billing",
             "pages": [
-              "billing/overview"
+              "billing/overview",
+              "billing/agent-payments"
+            ]
+          },
+          {
+            "group": "Readiness",
+            "pages": [
+              "readiness/doctor"
             ]
           },
           {

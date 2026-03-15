@@ -1,0 +1,48 @@
+---
+title: "Readiness Doctor"
+description: "Use SendyKit readiness to choose the right path before you buy or install"
+---
+
+## What it is
+
+Readiness Doctor turns diagnosis into a next-step plan.
+
+It is meant to answer:
+- is this environment ready?
+- what blockers exist?
+- should this be self-hosted, SaaS, or enterprise?
+- what should happen next?
+
+## Why it matters
+
+SendyKit already has strong trust assets:
+- wraps around Sendy without modifying core
+- Health Doctor exists
+- self-hosted licensing is fail-open
+- commercial lanes already exist
+
+Readiness Doctor is the bridge between those facts and an actual decision.
+
+## Public surface
+
+The public site exposes:
+- `https://sendykit.dev/ready`
+
+That page is the human-facing starting point.
+
+## API surface
+
+Public readiness routes include:
+- `/sendykit/api/v2/system/readiness/evaluate`
+- `/sendykit/api/v2/system/readiness/inboarding`
+- `/sendykit/api/v2/system/readiness/report/{id}`
+
+## Outcome types
+
+A readiness report should return:
+- findings
+- score
+- recommendation
+- exact next-step path
+
+A report is not useful if it stops at diagnosis.

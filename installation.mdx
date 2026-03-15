@@ -1,0 +1,65 @@
+---
+title: "Installation"
+description: "Install SendyKit alongside your existing Sendy deployment"
+---
+
+## Installation model
+
+SendyKit installs **next to** Sendy. It does not patch Sendy core files.
+
+That means:
+- your licensed Sendy install stays where it is
+- SendyKit reads the same database
+- SendyKit adds its own `sendykit_*` tables
+- if SendyKit stops, Sendy still works
+
+## Before you install
+
+You should have:
+- a working Sendy install
+- shell access to the server
+- Sendy database credentials
+- a SendyKit license key for self-hosted installs
+
+## Install command
+
+```bash
+curl -sSL https://install.sendykit.dev | bash
+```
+
+The installer should:
+- detect OS and architecture
+- download the correct binary
+- prompt for license details
+- create initial config
+
+## First boot sequence
+
+```bash
+sendykit migrate
+sendykit serve
+```
+
+## What migrations do
+
+SendyKit migrations are versioned and non-destructive.
+
+They create SendyKit-owned tables such as:
+- `sendykit_migrations`
+- `sendykit_feature_flags`
+- `sendykit_webhooks`
+- `sendykit_analytics_events`
+- `sendykit_doctor_reports`
+- `sendykit_audit_log`
+
+They do **not** modify Sendy core tables.
+
+## Verify the install
+
+```bash
+sendykit health
+sendykit doctor
+sendykit brands list
+```
+
+If those work, you have the main operator surfaces connected.

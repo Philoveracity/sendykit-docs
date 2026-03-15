@@ -1,0 +1,41 @@
+---
+title: "Agent Payments"
+description: "How premium agent actions are paid for in SendyKit"
+---
+
+## Current truth
+
+The current implementation target is:
+- **Stripe-native machine payments** for premium actions
+- proof via `X-Stripe-Machine-Payment`
+
+Not raw/direct x402 as the live public path.
+
+## Header shape
+
+```bash
+curl -H "X-API-Key: sk_..." \
+  -H "X-Stripe-Machine-Payment: <payment-proof-or-intent-ref>" \
+  https://your-server.com/sendykit/api/v2/ai/subject-lines
+```
+
+## When machine payments apply
+
+Machine payments are for **premium actions**, not every request.
+
+Examples:
+- AI generation
+- premium webhook trigger paths
+- higher-cost automation work
+- other policy-gated premium surfaces
+
+## When they do not apply
+
+Most normal operator automation should still use:
+- `X-API-Key`
+- JWT/session auth where appropriate
+
+## Historical note
+
+Older specs explored direct x402 flows.
+That material is preserved as historical exploration, but it should not be treated as the live customer path unless explicitly revived later.
