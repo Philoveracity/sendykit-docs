@@ -1,5 +1,7 @@
-<svg width="360" height="64" viewBox="0 0 360 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="64" height="64" rx="18" fill="#D4A843"/>
-  <path d="M18 33.5C18 25.492 24.492 19 32.5 19H46V27H32.5C28.9101 27 26 29.9101 26 33.5C26 37.0899 28.9101 40 32.5 40H38C45.732 40 52 46.268 52 54V55H44V54C44 50.4101 41.0899 47.5 37.5 47.5H32.5C24.492 47.5 18 41.008 18 33.5Z" fill="#10311F"/>
-  <text x="84" y="42" fill="#FFFFFF" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="700">SendyKit</text>
+<svg width="420" height="64" viewBox="0 0 420 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" rx="16" fill="#111111"/>
+  <path d="M17 22C17 19.7909 18.7909 18 21 18H43C45.2091 18 47 19.7909 47 22V42C47 44.2091 45.2091 46 43 46H21C18.7909 46 17 44.2091 17 42V22Z" stroke="#D4A843" stroke-width="3"/>
+  <path d="M18.5 21.5L32 32L45.5 21.5" stroke="#D4A843" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="84" y="42" fill="#FFFFFF" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="700">Sendy</text>
+  <text x="182" y="42" fill="#D4A843" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="700">Kit</text>
 </svg>
