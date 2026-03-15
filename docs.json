@@ -66,6 +66,13 @@
             ]
           },
           {
+            "group": "Features",
+            "pages": [
+              "features/smtp-overlay",
+              "features/ai-authoring"
+            ]
+          },
+          {
             "group": "Readiness",
             "pages": [
               "readiness/doctor"
@@ -74,6 +81,7 @@
           {
             "group": "CLI",
             "pages": [
+              "cli/installation",
               "cli/agent-usage"
             ]
           }

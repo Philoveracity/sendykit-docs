@@ -3,7 +3,7 @@
   "info": {
     "title": "SendyKit API",
     "version": "2.1.0-draft",
-    "description": "Canonical API contract for SendyKit v2.\n\nStatus tags on operations:\n- x-status: live\n- x-status: partial\n- x-status: planned\n\nPayment model:\n- Stripe machine payments are the current machine-paid action mechanism.\n- x402 compatibility is roadmap/future mode.\n",
+    "description": "Canonical API contract for SendyKit v2.\n\nStatus tags on operations:\n- x-status: live\n- x-status: partial\n- x-status: planned\n\nPayment model:\n- Stripe machine payments are the current machine-paid action mechanism.\n",
     "summary": "Sendy-compatible email operations API with SendyKit exoskeleton, SaaS controls, readiness evaluation, and machine-paid premium actions.",
     "contact": {
       "name": "SendyKit",
@@ -2052,7 +2052,7 @@
       },
       "MachinePaymentReceipt": {
         "type": "object",
-        "description": "Machine-payment receipt record; legacy x402 naming may still appear in older code/docs.",
+        "description": "Machine-payment receipt record for Stripe-native machine-paid actions.",
         "properties": {
           "id": {
             "type": "integer",
@@ -16653,71 +16653,6 @@
           }
         ]
       }
-    },
-    "/billing/x402-receipts": {
-      "get": {
-        "tags": [
-          "Billing"
-        ],
-        "summary": "List legacy x402 receipt alias",
-        "operationId": "ListLegacyX402ReceiptAlias",
-        "x-status": "live",
-        "description": "Legacy alias for machine-payment receipts retained for compatibility.",
-        "responses": {
-          "200": {
-            "description": "List legacy x402 receipt alias",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MachinePaymentReceiptEnvelope"
-                },
-                "examples": {
-                  "default": {
-                    "$ref": "#/components/examples/MachinePaymentReceiptResponse"
-                  }
-                }
-              }
-            },
-            "headers": {
-              "X-Request-ID": {
-                "$ref": "#/components/headers/X-Request-ID"
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "401": {
-            "$ref": "#/components/responses/Unauthorized"
-          },
-          "403": {
-            "$ref": "#/components/responses/Forbidden"
-          },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          },
-          "429": {
-            "$ref": "#/components/responses/RateLimited"
-          }
-        },
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/SinceQuery"
-          },
-          {
-            "$ref": "#/components/parameters/Limit"
-          }
-        ],
-        "deprecated": true
-      }
     }
   },
   "externalDocs": {
@@ -16869,7 +16804,7 @@
     "routes": [
       {
         "path": "/ai/generate",
-        "line": 197,
+        "line": 198,
         "handler": "aiHandler.GenerateEmail",
         "receiver_type": "AIHandler",
         "func_name": "GenerateEmail",
@@ -16880,7 +16815,7 @@
       },
       {
         "path": "/ai/generate-email",
-        "line": 196,
+        "line": 197,
         "handler": "aiHandler.GenerateEmail",
         "receiver_type": "AIHandler",
         "func_name": "GenerateEmail",
@@ -16891,7 +16826,7 @@
       },
       {
         "path": "/ai/insights/campaign",
-        "line": 191,
+        "line": 192,
         "handler": "aiHandler.CampaignInsights",
         "receiver_type": "AIHandler",
         "func_name": "CampaignInsights",
@@ -16902,7 +16837,7 @@
       },
       {
         "path": "/ai/models",
-        "line": 188,
+        "line": 189,
         "handler": "aiHandler.Models",
         "receiver_type": "AIHandler",
         "func_name": "Models",
@@ -16911,7 +16846,7 @@
       },
       {
         "path": "/ai/rewrite-for-email",
-        "line": 195,
+        "line": 196,
         "handler": "aiHandler.RewriteForEmail",
         "receiver_type": "AIHandler",
         "func_name": "RewriteForEmail",
@@ -16922,7 +16857,7 @@
       },
       {
         "path": "/ai/subject-lines",
-        "line": 192,
+        "line": 193,
         "handler": "aiHandler.SubjectLines",
         "receiver_type": "AIHandler",
         "func_name": "SubjectLines",
@@ -16933,7 +16868,7 @@
       },
       {
         "path": "/ai/subject-lines/ab-test",
-        "line": 193,
+        "line": 194,
         "handler": "aiHandler.SubjectLinesABTest",
         "receiver_type": "AIHandler",
         "func_name": "SubjectLinesABTest",
@@ -16944,7 +16879,7 @@
       },
       {
         "path": "/ai/suggest-subjects",
-        "line": 194,
+        "line": 195,
         "handler": "aiHandler.SubjectLines",
         "receiver_type": "AIHandler",
         "func_name": "SubjectLines",
@@ -16955,7 +16890,7 @@
       },
       {
         "path": "/ai/summary/weekly",
-        "line": 190,
+        "line": 191,
         "handler": "aiHandler.WeeklySummary",
         "receiver_type": "AIHandler",
         "func_name": "WeeklySummary",
@@ -16966,7 +16901,7 @@
       },
       {
         "path": "/ai/usage",
-        "line": 189,
+        "line": 190,
         "handler": "aiHandler.UsageReport",
         "receiver_type": "AIHandler",
         "func_name": "UsageReport",
@@ -16975,7 +16910,7 @@
       },
       {
         "path": "/analytics/campaign",
-        "line": 162,
+        "line": 163,
         "handler": "analyticsHandler.CampaignReport",
         "receiver_type": "AnalyticsHandler",
         "func_name": "CampaignReport",
@@ -16984,7 +16919,7 @@
       },
       {
         "path": "/analytics/campaigns",
-        "line": 169,
+        "line": 170,
         "handler": "analyticsHandler.Campaigns",
         "receiver_type": "AnalyticsHandler",
         "func_name": "Campaigns",
@@ -16993,7 +16928,7 @@
       },
       {
         "path": "/analytics/clients",
-        "line": 170,
+        "line": 171,
         "handler": "analyticsHandler.Clients",
         "receiver_type": "AnalyticsHandler",
         "func_name": "Clients",
@@ -17002,7 +16937,7 @@
       },
       {
         "path": "/analytics/dashboard",
-        "line": 167,
+        "line": 168,
         "handler": "analyticsHandler.Dashboard",
         "receiver_type": "AnalyticsHandler",
         "func_name": "Dashboard",
@@ -17011,7 +16946,7 @@
       },
       {
         "path": "/analytics/engagement",
-        "line": 172,
+        "line": 173,
         "handler": "analyticsHandler.Engagement",
         "receiver_type": "AnalyticsHandler",
         "func_name": "Engagement",
@@ -17020,7 +16955,7 @@
       },
       {
         "path": "/analytics/export",
-        "line": 173,
+        "line": 174,
         "handler": "analyticsHandler.AnalyticsExport",
         "receiver_type": "AnalyticsHandler",
         "func_name": "AnalyticsExport",
@@ -17031,7 +16966,7 @@
       },
       {
         "path": "/analytics/geography",
-        "line": 171,
+        "line": 172,
         "handler": "analyticsHandler.Geography",
         "receiver_type": "AnalyticsHandler",
         "func_name": "Geography",
@@ -17040,7 +16975,7 @@
       },
       {
         "path": "/analytics/growth",
-        "line": 168,
+        "line": 169,
         "handler": "analyticsHandler.Growth",
         "receiver_type": "AnalyticsHandler",
         "func_name": "Growth",
@@ -17049,7 +16984,7 @@
       },
       {
         "path": "/analytics/list",
-        "line": 163,
+        "line": 164,
         "handler": "analyticsHandler.ListReport",
         "receiver_type": "AnalyticsHandler",
         "func_name": "ListReport",
@@ -17058,7 +16993,7 @@
       },
       {
         "path": "/analytics/send-time",
-        "line": 165,
+        "line": 166,
         "handler": "analyticsHandler.SendTimeRecommendation",
         "receiver_type": "AnalyticsHandler",
         "func_name": "SendTimeRecommendation",
@@ -17067,7 +17002,7 @@
       },
       {
         "path": "/analytics/summary",
-        "line": 164,
+        "line": 165,
         "handler": "analyticsHandler.SummaryReport",
         "receiver_type": "AnalyticsHandler",
         "func_name": "SummaryReport",
@@ -17076,7 +17011,7 @@
       },
       {
         "path": "/analytics/unified",
-        "line": 166,
+        "line": 167,
         "handler": "analyticsHandler.UnifiedReport",
         "receiver_type": "AnalyticsHandler",
         "func_name": "UnifiedReport",
@@ -17085,7 +17020,7 @@
       },
       {
         "path": "/assets",
-        "line": 115,
+        "line": 116,
         "handler": "templateHandler.UploadAsset",
         "receiver_type": "TemplateHandler",
         "func_name": "UploadAsset",
@@ -17097,7 +17032,7 @@
       },
       {
         "path": "/audit",
-        "line": 272,
+        "line": 273,
         "handler": "auditHandler.Handle",
         "receiver_type": "AuditHandler",
         "func_name": "Handle",
@@ -17109,7 +17044,7 @@
       },
       {
         "path": "/audit/",
-        "line": 273,
+        "line": 274,
         "handler": "auditHandler.Handle",
         "receiver_type": "AuditHandler",
         "func_name": "Handle",
@@ -17121,7 +17056,7 @@
       },
       {
         "path": "/auth/token",
-        "line": 18,
+        "line": 19,
         "handler": "authHandler.Token",
         "receiver_type": "AuthHandler",
         "func_name": "Token",
@@ -17132,7 +17067,7 @@
       },
       {
         "path": "/automations",
-        "line": 52,
+        "line": 53,
         "handler": "automationHandler.Handle",
         "receiver_type": "AutomationHandler",
         "func_name": "Handle",
@@ -17144,7 +17079,7 @@
       },
       {
         "path": "/automations/",
-        "line": 53,
+        "line": 54,
         "handler": "automationHandler.HandleSub",
         "receiver_type": "AutomationHandler",
         "func_name": "HandleSub",
@@ -17158,7 +17093,7 @@
       },
       {
         "path": "/automations/runs/approve",
-        "line": 54,
+        "line": 55,
         "handler": "automationHandler.ApproveRun",
         "receiver_type": "AutomationHandler",
         "func_name": "ApproveRun",
@@ -17169,7 +17104,7 @@
       },
       {
         "path": "/automations/runs/edit",
-        "line": 56,
+        "line": 57,
         "handler": "automationHandler.EditRun",
         "receiver_type": "AutomationHandler",
         "func_name": "EditRun",
@@ -17180,7 +17115,7 @@
       },
       {
         "path": "/automations/runs/reject",
-        "line": 55,
+        "line": 56,
         "handler": "automationHandler.RejectRun",
         "receiver_type": "AutomationHandler",
         "func_name": "RejectRun",
@@ -17191,7 +17126,7 @@
       },
       {
         "path": "/autoresponders",
-        "line": 145,
+        "line": 146,
         "handler": "aresHandler.Handle",
         "receiver_type": "AutoresponderHandler",
         "func_name": "Handle",
@@ -17202,7 +17137,7 @@
       },
       {
         "path": "/autoresponders/",
-        "line": 146,
+        "line": 147,
         "handler": "aresHandler.HandleSub",
         "receiver_type": "AutoresponderHandler",
         "func_name": "HandleSub",
@@ -17215,7 +17150,7 @@
       },
       {
         "path": "/billing",
-        "line": 297,
+        "line": 303,
         "handler": "billingHandler.Handle",
         "receiver_type": "BillingHandler",
         "func_name": "Handle",
@@ -17227,7 +17162,7 @@
       },
       {
         "path": "/billing/",
-        "line": 298,
+        "line": 304,
         "handler": "billingHandler.Handle",
         "receiver_type": "BillingHandler",
         "func_name": "Handle",
@@ -17239,7 +17174,7 @@
       },
       {
         "path": "/brands",
-        "line": 22,
+        "line": 23,
         "handler": "brandHandler.Handle",
         "receiver_type": "BrandHandler",
         "func_name": "Handle",
@@ -17253,7 +17188,7 @@
       },
       {
         "path": "/brands/",
-        "line": 128,
+        "line": 129,
         "handler": "inline",
         "receiver_type": null,
         "func_name": null,
@@ -17262,7 +17197,7 @@
       },
       {
         "path": "/brands/blocks",
-        "line": 127,
+        "line": 128,
         "handler": "templateHandler.BrandBlocks",
         "receiver_type": "TemplateHandler",
         "func_name": "BrandBlocks",
@@ -17271,7 +17206,7 @@
       },
       {
         "path": "/bridge/",
-        "line": 250,
+        "line": 251,
         "handler": "bridgeHandler.Handle",
         "receiver_type": "BridgeHandler",
         "func_name": "Handle",
@@ -17282,7 +17217,7 @@
       },
       {
         "path": "/campaigns",
-        "line": 40,
+        "line": 41,
         "handler": "campHandler.Handle",
         "receiver_type": "CampaignHandler",
         "func_name": "Handle",
@@ -17294,7 +17229,7 @@
       },
       {
         "path": "/campaigns/",
-        "line": 49,
+        "line": 50,
         "handler": "campHandler.HandleSub",
         "receiver_type": "CampaignHandler",
         "func_name": "HandleSub",
@@ -17307,7 +17242,7 @@
       },
       {
         "path": "/campaigns/bulk",
-        "line": 48,
+        "line": 49,
         "handler": "campHandler.BulkAction",
         "receiver_type": "CampaignHandler",
         "func_name": "BulkAction",
@@ -17318,7 +17253,7 @@
       },
       {
         "path": "/campaigns/draft",
-        "line": 41,
+        "line": 42,
         "handler": "inline",
         "receiver_type": null,
         "func_name": null,
@@ -17330,7 +17265,7 @@
       },
       {
         "path": "/exa/answer",
-        "line": 88,
+        "line": 89,
         "handler": "exaHandler.Answer",
         "receiver_type": "ExaHandler",
         "func_name": "Answer",
@@ -17339,7 +17274,7 @@
       },
       {
         "path": "/exa/contents",
-        "line": 86,
+        "line": 87,
         "handler": "exaHandler.Contents",
         "receiver_type": "ExaHandler",
         "func_name": "Contents",
@@ -17348,7 +17283,7 @@
       },
       {
         "path": "/exa/find-similar",
-        "line": 87,
+        "line": 88,
         "handler": "exaHandler.FindSimilar",
         "receiver_type": "ExaHandler",
         "func_name": "FindSimilar",
@@ -17357,7 +17292,7 @@
       },
       {
         "path": "/exa/health",
-        "line": 84,
+        "line": 85,
         "handler": "exaHandler.Health",
         "receiver_type": "ExaHandler",
         "func_name": "Health",
@@ -17366,7 +17301,7 @@
       },
       {
         "path": "/exa/research",
-        "line": 89,
+        "line": 90,
         "handler": "exaHandler.Research",
         "receiver_type": "ExaHandler",
         "func_name": "Research",
@@ -17375,7 +17310,7 @@
       },
       {
         "path": "/exa/search",
-        "line": 85,
+        "line": 86,
         "handler": "exaHandler.Search",
         "receiver_type": "ExaHandler",
         "func_name": "Search",
@@ -17384,7 +17319,7 @@
       },
       {
         "path": "/exa/settings",
-        "line": 83,
+        "line": 84,
         "handler": "exaHandler.Settings",
         "receiver_type": "ExaHandler",
         "func_name": "Settings",
@@ -17396,7 +17331,7 @@
       },
       {
         "path": "/funnels",
-        "line": 239,
+        "line": 240,
         "handler": "funnelHandler.Handle",
         "receiver_type": "FunnelHandler",
         "func_name": "Handle",
@@ -17408,7 +17343,7 @@
       },
       {
         "path": "/funnels/",
-        "line": 240,
+        "line": 241,
         "handler": "funnelHandler.HandleSub",
         "receiver_type": "FunnelHandler",
         "func_name": "HandleSub",
@@ -17422,7 +17357,7 @@
       },
       {
         "path": "/goals/track",
-        "line": 247,
+        "line": 248,
         "handler": "goalHandler.TrackGoal",
         "receiver_type": "GoalHandler",
         "func_name": "TrackGoal",
@@ -17433,7 +17368,7 @@
       },
       {
         "path": "/health/doctor",
-        "line": 266,
+        "line": 267,
         "handler": "doctorHandler.Handle",
         "receiver_type": "DoctorHandler",
         "func_name": "Handle",
@@ -17445,7 +17380,7 @@
       },
       {
         "path": "/health/doctor/",
-        "line": 267,
+        "line": 268,
         "handler": "doctorHandler.Handle",
         "receiver_type": "DoctorHandler",
         "func_name": "Handle",
@@ -17457,7 +17392,7 @@
       },
       {
         "path": "/instantly/campaigns",
-        "line": 106,
+        "line": 107,
         "handler": "instantlyHandler.Campaigns",
         "receiver_type": "InstantlyHandler",
         "func_name": "Campaigns",
@@ -17466,7 +17401,7 @@
       },
       {
         "path": "/instantly/campaigns/analytics",
-        "line": 107,
+        "line": 108,
         "handler": "instantlyHandler.CampaignAnalytics",
         "receiver_type": "InstantlyHandler",
         "func_name": "CampaignAnalytics",
@@ -17475,7 +17410,7 @@
       },
       {
         "path": "/instantly/compliance",
-        "line": 110,
+        "line": 111,
         "handler": "instantlyHandler.Compliance",
         "receiver_type": "InstantlyHandler",
         "func_name": "Compliance",
@@ -17486,7 +17421,7 @@
       },
       {
         "path": "/instantly/health",
-        "line": 105,
+        "line": 106,
         "handler": "instantlyHandler.Health",
         "receiver_type": "InstantlyHandler",
         "func_name": "Health",
@@ -17495,7 +17430,7 @@
       },
       {
         "path": "/instantly/settings",
-        "line": 104,
+        "line": 105,
         "handler": "instantlyHandler.Settings",
         "receiver_type": "InstantlyHandler",
         "func_name": "Settings",
@@ -17507,7 +17442,7 @@
       },
       {
         "path": "/instantly/sync-lead",
-        "line": 108,
+        "line": 109,
         "handler": "instantlyHandler.SyncLead",
         "receiver_type": "InstantlyHandler",
         "func_name": "SyncLead",
@@ -17518,7 +17453,7 @@
       },
       {
         "path": "/instantly/webhook",
-        "line": 109,
+        "line": 110,
         "handler": "instantlyHandler.Webhook",
         "receiver_type": "InstantlyHandler",
         "func_name": "Webhook",
@@ -17529,7 +17464,7 @@
       },
       {
         "path": "/lists",
-        "line": 26,
+        "line": 27,
         "handler": "listHandler.Handle",
         "receiver_type": "ListHandler",
         "func_name": "Handle",
@@ -17541,7 +17476,7 @@
       },
       {
         "path": "/lists/",
-        "line": 117,
+        "line": 118,
         "handler": "inline",
         "receiver_type": null,
         "func_name": null,
@@ -17550,7 +17485,7 @@
       },
       {
         "path": "/lists/fields",
-        "line": 116,
+        "line": 117,
         "handler": "templateHandler.ListFields",
         "receiver_type": "TemplateHandler",
         "func_name": "ListFields",
@@ -17559,7 +17494,7 @@
       },
       {
         "path": "/migration/",
-        "line": 253,
+        "line": 254,
         "handler": "migrationHandler.Handle",
         "receiver_type": "MigrationWizardHandler",
         "func_name": "Handle",
@@ -17571,7 +17506,7 @@
       },
       {
         "path": "/queue/process",
-        "line": 175,
+        "line": 176,
         "handler": "analyticsHandler.QueueProcess",
         "receiver_type": "AnalyticsHandler",
         "func_name": "QueueProcess",
@@ -17582,7 +17517,7 @@
       },
       {
         "path": "/queue/status",
-        "line": 174,
+        "line": 175,
         "handler": "analyticsHandler.QueueStatus",
         "receiver_type": "AnalyticsHandler",
         "func_name": "QueueStatus",
@@ -17591,7 +17526,7 @@
       },
       {
         "path": "/rules",
-        "line": 141,
+        "line": 142,
         "handler": "ruleHandler.Handle",
         "receiver_type": "RuleHandler",
         "func_name": "Handle",
@@ -17602,7 +17537,7 @@
       },
       {
         "path": "/rules/",
-        "line": 142,
+        "line": 143,
         "handler": "ruleHandler.HandleSub",
         "receiver_type": "RuleHandler",
         "func_name": "HandleSub",
@@ -17615,7 +17550,7 @@
       },
       {
         "path": "/segments",
-        "line": 137,
+        "line": 138,
         "handler": "segmentHandler.Handle",
         "receiver_type": "SegmentHandler",
         "func_name": "Handle",
@@ -17627,7 +17562,7 @@
       },
       {
         "path": "/segments/",
-        "line": 138,
+        "line": 139,
         "handler": "segmentHandler.HandleSub",
         "receiver_type": "SegmentHandler",
         "func_name": "HandleSub",
@@ -17642,7 +17577,7 @@
       },
       {
         "path": "/sequences",
-        "line": 235,
+        "line": 236,
         "handler": "seqHandler.Handle",
         "receiver_type": "SequenceHandler",
         "func_name": "Handle",
@@ -17654,7 +17589,7 @@
       },
       {
         "path": "/sequences/",
-        "line": 236,
+        "line": 237,
         "handler": "seqHandler.HandleSub",
         "receiver_type": "SequenceHandler",
         "func_name": "HandleSub",
@@ -17669,7 +17604,7 @@
       },
       {
         "path": "/subscribers",
-        "line": 30,
+        "line": 31,
         "handler": "subHandler.Handle",
         "receiver_type": "SubscriberHandler",
         "func_name": "Handle",
@@ -17681,7 +17616,7 @@
       },
       {
         "path": "/subscribers/",
-        "line": 31,
+        "line": 32,
         "handler": "subHandler.HandleSub",
         "receiver_type": "SubscriberHandler",
         "func_name": "HandleSub",
@@ -17696,7 +17631,7 @@
       },
       {
         "path": "/subscribers/bulk",
-        "line": 33,
+        "line": 34,
         "handler": "subHandler.BulkSubscribe",
         "receiver_type": "SubscriberHandler",
         "func_name": "BulkSubscribe",
@@ -17707,7 +17642,7 @@
       },
       {
         "path": "/subscribers/bulk-delete",
-        "line": 34,
+        "line": 35,
         "handler": "subHandler.BulkDelete",
         "receiver_type": "SubscriberHandler",
         "func_name": "BulkDelete",
@@ -17718,7 +17653,7 @@
       },
       {
         "path": "/subscribers/bulk-unsubscribe",
-        "line": 35,
+        "line": 36,
         "handler": "subHandler.BulkUnsubscribe",
         "receiver_type": "SubscriberHandler",
         "func_name": "BulkUnsubscribe",
@@ -17729,7 +17664,7 @@
       },
       {
         "path": "/subscribers/export",
-        "line": 149,
+        "line": 150,
         "handler": "ieHandler.Export",
         "receiver_type": "ImportExportHandler",
         "func_name": "Export",
@@ -17738,7 +17673,7 @@
       },
       {
         "path": "/subscribers/import",
-        "line": 150,
+        "line": 151,
         "handler": "ieHandler.Import",
         "receiver_type": "ImportExportHandler",
         "func_name": "Import",
@@ -17747,7 +17682,7 @@
       },
       {
         "path": "/subscribers/lookup",
-        "line": 36,
+        "line": 37,
         "handler": "subHandler.Lookup",
         "receiver_type": "SubscriberHandler",
         "func_name": "Lookup",
@@ -17758,7 +17693,7 @@
       },
       {
         "path": "/subscribers/unsubscribe",
-        "line": 32,
+        "line": 33,
         "handler": "subHandler.UnsubscribeByEmail",
         "receiver_type": "SubscriberHandler",
         "func_name": "UnsubscribeByEmail",
@@ -17769,7 +17704,7 @@
       },
       {
         "path": "/suppressions",
-        "line": 153,
+        "line": 154,
         "handler": "suppressionHandler.Handle",
         "receiver_type": "SuppressionHandler",
         "func_name": "Handle",
@@ -17781,7 +17716,7 @@
       },
       {
         "path": "/system/db-check",
-        "line": 202,
+        "line": 203,
         "handler": "systemHandler.DBCheck",
         "receiver_type": "SystemHandler",
         "func_name": "DBCheck",
@@ -17790,7 +17725,7 @@
       },
       {
         "path": "/system/dlq",
-        "line": 208,
+        "line": 209,
         "handler": "systemHandler.DLQList",
         "receiver_type": "SystemHandler",
         "func_name": "DLQList",
@@ -17799,7 +17734,7 @@
       },
       {
         "path": "/system/dlq/discard",
-        "line": 227,
+        "line": 228,
         "handler": "systemHandler.DLQDiscard",
         "receiver_type": "SystemHandler",
         "func_name": "DLQDiscard",
@@ -17810,7 +17745,7 @@
       },
       {
         "path": "/system/dlq/resolve",
-        "line": 226,
+        "line": 227,
         "handler": "systemHandler.DLQResolve",
         "receiver_type": "SystemHandler",
         "func_name": "DLQResolve",
@@ -17821,7 +17756,7 @@
       },
       {
         "path": "/system/flags",
-        "line": 206,
+        "line": 207,
         "handler": "systemHandler.FeatureFlags",
         "receiver_type": "SystemHandler",
         "func_name": "FeatureFlags",
@@ -17833,7 +17768,7 @@
       },
       {
         "path": "/system/info",
-        "line": 200,
+        "line": 201,
         "handler": "systemHandler.Info",
         "receiver_type": "SystemHandler",
         "func_name": "Info",
@@ -17842,7 +17777,7 @@
       },
       {
         "path": "/system/metrics",
-        "line": 203,
+        "line": 204,
         "handler": "systemHandler.Metrics",
         "receiver_type": "SystemHandler",
         "func_name": "Metrics",
@@ -17851,7 +17786,7 @@
       },
       {
         "path": "/system/migration/legacy-inventory",
-        "line": 228,
+        "line": 229,
         "handler": "systemHandler.LegacyInventory",
         "receiver_type": "SystemHandler",
         "func_name": "LegacyInventory",
@@ -17860,7 +17795,7 @@
       },
       {
         "path": "/system/migration/mirror-now",
-        "line": 231,
+        "line": 232,
         "handler": "systemHandler.MigrationMirrorNow",
         "receiver_type": "SystemHandler",
         "func_name": "MigrationMirrorNow",
@@ -17871,7 +17806,7 @@
       },
       {
         "path": "/system/migration/mirror-stats",
-        "line": 230,
+        "line": 231,
         "handler": "systemHandler.MigrationMirrorStats",
         "receiver_type": "SystemHandler",
         "func_name": "MigrationMirrorStats",
@@ -17880,7 +17815,7 @@
       },
       {
         "path": "/system/migration/mode",
-        "line": 229,
+        "line": 230,
         "handler": "systemHandler.MigrationMode",
         "receiver_type": "SystemHandler",
         "func_name": "MigrationMode",
@@ -17892,7 +17827,7 @@
       },
       {
         "path": "/system/outbound-transport/adopt-from-brand/",
-        "line": 218,
+        "line": 219,
         "handler": "outboundTransportHandler.AdoptFromBrand",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "AdoptFromBrand",
@@ -17903,7 +17838,7 @@
       },
       {
         "path": "/system/outbound-transport/apply",
-        "line": 214,
+        "line": 215,
         "handler": "outboundTransportHandler.HandleApply",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "HandleApply",
@@ -17915,7 +17850,7 @@
       },
       {
         "path": "/system/outbound-transport/apply/",
-        "line": 215,
+        "line": 216,
         "handler": "outboundTransportHandler.HandleApply",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "HandleApply",
@@ -17927,7 +17862,7 @@
       },
       {
         "path": "/system/outbound-transport/bounce/brands/",
-        "line": 220,
+        "line": 221,
         "handler": "outboundTransportHandler.HandleBounceBrandSettings",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "HandleBounceBrandSettings",
@@ -17939,7 +17874,7 @@
       },
       {
         "path": "/system/outbound-transport/bounce/dlq",
-        "line": 224,
+        "line": 225,
         "handler": "smtpFeedbackOps.HandleDLQ",
         "receiver_type": "SMTPFeedbackOpsHandler",
         "func_name": "HandleDLQ",
@@ -17950,7 +17885,7 @@
       },
       {
         "path": "/system/outbound-transport/bounce/dlq/",
-        "line": 225,
+        "line": 226,
         "handler": "smtpFeedbackOps.HandleDLQSub",
         "receiver_type": "SMTPFeedbackOpsHandler",
         "func_name": "HandleDLQSub",
@@ -17961,7 +17896,7 @@
       },
       {
         "path": "/system/outbound-transport/bounce/events",
-        "line": 222,
+        "line": 223,
         "handler": "smtpFeedbackOps.HandleEvents",
         "receiver_type": "SMTPFeedbackOpsHandler",
         "func_name": "HandleEvents",
@@ -17972,7 +17907,7 @@
       },
       {
         "path": "/system/outbound-transport/bounce/events/",
-        "line": 223,
+        "line": 224,
         "handler": "smtpFeedbackOps.HandleEventsSub",
         "receiver_type": "SMTPFeedbackOpsHandler",
         "func_name": "HandleEventsSub",
@@ -17984,7 +17919,7 @@
       },
       {
         "path": "/system/outbound-transport/bounce/settings",
-        "line": 219,
+        "line": 220,
         "handler": "outboundTransportHandler.HandleBounceSettings",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "HandleBounceSettings",
@@ -17996,7 +17931,7 @@
       },
       {
         "path": "/system/outbound-transport/brands",
-        "line": 216,
+        "line": 217,
         "handler": "outboundTransportHandler.HandleBrands",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "HandleBrands",
@@ -18007,7 +17942,7 @@
       },
       {
         "path": "/system/outbound-transport/brands/",
-        "line": 217,
+        "line": 218,
         "handler": "outboundTransportHandler.HandleBrands",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "HandleBrands",
@@ -18018,7 +17953,7 @@
       },
       {
         "path": "/system/outbound-transport/global",
-        "line": 210,
+        "line": 211,
         "handler": "outboundTransportHandler.HandleGlobal",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "HandleGlobal",
@@ -18030,7 +17965,7 @@
       },
       {
         "path": "/system/outbound-transport/global/presets",
-        "line": 211,
+        "line": 212,
         "handler": "outboundTransportHandler.GlobalPresets",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "GlobalPresets",
@@ -18041,7 +17976,7 @@
       },
       {
         "path": "/system/outbound-transport/global/test-connection",
-        "line": 212,
+        "line": 213,
         "handler": "outboundTransportHandler.TestConnection",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "TestConnection",
@@ -18052,7 +17987,7 @@
       },
       {
         "path": "/system/outbound-transport/global/test-send",
-        "line": 213,
+        "line": 214,
         "handler": "outboundTransportHandler.TestSend",
         "receiver_type": "OutboundTransportHandler",
         "func_name": "TestSend",
@@ -18063,7 +17998,7 @@
       },
       {
         "path": "/system/rbac/capabilities",
-        "line": 207,
+        "line": 208,
         "handler": "systemHandler.APIKeyCapabilities",
         "receiver_type": "SystemHandler",
         "func_name": "APIKeyCapabilities",
@@ -18076,7 +18011,7 @@
       },
       {
         "path": "/system/readiness/evaluate",
-        "line": 282,
+        "line": 283,
         "handler": "readinessHandler.Evaluate",
         "receiver_type": "ReadinessHandler",
         "func_name": "Evaluate",
@@ -18087,7 +18022,7 @@
       },
       {
         "path": "/system/readiness/inboarding",
-        "line": 283,
+        "line": 284,
         "handler": "readinessHandler.Inboarding",
         "receiver_type": "ReadinessHandler",
         "func_name": "Inboarding",
@@ -18098,7 +18033,7 @@
       },
       {
         "path": "/system/readiness/report/",
-        "line": 284,
+        "line": 285,
         "handler": "readinessHandler.Report",
         "receiver_type": "ReadinessHandler",
         "func_name": "Report",
@@ -18109,7 +18044,7 @@
       },
       {
         "path": "/system/rollout/evaluate",
-        "line": 205,
+        "line": 206,
         "handler": "systemHandler.RolloutEvaluate",
         "receiver_type": "SystemHandler",
         "func_name": "RolloutEvaluate",
@@ -18120,7 +18055,7 @@
       },
       {
         "path": "/system/ses-quota",
-        "line": 201,
+        "line": 202,
         "handler": "systemHandler.SESQuota",
         "receiver_type": "SystemHandler",
         "func_name": "SESQuota",
@@ -18129,7 +18064,7 @@
       },
       {
         "path": "/system/settings",
-        "line": 277,
+        "line": 278,
         "handler": "settingsHandler.Handle",
         "receiver_type": "SettingsHandler",
         "func_name": "Handle",
@@ -18141,7 +18076,7 @@
       },
       {
         "path": "/system/settings/",
-        "line": 278,
+        "line": 279,
         "handler": "settingsHandler.Handle",
         "receiver_type": "SettingsHandler",
         "func_name": "Handle",
@@ -18153,7 +18088,7 @@
       },
       {
         "path": "/system/slo",
-        "line": 204,
+        "line": 205,
         "handler": "systemHandler.SLO",
         "receiver_type": "SystemHandler",
         "func_name": "SLO",
@@ -18162,7 +18097,7 @@
       },
       {
         "path": "/tags",
-        "line": 243,
+        "line": 244,
         "handler": "tagHandler.Handle",
         "receiver_type": "TagHandler",
         "func_name": "Handle",
@@ -18174,7 +18109,7 @@
       },
       {
         "path": "/tags/",
-        "line": 244,
+        "line": 245,
         "handler": "tagHandler.HandleSub",
         "receiver_type": "TagHandler",
         "func_name": "HandleSub",
@@ -18187,7 +18122,7 @@
       },
       {
         "path": "/templates",
-        "line": 113,
+        "line": 114,
         "handler": "templateHandler.Handle",
         "receiver_type": "TemplateHandler",
         "func_name": "Handle",
@@ -18199,7 +18134,7 @@
       },
       {
         "path": "/templates/",
-        "line": 114,
+        "line": 115,
         "handler": "templateHandler.HandleSub",
         "receiver_type": "TemplateHandler",
         "func_name": "HandleSub",
@@ -18214,7 +18149,7 @@
       },
       {
         "path": "/tenants",
-        "line": 306,
+        "line": 312,
         "handler": "tenantHandler.Handle",
         "receiver_type": "TenantHandler",
         "func_name": "Handle",
@@ -18226,7 +18161,7 @@
       },
       {
         "path": "/tenants/",
-        "line": 307,
+        "line": 313,
         "handler": "tenantHandler.Handle",
         "receiver_type": "TenantHandler",
         "func_name": "Handle",
@@ -18238,7 +18173,7 @@
       },
       {
         "path": "/webhooks",
-        "line": 62,
+        "line": 63,
         "handler": "inline",
         "receiver_type": null,
         "func_name": null,
@@ -18251,7 +18186,7 @@
       },
       {
         "path": "/webhooks/events",
-        "line": 74,
+        "line": 75,
         "handler": "webhookHandler.ListEvents",
         "receiver_type": "WebhookHandler",
         "func_name": "ListEvents",
@@ -18260,7 +18195,7 @@
       },
       {
         "path": "/webhooks/trigger",
-        "line": 75,
+        "line": 76,
         "handler": "webhookHandler.Trigger",
         "receiver_type": "WebhookHandler",
         "func_name": "Trigger",

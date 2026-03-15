@@ -1,0 +1,27 @@
+---
+title: "SMTP Overlay"
+description: "Use SendyKit’s outbound transport layer to operate beyond Sendy’s SES-only default"
+---
+
+## Why it exists
+
+Sendy is historically centered on Amazon SES. SendyKit adds an outbound transport layer so operators can run with broader provider support while preserving Sendy compatibility.
+
+## What it covers
+
+SendyKit’s transport layer is where you manage:
+
+- provider-backed outbound delivery settings
+- operational transport checks
+- replay and delivery workflows
+- billing-aware machine-paid transport actions when enabled
+
+## Operator outcome
+
+This lets you keep the familiar Sendy data model while moving transport operations into a more flexible control plane.
+
+## Related guides
+
+- [Configuration](/configuration)
+- [Quickstart](/quickstart)
+- [API Introduction](/api-reference/introduction)

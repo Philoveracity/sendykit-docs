@@ -1,0 +1,42 @@
+---
+title: "CLI Installation"
+description: "Install and use the SendyKit CLI for health, doctor, brands, billing, and licensing operations"
+---
+
+## Install the CLI
+
+The standard installer places the `sendykit` binary on your server:
+
+```bash
+curl -sSL https://install.sendykit.dev | bash
+```
+
+If you already have SendyKit installed, confirm the CLI is available:
+
+```bash
+sendykit --help
+```
+
+## Useful first commands
+
+```bash
+sendykit health
+sendykit doctor
+sendykit brands list
+sendykit license status
+```
+
+## What the CLI is for
+
+Use the CLI when you want:
+
+- server-side operational checks
+- readiness and doctor output in scripts
+- licensing inspection and verification
+- brand, campaign, and subscriber operations without opening the admin UI
+
+## Related guides
+
+- [Quickstart](/quickstart)
+- [Doctor](/readiness/doctor)
+- [Licensing](/self-hosted/licensing)
