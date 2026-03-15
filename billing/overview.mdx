@@ -1,0 +1,50 @@
+---
+title: "Billing Overview"
+description: "How SendyKit billing works across self-hosted, SaaS, and premium agent actions"
+---
+
+## Overview
+
+SendyKit uses a split billing model because humans and agents do not buy the same way.
+
+| Path | Who it serves | Current model |
+|------|---------------|---------------|
+| Self-hosted | Operators running Sendy + SendyKit | One-time license via EDD |
+| SaaS | Managed SendyKit customers | Subscription billing |
+| Premium agent actions | Agents using higher-cost capabilities | Stripe-native machine payments |
+
+## Self-hosted
+
+Self-hosted SendyKit is a paid product.
+
+- perpetual license
+- use forever
+- tiered by included future major upgrades
+- optional metered add-ons like SMTP pool overflow and AI credits
+
+See [Self-Hosted Licensing](/self-hosted/licensing).
+
+## SaaS
+
+SaaS is the managed path.
+
+- SendyKit hosts and operates the stack
+- no separate Sendy license needed
+- subscription pricing
+- same product direction, less operator overhead
+
+See pricing at [sendykit.dev/pricing](https://sendykit.dev/pricing).
+
+## Agent payments
+
+For premium actions, SendyKit can require:
+
+```text
+X-Stripe-Machine-Payment: <payment-proof-or-intent-ref>
+```
+
+This is the current implementation target for machine-paid actions.
+
+<Note>
+Direct/raw x402 should be treated as historical exploration unless explicitly revived later.
+</Note>

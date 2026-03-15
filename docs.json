@@ -54,6 +54,12 @@
             ]
           },
           {
+            "group": "Billing",
+            "pages": [
+              "billing/overview"
+            ]
+          },
+          {
             "group": "CLI",
             "pages": [
               "cli/agent-usage"
