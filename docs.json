@@ -38,7 +38,9 @@
             "group": "Getting Started",
             "pages": [
               "index",
-              "quickstart"
+              "quickstart",
+              "installation",
+              "configuration"
             ]
           },
           {
@@ -50,13 +52,16 @@
           {
             "group": "Self-Hosted",
             "pages": [
-              "self-hosted/licensing"
+              "self-hosted/licensing",
+              "self-hosted/editions",
+              "self-hosted/smtp-pool"
             ]
           },
           {
             "group": "Billing",
             "pages": [
               "billing/overview",
+              "billing/plans",
               "billing/agent-payments"
             ]
           },
@@ -83,6 +88,7 @@
               "api-reference/introduction",
               "api-reference/authentication",
               "api-reference/errors",
+              "api-reference/pagination",
               "api-reference/rate-limiting"
             ]
           }

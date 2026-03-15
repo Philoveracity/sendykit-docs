@@ -1,0 +1,33 @@
+---
+title: "SMTP Pool"
+description: "How SendyKit managed SMTP overflow works for self-hosted operators"
+---
+
+## Overview
+
+Managed SMTP Pool is the overflow path for operators who want help when their own sending capacity runs short.
+
+Typical use case:
+- you normally send through SES or your own SMTP
+- quota or deliverability pressure spikes
+- SendyKit can route overflow through managed providers
+
+## Why it exists
+
+It gives self-hosted operators:
+- a safety valve during spikes
+- a way to keep sends moving
+- less panic when provider limits hit at the wrong time
+
+## Pricing shape
+
+Product docs currently frame SMTP Pool as a metered add-on.
+
+Examples already used in product/store work:
+- 10K emails
+- 50K emails
+
+## Important boundary
+
+This is an add-on service.
+It does not change the fact that self-hosted SendyKit is still your install, your server, your operating model.

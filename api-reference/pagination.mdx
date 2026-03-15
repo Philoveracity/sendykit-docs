@@ -1,0 +1,34 @@
+---
+title: "Pagination"
+description: "How SendyKit paginates list-style API responses"
+---
+
+## Envelope shape
+
+List responses use a JSON envelope with `data` and `meta`.
+
+```json
+{
+  "data": [],
+  "meta": {
+    "page": 1,
+    "per_page": 25,
+    "total": 142
+  }
+}
+```
+
+## Common query params
+
+Typical pagination params:
+- `page`
+- `per_page`
+
+## Why it matters
+
+SendyKit is meant to be usable by:
+- humans
+- scripts
+- agents
+
+That means responses need predictable pagination and metadata instead of ad-hoc raw dumps.
