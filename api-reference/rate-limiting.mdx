@@ -1,0 +1,31 @@
+---
+title: "Rate Limiting"
+description: "How SendyKit communicates API rate limits"
+---
+
+## Response headers
+
+SendyKit returns standard rate-limit headers:
+
+```text
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 97
+X-RateLimit-Reset: 1710345600
+```
+
+## What to do
+
+- retry after the reset window
+- keep writes idempotent with `Idempotency-Key`
+- use API keys for stable automation
+- reserve machine payments for premium actions, not every request
+
+## Public readiness endpoints
+
+The public readiness endpoints are separately rate-limited because they are browser-accessible:
+
+- `/sendykit/api/v2/system/readiness/evaluate`
+- `/sendykit/api/v2/system/readiness/inboarding`
+- `/sendykit/api/v2/system/readiness/report/{id}`
+
+Those routes are intentionally narrower than the main authenticated API.

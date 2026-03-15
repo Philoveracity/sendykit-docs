@@ -1,0 +1,59 @@
+---
+title: "Authentication"
+description: "How SendyKit API authentication works"
+---
+
+## Supported auth modes
+
+SendyKit supports three auth patterns:
+
+| Mode | Header | When to use |
+|------|--------|-------------|
+| API key | `X-API-Key` | Standard integrations, operators, automation |
+| JWT | `Authorization: Bearer ...` | User/session-scoped browser or admin flows |
+| Machine payment | `X-Stripe-Machine-Payment` | Premium actions for agent workflows |
+
+## API key
+
+This is the primary auth surface for integrations.
+
+```bash
+curl -H "X-API-Key: sk_a1b2c3d4..." \
+  https://your-server.com/sendykit/api/v2/brands
+```
+
+## JWT
+
+Use JWTs for session-style flows.
+
+```bash
+curl -X POST https://your-server.com/sendykit/api/v2/auth/token \
+  -d '{"username": "admin", "password": "..."}'
+```
+
+Then:
+
+```bash
+curl -H "Authorization: Bearer eyJ..." \
+  https://your-server.com/sendykit/api/v2/brands
+```
+
+## Machine payments
+
+For premium actions, SendyKit can require Stripe-native machine-payment proof.
+
+```bash
+curl -H "X-API-Key: sk_a1b2c3d4..." \
+  -H "X-Stripe-Machine-Payment: <payment-proof-or-intent-ref>" \
+  https://your-server.com/sendykit/api/v2/ai/subject-lines
+```
+
+<Note>
+Current implementation target is Stripe-native machine payments. Raw/direct x402 should be treated as historical exploration, not the live customer path.
+</Note>
+
+## Related source of truth
+
+- `docs/AUTH-BILLING-MATRIX.md`
+- `docs/openapi/sendykit-v2.yaml`
+- `internal/http/middleware_billing.go`

@@ -1,0 +1,43 @@
+---
+title: "Errors"
+description: "SendyKit API error format and common error codes"
+---
+
+## Error envelope
+
+SendyKit error responses use this shape:
+
+```json
+{
+  "error": "subscriber not found",
+  "code": "not_found"
+}
+```
+
+## Common error codes
+
+| Code | Meaning |
+|------|---------|
+| `unauthorized` | Missing or invalid auth |
+| `forbidden` | Authenticated, but not allowed |
+| `not_found` | Resource does not exist |
+| `invalid_request` | Missing or invalid input |
+| `internal_error` | Unexpected server-side failure |
+
+## Common statuses
+
+| Status | Typical cause |
+|--------|---------------|
+| `400` | Invalid request body, query, or params |
+| `401` | Missing or invalid API key / token |
+| `402` | Machine payment required for premium action |
+| `403` | Auth ok, permission denied |
+| `404` | Resource not found |
+| `409` | Idempotency or state conflict |
+| `500` | Internal server error |
+
+## Source of truth
+
+Defined in:
+- `internal/respond/respond.go`
+- `docs/AUTH-BILLING-MATRIX.md`
