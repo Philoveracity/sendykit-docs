@@ -15,22 +15,23 @@ The canonical product/docs source lives in the main SendyKit repo:
 
 Use this split:
 
-- **OpenAPI** for API truth
-- **Mintlify** for public rendering
-- **MDX** for guides, concepts, pricing, readiness, and operator explanation
+- **`sendykit/docs-site`** for canonical Mintlify content
+- **`sendykit/docs/openapi/sendykit-v2.yaml`** for canonical API truth
+- **`sendykit-docs`** as the public publishing repo
 
-### Sync OpenAPI
+### Sync from canonical repo
 
 ```bash
-cd /home/thedream/mail.thedream.rocks/sendykit-docs
-python3 scripts/sync-openapi.py
+cd /home/thedream/mail.thedream.rocks/sendykit
+make openapi-sync
 ```
 
-That updates:
+That now syncs:
 
-- `api-reference/openapi.json`
+- canonical `docs-site/*` content into this public repo
+- `docs/openapi/sendykit-v2.yaml` into `api-reference/openapi.json`
 
-from the canonical spec in the main SendyKit repo.
+GitHub Actions also runs this sync on pushes touching `docs-site/**`, OpenAPI, or sync automation.
 
 ## Preview locally
 

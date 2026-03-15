@@ -67,7 +67,7 @@ SendyKit reads Sendy's MySQL database and adds its own tables (prefixed `sendyki
   <Card title="Self-Hosted" icon="server" href="/self-hosted/licensing">
     One-time purchase. Install on your server alongside Sendy. Full feature access. Optional managed SMTP pool and AI credits.
   </Card>
-  <Card title="SaaS" icon="cloud" href="https://sendykit.dev/pricing">
+  <Card title="SaaS" icon="cloud" href="/billing/overview">
     Managed hosting at sendykit.dev. No Sendy license needed. Subscription pricing with included sending.
   </Card>
 </Columns>
@@ -83,4 +83,18 @@ sendykit campaigns list --brand 2 --sort open_rate --limit 5 --json | jq '.[0]'
 sendykit campaigns create --brand 2 --subject "Re-engagement" --template re-engage.html
 ```
 
-Agents can also handle premium actions with Stripe-native machine-payment proofs. Use the API and CLI as the primary surfaces; treat raw/direct x402 as historical exploration, not the live customer path.
+Agents can also handle premium actions with Stripe-native machine-payment proofs. Use the API and CLI as the primary surfaces, with Stripe machine payments as the live premium-action path.
+
+## By the Numbers
+
+| Metric | Count |
+|--------|-------|
+| REST API endpoints | 125 |
+| CLI commands | 240+ |
+| Admin pages | 7 |
+| Health checks | 68 |
+| Automated tests | 351 |
+| Spec documents | 30 |
+| Background workers | 6 |
+| DB migrations | 7 |
+| Binary size | ~10MB |

@@ -45,7 +45,7 @@ curl -H "X-Stripe-Machine-Payment: <payment-proof-or-intent-ref>" \
   https://your-server.com/sendykit/api/v2/campaigns
 ```
 
-Use API keys for standard authenticated automation. Treat raw/direct x402 as historical exploration, not the live customer path.
+Use API keys for standard authenticated automation. Use Stripe-native machine-payment proofs for premium machine-paid actions.
 
 ## Response Format
 
@@ -62,19 +62,51 @@ All responses use a consistent JSON envelope:
 }
 ```
 
+Error responses:
+
+```json
+{
+  "error": "subscriber not found",
+  "code": "not_found",
+  "status": 404
+}
+```
+
 ## Idempotency
 
-For write operations (POST, PUT, DELETE), include an `Idempotency-Key` header to prevent duplicate processing.
+For write operations (POST, PUT, DELETE), include an `Idempotency-Key` header to prevent duplicate processing:
+
+```bash
+curl -X POST \
+  -H "X-API-Key: sk_..." \
+  -H "Idempotency-Key: unique-request-id-123" \
+  -d '{"email": "user@example.com", "list_id": 1}' \
+  https://your-server.com/sendykit/api/v2/subscribers
+```
+
+## Rate Limiting
+
+Rate limits are returned in response headers:
+
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 97
+X-RateLimit-Reset: 1710345600
+```
+
+Default limits per API key. Contact support for higher limits.
 
 ## Endpoint Categories
 
-- Brands
-- Lists
-- Subscribers
-- Campaigns
-- Templates
-- Analytics
-- AI
-- Webhooks
-- System
-- Billing
+| Category | Endpoints | Description |
+|----------|-----------|-------------|
+| [Brands](/api-reference/brands/list) | 3 | Multi-brand management |
+| [Lists](/api-reference/lists/list) | 4 | Mailing list CRUD + custom fields |
+| [Subscribers](/api-reference/subscribers/list) | 10 | Full subscriber lifecycle + bulk ops |
+| [Campaigns](/api-reference/campaigns/list) | 5 | Campaign CRUD + reports |
+| [Templates](/api-reference/templates/list) | 3 | Template management |
+| [Analytics](/api-reference/analytics/dashboard) | 12 | Intelligence engine |
+| [AI](/api-reference/ai/subject-lines) | 8 | Content generation |
+| [Webhooks](/api-reference/webhooks/list) | 4 | Event subscriptions |
+| [System](/api-reference/system/health) | 15+ | Health, doctor, SES quota, audit, flags |
+| [Billing](/api-reference/billing/status) | 4 | Plans, checkout, status |

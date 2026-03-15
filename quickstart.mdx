@@ -35,25 +35,34 @@ description: "Get SendyKit running in under 5 minutes"
     DB_PASS=your_password
     DB_NAME=sendy_database
 
+    # Your license key (set during install)
     SENDYKIT_LICENSE_KEY=sk_lic_xxxxxxxxxxxxx
     ```
 
-    <Tip>SendyKit reads the same database as Sendy. Use the same credentials from Sendy's `includes/config.php`.</Tip>
+    <Tip>SendyKit reads the **same database** as Sendy. Use the same credentials from Sendy's `includes/config.php`.</Tip>
   </Step>
 
   <Step title="Start SendyKit">
     ```bash
+    # Run migrations (adds sendykit_ prefixed tables, never modifies Sendy tables)
     sendykit migrate
+
+    # Start the API server
     sendykit serve
     ```
 
-    Your API will be available at `http://localhost:3939/sendykit/api/v2/`.
+    Your SendyKit API is now running at `http://localhost:3939/sendykit/api/v2/`.
   </Step>
 
   <Step title="Verify installation">
     ```bash
+    # Check health
     sendykit health
+
+    # Run the doctor (68 automated checks)
     sendykit doctor
+
+    # List your Sendy brands
     sendykit brands list
     ```
   </Step>
@@ -63,15 +72,15 @@ description: "Get SendyKit running in under 5 minutes"
 
 <Columns cols={2}>
   <Card title="Explore the API" icon="code" href="/api-reference/introduction">
-    Start with the v2 API overview and authentication model.
+    125 REST endpoints for brands, lists, subscribers, campaigns, analytics, and more.
   </Card>
-  <Card title="Self-Hosted Licensing" icon="key" href="/self-hosted/licensing">
-    Understand EDD-powered licensing, safety guarantees, and offline mode.
+  <Card title="Try the CLI" icon="terminal" href="/cli/installation">
+    240+ commands with shell completion. Composable with pipes and scripts.
   </Card>
-  <Card title="Agent Usage" icon="terminal" href="/cli/agent-usage">
-    Use the CLI and API as primary surfaces for agents and operators.
+  <Card title="Set up SMTP" icon="envelope" href="/features/smtp-overlay">
+    Use SendGrid, Brevo, or any SMTP provider — not just Amazon SES.
   </Card>
-  <Card title="Pricing" icon="credit-card" href="https://sendykit.dev/pricing">
-    Compare self-hosted and SaaS paths.
+  <Card title="Enable AI" icon="wand-magic-sparkles" href="/features/ai-authoring">
+    Generate subject lines, full emails, and campaign insights with your AI provider.
   </Card>
 </Columns>
