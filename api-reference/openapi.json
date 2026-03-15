@@ -3,7 +3,17 @@
   "info": {
     "title": "SendyKit API",
     "version": "2.1.0-draft",
-    "description": "Canonical API contract for SendyKit v2.\n\nStatus tags on operations:\n- x-status: live\n- x-status: partial\n- x-status: planned\n\nPayment model:\n- Stripe machine payments are the current machine-paid action mechanism.\n- x402 compatibility is roadmap/future mode.\n"
+    "description": "Canonical API contract for SendyKit v2.\n\nStatus tags on operations:\n- x-status: live\n- x-status: partial\n- x-status: planned\n\nPayment model:\n- Stripe machine payments are the current machine-paid action mechanism.\n- x402 compatibility is roadmap/future mode.\n",
+    "summary": "Sendy-compatible email operations API with SendyKit exoskeleton, SaaS controls, readiness evaluation, and machine-paid premium actions.",
+    "contact": {
+      "name": "SendyKit",
+      "url": "https://sendykit.dev",
+      "email": "support@sendykit.dev"
+    },
+    "license": {
+      "name": "Commercial / source-available components as licensed",
+      "url": "https://sendykit.dev"
+    }
   },
   "servers": [
     {
@@ -17,100 +27,132 @@
   ],
   "tags": [
     {
-      "name": "Core"
+      "name": "Core",
+      "description": "Core compatibility surfaces."
     },
     {
-      "name": "Campaigns"
+      "name": "Campaigns",
+      "description": "Campaign CRUD, delivery actions, and campaign-level reporting."
     },
     {
-      "name": "Analytics"
+      "name": "Analytics",
+      "description": "Reporting, dashboards, exports, and recommendation endpoints."
     },
     {
-      "name": "Webhooks"
+      "name": "Webhooks",
+      "description": "Outbound webhook subscriptions and manual trigger/testing."
     },
     {
-      "name": "AI"
+      "name": "AI",
+      "description": "AI-assisted authoring, summaries, and marketing intelligence."
     },
     {
-      "name": "Sequences"
+      "name": "Sequences",
+      "description": "Lifecycle automation sequences, steps, enrollments, and goals."
     },
     {
-      "name": "Funnels"
+      "name": "Funnels",
+      "description": "Funnel CRUD and funnel analytics surfaces."
     },
     {
-      "name": "Tags"
+      "name": "Tags",
+      "description": "Tag CRUD plus subscriber-tag relationships."
     },
     {
-      "name": "Goals"
+      "name": "Goals",
+      "description": "Goal tracking events."
     },
     {
-      "name": "Exa"
+      "name": "Exa",
+      "description": "Exa-powered research, search, and content retrieval integration."
     },
     {
-      "name": "Instantly"
+      "name": "Instantly",
+      "description": "Instantly integration settings, sync, compliance, and webhooks."
     },
     {
-      "name": "Automations"
+      "name": "Automations",
+      "description": "Approval-oriented automation runs and workflow objects."
     },
     {
-      "name": "Auth"
+      "name": "Auth",
+      "description": "Token issuance and auth-adjacent entrypoints."
     },
     {
-      "name": "Brands"
+      "name": "Brands",
+      "description": "Sendy app/brand identity and reusable content scope."
     },
     {
-      "name": "Lists"
+      "name": "Lists",
+      "description": "Sendy lists and custom-field discovery endpoints."
     },
     {
-      "name": "Subscribers"
+      "name": "Subscribers",
+      "description": "Subscriber CRUD, status transitions, bulk operations, imports, and lookup."
     },
     {
-      "name": "Templates"
+      "name": "Templates",
+      "description": "Email template CRUD, duplication, preview, and brand-scoped blocks."
     },
     {
-      "name": "Assets"
+      "name": "Assets",
+      "description": "Managed media uploads for the editor and templating layer."
     },
     {
-      "name": "Billing"
+      "name": "Billing",
+      "description": "Plan catalog, tenant usage, receipts, payments, and Stripe webhooks."
     },
     {
-      "name": "System"
+      "name": "System",
+      "description": "Operator endpoints for runtime inspection, rollout, migration, DLQ, and transport."
     },
     {
-      "name": "Health"
+      "name": "Health",
+      "description": "Doctor-style health scans and remediation history."
     },
     {
-      "name": "Settings"
+      "name": "Settings",
+      "description": "Feature-flag driven platform settings and registry metadata."
     },
     {
-      "name": "Audit"
+      "name": "Audit",
+      "description": "Audit trail listing and purge endpoints."
     },
     {
-      "name": "Readiness"
+      "name": "Readiness",
+      "description": "Readiness evaluation, report retrieval, and inboarding recommendations."
     },
     {
-      "name": "Tenants"
+      "name": "Tenants",
+      "description": "SaaS tenant CRUD, API keys, and usage views."
     },
     {
-      "name": "Suppressions"
+      "name": "Suppressions",
+      "description": "Suppression checks and writes."
     },
     {
-      "name": "Queue"
+      "name": "Queue",
+      "description": "Queue inspection and immediate processing."
     },
     {
-      "name": "Segments"
+      "name": "Segments",
+      "description": "Segments, conditions, and refresh views."
     },
     {
-      "name": "Rules"
+      "name": "Rules",
+      "description": "Sendy rules and logs."
     },
     {
-      "name": "Autoresponders"
+      "name": "Autoresponders",
+      "description": "Legacy autoresponder inspection and email toggles."
     },
     {
-      "name": "Bridge"
+      "name": "Bridge",
+      "description": "Simplified automation bridge for external systems."
     },
     {
-      "name": "Integrations"
+      "name": "Integrations",
+      "description": "Cross-system integration support surfaces."
     }
   ],
   "components": {
@@ -341,7 +383,8 @@
         },
         "required": [
           "data"
-        ]
+        ],
+        "description": "Standard SendyKit response wrapper. Most successful responses place the primary payload in `data` and optional metadata in `meta`."
       },
       "Error": {
         "type": "object",
@@ -366,7 +409,12 @@
         },
         "required": [
           "error"
-        ]
+        ],
+        "description": "Standard error payload returned by SendyKit handlers.",
+        "example": {
+          "error": "tenant_id required",
+          "code": "invalid"
+        }
       },
       "PaginationMeta": {
         "type": "object",
@@ -401,7 +449,8 @@
         },
         "required": [
           "api_key"
-        ]
+        ],
+        "description": "Exchange an API key for a 24-hour JWT."
       },
       "AuthTokenData": {
         "type": "object",
@@ -412,7 +461,11 @@
         },
         "required": [
           "token"
-        ]
+        ],
+        "description": "Issued JWT token.",
+        "example": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        }
       },
       "StatusObject": {
         "type": "object",
@@ -445,128 +498,337 @@
       },
       "Brand": {
         "type": "object",
+        "description": "Sendy app/brand identity used for sender defaults and content scoping.",
         "properties": {
           "id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 7
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Flagship SaaS"
           },
           "from_name": {
-            "type": "string"
+            "type": "string",
+            "example": "SendyKit"
           },
           "from_email": {
             "type": "string",
-            "format": "email"
+            "format": "email",
+            "example": "hello@sendykit.dev"
           },
           "reply_to": {
             "type": "string",
-            "format": "email"
+            "format": "email",
+            "example": "support@sendykit.dev"
           },
           "created_at": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T01:15:00Z"
           }
         },
+        "required": [
+          "id",
+          "name"
+        ],
         "additionalProperties": true
       },
       "List": {
         "type": "object",
+        "description": "Sendy list record.",
         "properties": {
           "id": {
-            "type": "integer"
-          },
-          "brand_id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 21
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Product updates"
+          },
+          "app_id": {
+            "type": "integer",
+            "example": 7
+          },
+          "brand_id": {
+            "type": "integer",
+            "example": 7
           },
           "subscriber_count": {
-            "type": "integer"
+            "type": "integer",
+            "example": 12842
           }
         },
+        "required": [
+          "id",
+          "name"
+        ],
         "additionalProperties": true
       },
       "Subscriber": {
         "type": "object",
+        "description": "Subscriber record with Sendy-compatible status fields.",
         "properties": {
           "id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1042
           },
           "email": {
             "type": "string",
-            "format": "email"
+            "format": "email",
+            "example": "jane@example.com"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Jane Doe"
           },
           "list_id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 21
+          },
+          "confirmed": {
+            "type": "integer",
+            "example": 1
+          },
+          "unsubscribed": {
+            "type": "integer",
+            "example": 0
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "example": "confirmed"
+          },
+          "bounced": {
+            "type": "integer",
+            "example": 0
+          },
+          "bounce_soft": {
+            "type": "integer",
+            "example": 0
+          },
+          "complaint": {
+            "type": "integer",
+            "example": 0
+          },
+          "custom_fields": {
+            "type": "string",
+            "example": "{\"company\":\"Acme\"}"
+          },
+          "country": {
+            "type": "string",
+            "example": "US"
+          },
+          "ip": {
+            "type": "string",
+            "example": "203.0.113.42"
+          },
+          "referrer": {
+            "type": "string",
+            "example": "https://sendykit.dev"
+          },
+          "timestamp": {
+            "type": "integer",
+            "example": 1710370980
+          },
+          "join_date": {
+            "type": "integer",
+            "example": 1710370980
+          },
+          "last_campaign": {
+            "type": "integer",
+            "example": 88
           }
         },
+        "required": [
+          "id",
+          "email",
+          "list_id"
+        ],
         "additionalProperties": true
       },
       "Campaign": {
         "type": "object",
+        "description": "Campaign record backed by Sendy campaign tables and SendyKit overlays.",
         "properties": {
           "id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 88
+          },
+          "app_id": {
+            "type": "integer",
+            "example": 7
           },
           "brand_id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 7
+          },
+          "title": {
+            "type": "string",
+            "example": "Launch week announcement"
+          },
+          "label": {
+            "type": "string",
+            "example": "launch-week"
           },
           "subject": {
-            "type": "string"
+            "type": "string",
+            "example": "SendyKit launch week is live"
+          },
+          "sent": {
+            "type": "string",
+            "example": "0"
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "example": "draft"
           },
-          "created_at": {
-            "type": "string"
+          "from_name": {
+            "type": "string",
+            "example": "SendyKit"
+          },
+          "from_email": {
+            "type": "string",
+            "format": "email",
+            "example": "hello@sendykit.dev"
+          },
+          "reply_to": {
+            "type": "string",
+            "format": "email",
+            "example": "support@sendykit.dev"
+          },
+          "html": {
+            "type": "string",
+            "example": "<h1>Launch week</h1><p>We are live.</p>"
+          },
+          "plain_text": {
+            "type": "string",
+            "example": "Launch week\n\nWe are live."
+          },
+          "lists": {
+            "type": "string",
+            "example": "21,22"
+          },
+          "send_date": {
+            "type": "string",
+            "example": "2026-03-20 16:00:00"
+          },
+          "timezone": {
+            "type": "string",
+            "example": "America/Los_Angeles"
+          },
+          "recipients": {
+            "type": "integer",
+            "example": 12842
+          },
+          "to_send": {
+            "type": "integer",
+            "example": 12842
           }
         },
+        "required": [
+          "id"
+        ],
         "additionalProperties": true
       },
       "Template": {
         "type": "object",
+        "description": "Email template object with HTML, plain text, and optional GrapeJS document.",
         "properties": {
           "id": {
-            "type": "integer"
-          },
-          "brand_id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 14
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Launch email base"
           },
           "html": {
-            "type": "string"
+            "type": "string",
+            "example": "<h1>Hello {{fname}}</h1>"
+          },
+          "grapejs_data": {
+            "type": "object",
+            "additionalProperties": true,
+            "example": {
+              "assets": [],
+              "styles": []
+            }
           },
           "plain_text": {
-            "type": "string"
+            "type": "string",
+            "example": "Hello {{fname}}"
+          },
+          "app_id": {
+            "type": "integer",
+            "example": 7
+          },
+          "brand_id": {
+            "type": "integer",
+            "example": 7
+          },
+          "from_name": {
+            "type": "string",
+            "example": "SendyKit"
+          },
+          "from_email": {
+            "type": "string",
+            "format": "email",
+            "example": "hello@sendykit.dev"
+          },
+          "reply_to": {
+            "type": "string",
+            "format": "email",
+            "example": "support@sendykit.dev"
           }
         },
+        "required": [
+          "id",
+          "name"
+        ],
         "additionalProperties": true
       },
       "Webhook": {
         "type": "object",
+        "description": "Outbound webhook subscription.",
         "properties": {
           "id": {
-            "type": "integer"
+            "type": "integer",
+            "example": 9
           },
-          "event": {
-            "type": "string"
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://ops.example.com/sendykit/webhooks"
           },
-          "target_url": {
-            "type": "string"
+          "secret": {
+            "type": "string",
+            "example": "whsec_abc123"
           },
-          "status": {
-            "type": "string"
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "campaign.sent",
+              "subscriber.unsubscribed"
+            ]
+          },
+          "active": {
+            "type": "boolean",
+            "example": true
+          },
+          "brand_id": {
+            "type": "integer",
+            "example": 7
           }
         },
+        "required": [
+          "id",
+          "url",
+          "events",
+          "active"
+        ],
         "additionalProperties": true
       },
       "FeatureFlag": {
@@ -592,58 +854,365 @@
       },
       "Tenant": {
         "type": "object",
+        "description": "SaaS tenant record.",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "tenant_01HZX8V4N5"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Acme Growth"
           },
           "slug": {
-            "type": "string"
+            "type": "string",
+            "example": "acme-growth"
           },
           "email": {
             "type": "string",
-            "format": "email"
+            "format": "email",
+            "example": "owner@acme.test"
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "example": "trial"
           },
           "plan": {
-            "type": "string"
+            "type": "string",
+            "example": "growth"
+          },
+          "edd_customer_id": {
+            "type": "string",
+            "example": "edd_cus_123"
+          },
+          "stripe_customer_id": {
+            "type": "string",
+            "example": "cus_Q2abc123"
+          },
+          "stripe_subscription_id": {
+            "type": "string",
+            "example": "sub_Q2abc123"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true,
+            "example": {
+              "source": "launch"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T02:05:00Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T02:05:00Z"
           }
         },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "email",
+          "status",
+          "plan"
+        ],
         "additionalProperties": true
       },
       "ReadinessEvaluateRequest": {
         "type": "object",
-        "description": "Canonical readiness evaluation input. Actual object can include operational, commercial, and environment signals.",
-        "additionalProperties": true
-      },
-      "ReadinessReport": {
-        "type": "object",
+        "description": "Readiness evaluation questionnaire / scan payload.",
         "properties": {
-          "grade": {
-            "type": "string"
+          "mode": {
+            "type": "string",
+            "enum": [
+              "questionnaire",
+              "local_scan",
+              "hybrid"
+            ],
+            "example": "questionnaire"
           },
-          "score": {
-            "type": "number"
+          "technical": {
+            "type": "object",
+            "properties": {
+              "compatibility": {
+                "type": "integer",
+                "example": 8
+              },
+              "database": {
+                "type": "integer",
+                "example": 8
+              },
+              "runtime": {
+                "type": "integer",
+                "example": 7
+              },
+              "cron": {
+                "type": "integer",
+                "example": 7
+              },
+              "dns": {
+                "type": "integer",
+                "example": 6
+              },
+              "transport": {
+                "type": "integer",
+                "example": 7
+              },
+              "filesystem": {
+                "type": "integer",
+                "example": 8
+              },
+              "security": {
+                "type": "integer",
+                "example": 7
+              }
+            },
+            "additionalProperties": true
           },
-          "recommendation": {
-            "type": "string"
+          "commercial": {
+            "type": "object",
+            "properties": {
+              "ownership_preference": {
+                "type": "integer",
+                "example": 9
+              },
+              "managed_preference": {
+                "type": "integer",
+                "example": 4
+              },
+              "ops_tolerance": {
+                "type": "integer",
+                "example": 7
+              },
+              "budget_sensitivity": {
+                "type": "integer",
+                "example": 5
+              },
+              "future_certainty": {
+                "type": "integer",
+                "example": 7
+              },
+              "planned_connected_sites": {
+                "type": "integer",
+                "example": 12
+              },
+              "planned_site_activations": {
+                "type": "integer",
+                "example": 6
+              },
+              "planned_subscribers": {
+                "type": "integer",
+                "example": 250000
+              },
+              "planned_emails_per_month": {
+                "type": "integer",
+                "example": 2000000
+              },
+              "planned_api_calls_per_month": {
+                "type": "integer",
+                "example": 500000
+              },
+              "needs_ai": {
+                "type": "boolean",
+                "example": true
+              },
+              "needs_automations": {
+                "type": "boolean",
+                "example": true
+              },
+              "needs_white_label": {
+                "type": "boolean",
+                "example": false
+              },
+              "needs_custom_domain": {
+                "type": "boolean",
+                "example": true
+              },
+              "needs_sso": {
+                "type": "boolean",
+                "example": false
+              },
+              "needs_sla": {
+                "type": "boolean",
+                "example": false
+              },
+              "needs_dedicated_ip": {
+                "type": "boolean",
+                "example": false
+              }
+            },
+            "additionalProperties": true
           },
           "findings": {
             "type": "array",
             "items": {
               "type": "object",
-              "additionalProperties": true
+              "properties": {
+                "category": {
+                  "type": "string",
+                  "example": "dns"
+                },
+                "severity": {
+                  "type": "string",
+                  "enum": [
+                    "blocker",
+                    "warning",
+                    "info",
+                    "pass"
+                  ],
+                  "example": "warning"
+                },
+                "code": {
+                  "type": "string",
+                  "example": "spf_missing"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "SPF record missing"
+                },
+                "detail": {
+                  "type": "string",
+                  "example": "No SPF record detected for the sender domain."
+                },
+                "docs_url": {
+                  "type": "string",
+                  "example": "https://docs.sendykit.dev/readiness/doctor"
+                },
+                "fix_command": {
+                  "type": "string",
+                  "example": "Add SPF TXT record in DNS"
+                }
+              },
+              "required": [
+                "category",
+                "severity",
+                "code",
+                "title"
+              ]
             }
+          },
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T02:00:00Z"
+          }
+        },
+        "required": [
+          "mode",
+          "technical",
+          "commercial"
+        ],
+        "additionalProperties": true
+      },
+      "ReadinessReport": {
+        "type": "object",
+        "properties": {
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T02:00:00Z"
+          },
+          "mode": {
+            "type": "string",
+            "example": "questionnaire"
+          },
+          "score": {
+            "type": "integer",
+            "example": 82
+          },
+          "grade": {
+            "type": "string",
+            "example": "ready_with_warnings"
+          },
+          "dimensions": {
+            "type": "object",
+            "properties": {
+              "technical": {
+                "type": "integer",
+                "example": 79
+              },
+              "commercial_fit": {
+                "type": "integer",
+                "example": 85
+              },
+              "self_hosted_fit": {
+                "type": "integer",
+                "example": 88
+              },
+              "saas_fit": {
+                "type": "integer",
+                "example": 62
+              },
+              "enterprise_fit": {
+                "type": "integer",
+                "example": 41
+              }
+            },
+            "additionalProperties": true
+          },
+          "commercial_fit": {
+            "type": "object",
+            "additionalProperties": true,
+            "example": {
+              "recommended_model": "self_hosted",
+              "recommended_plan": "growth",
+              "confidence": 0.86,
+              "reasons": [
+                "Strong ownership preference",
+                "Ops tolerance is sufficient"
+              ]
+            }
+          },
+          "risk": {
+            "type": "object",
+            "additionalProperties": true,
+            "example": {
+              "migration": "medium",
+              "operational": "medium",
+              "deliverability": "low"
+            }
+          },
+          "findings": {
+            "type": "object",
+            "additionalProperties": true
           },
           "inboarding": {
             "type": "object",
-            "additionalProperties": true
+            "additionalProperties": true,
+            "example": {
+              "mode": "self_hosted_fix_then_install",
+              "title": "Fix DNS and cron before launch",
+              "docs": [
+                "https://docs.sendykit.dev/readiness/doctor"
+              ],
+              "commands": [
+                "sendykit doctor"
+              ],
+              "steps": [
+                "Fix SPF",
+                "Verify cron"
+              ],
+              "cta": {
+                "label": "Open docs",
+                "url": "https://docs.sendykit.dev/readiness/doctor"
+              }
+            }
           }
         },
+        "required": [
+          "evaluated_at",
+          "mode",
+          "score",
+          "grade",
+          "dimensions",
+          "commercial_fit",
+          "risk",
+          "findings",
+          "inboarding"
+        ],
         "additionalProperties": true
       },
       "BillingStatus": {
@@ -703,7 +1272,8 @@
             "type": "integer"
           }
         },
-        "additionalProperties": true
+        "additionalProperties": true,
+        "description": "Cross-system billing intelligence summary."
       },
       "DoctorReport": {
         "type": "object",
@@ -727,7 +1297,8 @@
             }
           }
         },
-        "additionalProperties": true
+        "additionalProperties": true,
+        "description": "Health doctor report with summary, checks, and optional fixes."
       },
       "Sequence": {
         "type": "object",
@@ -1044,6 +1615,830 @@
           "sequence_id"
         ],
         "additionalProperties": true
+      },
+      "BrandUpsertRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Required by PUT /brands in compatibility mode.",
+            "example": 7
+          },
+          "name": {
+            "type": "string",
+            "example": "Flagship SaaS"
+          },
+          "from_name": {
+            "type": "string",
+            "example": "SendyKit"
+          },
+          "from_email": {
+            "type": "string",
+            "format": "email",
+            "example": "hello@sendykit.dev"
+          },
+          "reply_to": {
+            "type": "string",
+            "format": "email",
+            "example": "support@sendykit.dev"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": true
+      },
+      "ListCreateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Product updates"
+          },
+          "brand_id": {
+            "type": "integer",
+            "example": 7
+          },
+          "app_id": {
+            "type": "integer",
+            "example": 7
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": true
+      },
+      "SubscriberCreateRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "jane@example.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "Jane Doe"
+          },
+          "list_id": {
+            "type": "integer",
+            "example": 21
+          },
+          "custom_fields": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "{\"company\":\"Acme\",\"plan\":\"growth\"}"
+              },
+              {
+                "type": "object",
+                "additionalProperties": true,
+                "example": {
+                  "company": "Acme",
+                  "plan": "growth"
+                }
+              }
+            ]
+          }
+        },
+        "required": [
+          "email",
+          "list_id"
+        ],
+        "additionalProperties": true
+      },
+      "SubscriberBulkRequest": {
+        "type": "object",
+        "properties": {
+          "list_id": {
+            "type": "integer",
+            "example": 21
+          },
+          "subscribers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubscriberCreateRequest"
+            },
+            "example": [
+              {
+                "email": "jane@example.com",
+                "name": "Jane Doe"
+              },
+              {
+                "email": "sam@example.com",
+                "name": "Sam Rivera"
+              }
+            ]
+          }
+        },
+        "required": [
+          "list_id",
+          "subscribers"
+        ],
+        "additionalProperties": true
+      },
+      "CampaignCreateRequest": {
+        "type": "object",
+        "properties": {
+          "brand_id": {
+            "type": "integer",
+            "example": 7
+          },
+          "app_id": {
+            "type": "integer",
+            "example": 7
+          },
+          "title": {
+            "type": "string",
+            "example": "Launch week announcement"
+          },
+          "subject": {
+            "type": "string",
+            "example": "SendyKit launch week is live"
+          },
+          "html": {
+            "type": "string",
+            "example": "<h1>Launch week</h1><p>We are live.</p>"
+          },
+          "plain_text": {
+            "type": "string",
+            "example": "Launch week\n\nWe are live."
+          },
+          "lists": {
+            "oneOf": [
+              {
+                "type": "string",
+                "example": "21,22"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                },
+                "example": [
+                  21,
+                  22
+                ]
+              }
+            ]
+          },
+          "from_name": {
+            "type": "string",
+            "example": "SendyKit"
+          },
+          "from_email": {
+            "type": "string",
+            "format": "email",
+            "example": "hello@sendykit.dev"
+          },
+          "reply_to": {
+            "type": "string",
+            "format": "email",
+            "example": "support@sendykit.dev"
+          },
+          "send_date": {
+            "type": "string",
+            "example": "2026-03-20 16:00:00"
+          },
+          "timezone": {
+            "type": "string",
+            "example": "America/Los_Angeles"
+          }
+        },
+        "additionalProperties": true
+      },
+      "CampaignBulkActionRequest": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "send",
+              "pause",
+              "resume",
+              "cancel"
+            ],
+            "example": "pause"
+          },
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "example": [
+              88,
+              89,
+              90
+            ]
+          }
+        },
+        "required": [
+          "action",
+          "ids"
+        ]
+      },
+      "TemplateUpsertRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Launch email base"
+          },
+          "html": {
+            "type": "string",
+            "example": "<h1>Hello {{fname}}</h1>"
+          },
+          "grapejs_data": {
+            "type": "object",
+            "additionalProperties": true,
+            "example": {
+              "assets": [],
+              "styles": []
+            }
+          },
+          "plain_text": {
+            "type": "string",
+            "example": "Hello {{fname}}"
+          },
+          "brand_id": {
+            "type": "integer",
+            "example": 7
+          },
+          "from_name": {
+            "type": "string",
+            "example": "SendyKit"
+          },
+          "from_email": {
+            "type": "string",
+            "format": "email",
+            "example": "hello@sendykit.dev"
+          },
+          "reply_to": {
+            "type": "string",
+            "format": "email",
+            "example": "support@sendykit.dev"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": true
+      },
+      "WebhookCreateRequest": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://ops.example.com/sendykit/webhooks"
+          },
+          "secret": {
+            "type": "string",
+            "example": "whsec_abc123"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "campaign.sent",
+              "subscriber.unsubscribed"
+            ]
+          },
+          "brand_id": {
+            "type": "integer",
+            "example": 7
+          }
+        },
+        "required": [
+          "url",
+          "events"
+        ]
+      },
+      "TenantCreateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Acme Growth"
+          },
+          "slug": {
+            "type": "string",
+            "example": "acme-growth"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "owner@acme.test"
+          },
+          "plan": {
+            "type": "string",
+            "example": "growth"
+          }
+        },
+        "required": [
+          "name",
+          "email"
+        ],
+        "additionalProperties": true
+      },
+      "TenantKeyCreateRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "automation-worker"
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "read",
+              "write"
+            ]
+          },
+          "rate_limit_rpm": {
+            "type": "integer",
+            "example": 120
+          }
+        },
+        "additionalProperties": true
+      },
+      "Payment": {
+        "type": "object",
+        "description": "Campaign payment record.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 52
+          },
+          "campaign_id": {
+            "type": "integer",
+            "example": 88
+          },
+          "brand_id": {
+            "type": "integer",
+            "example": 7
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "tenant_id": {
+            "type": "string",
+            "example": "tenant_01HZX8V4N5"
+          },
+          "amount": {
+            "type": "number",
+            "format": "float",
+            "example": 49.0
+          },
+          "currency": {
+            "type": "string",
+            "example": "USD"
+          },
+          "gateway": {
+            "type": "string",
+            "example": "stripe"
+          },
+          "gateway_session_id": {
+            "type": "string",
+            "example": "cs_test_abc123"
+          },
+          "payment_token": {
+            "type": "string",
+            "example": "ZXlKcGJtY2lPaUpJVXpJMU5pSjkuLi4="
+          },
+          "token_consumed": {
+            "type": "boolean",
+            "example": true
+          },
+          "status": {
+            "type": "string",
+            "example": "completed"
+          },
+          "error_message": {
+            "type": "string",
+            "example": ""
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T02:15:00Z"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T02:16:00Z"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T02:30:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "campaign_id",
+          "amount",
+          "currency",
+          "status"
+        ],
+        "additionalProperties": true
+      },
+      "MachinePaymentReceipt": {
+        "type": "object",
+        "description": "Machine-payment receipt record; legacy x402 naming may still appear in older code/docs.",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 801
+          },
+          "request_path": {
+            "type": "string",
+            "example": "/sendykit/api/v2/exa/research"
+          },
+          "request_method": {
+            "type": "string",
+            "example": "POST"
+          },
+          "price_usdc": {
+            "type": "number",
+            "format": "float",
+            "example": 0.25
+          },
+          "payer_address": {
+            "type": "string",
+            "example": "0x1234abcd5678ef90"
+          },
+          "network": {
+            "type": "string",
+            "example": "base"
+          },
+          "settlement_tx": {
+            "type": "string",
+            "example": "0xbeefcafe1234"
+          },
+          "facilitator_response": {
+            "type": "string",
+            "example": "{\"status\":\"settled\"}"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T02:20:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "request_path",
+          "request_method",
+          "price_usdc",
+          "created_at"
+        ],
+        "additionalProperties": true
+      },
+      "AuthTokenEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/AuthTokenData"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "example": {
+          "data": {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        }
+      },
+      "BrandEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Brand"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BrandListEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Brand"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ListEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/List"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ListListEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/List"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SubscriberEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Subscriber"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SubscriberListEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subscriber"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CampaignEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Campaign"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CampaignListEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Campaign"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TemplateEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Template"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TemplateListEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Template"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "WebhookEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Webhook"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "WebhookListEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Webhook"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TenantEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Tenant"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TenantListEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tenant"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PaymentListEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Payment"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "MachinePaymentReceiptEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "receipts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MachinePaymentReceipt"
+                }
+              },
+              "total_usdc": {
+                "type": "number"
+              },
+              "since": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "receipt_count": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "receipts",
+              "total_usdc",
+              "receipt_count"
+            ]
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BillingStatusEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/BillingStatus"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ReadinessReportEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/ReadinessReport"
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "report_id": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "DoctorReportEnvelope": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/DoctorReport"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMeta"
+          }
+        },
+        "required": [
+          "data"
+        ]
       }
     },
     "responses": {
@@ -1055,6 +2450,11 @@
               "$ref": "#/components/schemas/ErrorResponse"
             }
           }
+        },
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/X-Request-ID"
+          }
         }
       },
       "Unauthorized": {
@@ -1064,6 +2464,11 @@
             "schema": {
               "$ref": "#/components/schemas/ErrorResponse"
             }
+          }
+        },
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/X-Request-ID"
           }
         }
       },
@@ -1075,6 +2480,11 @@
               "$ref": "#/components/schemas/ErrorResponse"
             }
           }
+        },
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/X-Request-ID"
+          }
         }
       },
       "NotFound": {
@@ -1084,6 +2494,11 @@
             "schema": {
               "$ref": "#/components/schemas/ErrorResponse"
             }
+          }
+        },
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/X-Request-ID"
           }
         }
       },
@@ -1095,6 +2510,11 @@
               "$ref": "#/components/schemas/ErrorResponse"
             }
           }
+        },
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/X-Request-ID"
+          }
         }
       },
       "Conflict": {
@@ -1104,6 +2524,11 @@
             "schema": {
               "$ref": "#/components/schemas/ErrorResponse"
             }
+          }
+        },
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/X-Request-ID"
           }
         }
       },
@@ -1115,6 +2540,236 @@
               "$ref": "#/components/schemas/ErrorResponse"
             }
           }
+        },
+        "headers": {
+          "X-Request-ID": {
+            "$ref": "#/components/headers/X-Request-ID"
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Request was rate limited.",
+        "headers": {
+          "RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimit-Limit"
+          },
+          "RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimit-Remaining"
+          },
+          "RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimit-Reset"
+          },
+          "X-Request-ID": {
+            "$ref": "#/components/headers/X-Request-ID"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "rate_limited": {
+                "value": {
+                  "error": "rate limit exceeded",
+                  "code": "rate_limited"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "examples": {
+      "AuthTokenRequest": {
+        "value": {
+          "api_key": "sk_live_1234567890"
+        }
+      },
+      "AuthTokenResponse": {
+        "value": {
+          "data": {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        }
+      },
+      "BrandCreateRequest": {
+        "value": {
+          "name": "Flagship SaaS",
+          "from_name": "SendyKit",
+          "from_email": "hello@sendykit.dev",
+          "reply_to": "support@sendykit.dev"
+        }
+      },
+      "BrandListResponse": {
+        "value": {
+          "data": [
+            {
+              "id": 7,
+              "name": "Flagship SaaS",
+              "from_name": "SendyKit",
+              "from_email": "hello@sendykit.dev",
+              "reply_to": "support@sendykit.dev"
+            }
+          ]
+        }
+      },
+      "SubscriberCreateRequest": {
+        "value": {
+          "email": "jane@example.com",
+          "name": "Jane Doe",
+          "list_id": 21,
+          "custom_fields": {
+            "company": "Acme",
+            "plan": "growth"
+          }
+        }
+      },
+      "CampaignCreateRequest": {
+        "value": {
+          "brand_id": 7,
+          "title": "Launch week announcement",
+          "subject": "SendyKit launch week is live",
+          "html": "<h1>Launch week</h1><p>We are live.</p>",
+          "plain_text": "Launch week\n\nWe are live.",
+          "lists": [
+            21,
+            22
+          ]
+        }
+      },
+      "TemplateCreateRequest": {
+        "value": {
+          "name": "Launch email base",
+          "brand_id": 7,
+          "html": "<h1>Hello {{fname}}</h1>",
+          "plain_text": "Hello {{fname}}"
+        }
+      },
+      "WebhookCreateRequest": {
+        "value": {
+          "url": "https://ops.example.com/sendykit/webhooks",
+          "secret": "whsec_abc123",
+          "events": [
+            "campaign.sent",
+            "subscriber.unsubscribed"
+          ],
+          "brand_id": 7
+        }
+      },
+      "TenantCreateRequest": {
+        "value": {
+          "name": "Acme Growth",
+          "slug": "acme-growth",
+          "email": "owner@acme.test",
+          "plan": "growth"
+        }
+      },
+      "ReadinessEvaluateRequest": {
+        "value": {
+          "mode": "questionnaire",
+          "technical": {
+            "compatibility": 8,
+            "database": 8,
+            "runtime": 7,
+            "cron": 7,
+            "dns": 6,
+            "transport": 7,
+            "filesystem": 8,
+            "security": 7
+          },
+          "commercial": {
+            "ownership_preference": 9,
+            "managed_preference": 4,
+            "ops_tolerance": 7,
+            "budget_sensitivity": 5,
+            "future_certainty": 7,
+            "planned_connected_sites": 12,
+            "planned_site_activations": 6,
+            "planned_subscribers": 250000,
+            "planned_emails_per_month": 2000000,
+            "planned_api_calls_per_month": 500000,
+            "needs_ai": true,
+            "needs_automations": true,
+            "needs_custom_domain": true
+          }
+        }
+      },
+      "BillingStatusResponse": {
+        "value": {
+          "data": {
+            "mode": "stripe_enabled",
+            "mode_label": "Stripe enabled, enforcement off",
+            "config": {
+              "stripe": true,
+              "payment_gateway": true,
+              "webhook": true,
+              "enforcement": false
+            },
+            "sendy": {
+              "subscribers": 24000,
+              "campaigns": 312,
+              "brands": 4,
+              "sub_users": 2
+            },
+            "plans_count": 4
+          }
+        }
+      },
+      "MachinePaymentReceiptResponse": {
+        "value": {
+          "data": {
+            "receipts": [
+              {
+                "id": 801,
+                "request_path": "/sendykit/api/v2/exa/research",
+                "request_method": "POST",
+                "price_usdc": 0.25,
+                "payer_address": "0x1234abcd5678ef90",
+                "network": "base",
+                "settlement_tx": "0xbeefcafe1234",
+                "created_at": "2026-03-14T02:20:00Z"
+              }
+            ],
+            "total_usdc": 2.75,
+            "receipt_count": 11
+          }
+        }
+      },
+      "ErrorInvalid": {
+        "value": {
+          "error": "list_id query param required",
+          "code": "invalid"
+        }
+      }
+    },
+    "headers": {
+      "RateLimit-Limit": {
+        "description": "Maximum requests permitted in the current rate-limit window.",
+        "schema": {
+          "type": "integer",
+          "example": 60
+        }
+      },
+      "RateLimit-Remaining": {
+        "description": "Requests remaining in the current window.",
+        "schema": {
+          "type": "integer",
+          "example": 59
+        }
+      },
+      "RateLimit-Reset": {
+        "description": "Unix timestamp when the current rate-limit window resets.",
+        "schema": {
+          "type": "integer",
+          "example": 1731000060
+        }
+      },
+      "X-Request-ID": {
+        "description": "Opaque request identifier for tracing and support.",
+        "schema": {
+          "type": "string",
+          "example": "req_01J8R5H8XYZ"
         }
       }
     }
@@ -1149,8 +2804,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/CampaignEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -1168,6 +2828,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "description": "Get campaign by ID. Current contract status: live."
@@ -1207,6 +2870,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -1264,6 +2932,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -1306,6 +2979,9 @@
             "schema": {
               "type": "integer"
             }
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
           }
         ],
         "responses": {
@@ -1316,6 +2992,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -1360,6 +3041,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -1402,6 +3088,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -1446,6 +3137,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -1486,8 +3182,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/WebhookListEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -1505,6 +3206,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "description": "List webhook subscriptions. Current contract status: live."
@@ -1530,6 +3234,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -1546,9 +3255,27 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
-        "description": "Create webhook subscription. Current contract status: live."
+        "description": "Create webhook subscription. Current contract status: live.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookCreateRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/WebhookCreateRequest"
+                }
+              }
+            }
+          }
+        }
       },
       "delete": {
         "tags": [
@@ -1564,7 +3291,12 @@
         ],
         "responses": {
           "204": {
-            "description": "Deleted"
+            "description": "Deleted",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -1606,6 +3338,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -1658,6 +3395,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -1704,6 +3446,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -1746,6 +3493,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -1793,6 +3545,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -1814,7 +3571,45 @@
             "$ref": "#/components/responses/PaymentRequired"
           }
         },
-        "description": "Generate subject line variants. Current contract status: planned."
+        "description": "Generate subject line variants. Current contract status: planned.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "provider": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "topic": {
+                    "type": "string"
+                  },
+                  "context": {
+                    "type": "string"
+                  },
+                  "count": {
+                    "type": "integer"
+                  },
+                  "temperature": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "topic"
+                ],
+                "example": {
+                  "topic": "Product launch follow-up",
+                  "context": "Audience: active trial users",
+                  "count": 5
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/ai/generate-email": {
@@ -1842,6 +3637,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -1861,6 +3661,9 @@
           },
           "402": {
             "$ref": "#/components/responses/PaymentRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "description": "Generate email content from brief. Current contract status: planned."
@@ -1891,6 +3694,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -1910,6 +3718,9 @@
           },
           "402": {
             "$ref": "#/components/responses/PaymentRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "description": "Rewrite post/blog content for email. Current contract status: planned."
@@ -1940,6 +3751,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -1959,6 +3775,9 @@
           },
           "402": {
             "$ref": "#/components/responses/PaymentRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "description": "Generate campaign insights. Current contract status: planned."
@@ -1985,6 +3804,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2026,6 +3850,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2080,6 +3909,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -2130,6 +3964,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2182,6 +4021,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -2226,7 +4070,12 @@
         ],
         "responses": {
           "204": {
-            "description": "Deleted"
+            "description": "Deleted",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
           },
           "400": {
             "$ref": "#/components/responses/BadRequest"
@@ -2282,6 +4131,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -2325,6 +4179,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -2365,6 +4224,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2419,6 +4283,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -2467,6 +4336,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -2509,6 +4383,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2553,6 +4432,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -2595,6 +4479,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2639,6 +4528,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -2681,6 +4575,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2725,6 +4624,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -2763,6 +4667,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2807,6 +4716,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -2839,15 +4753,19 @@
         "description": "Converts a valid API key into a JWT for session-style API usage.",
         "security": [],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AuthTokenRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/AuthTokenRequest"
+                }
               }
             }
-          },
-          "required": true,
-          "description": "API key payload."
+          }
         },
         "responses": {
           "200": {
@@ -2855,8 +4773,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/AuthTokenEnvelope"
+                },
+                "examples": {
+                  "default": {
+                    "$ref": "#/components/examples/AuthTokenResponse"
+                  }
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2874,6 +4802,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -2906,8 +4837,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/BrandListEnvelope"
+                },
+                "examples": {
+                  "default": {
+                    "$ref": "#/components/examples/BrandListResponse"
+                  }
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2925,6 +4866,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -2942,14 +4886,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Brand"
+                "$ref": "#/components/schemas/BrandUpsertRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/BrandCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -2957,8 +4906,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/BrandEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -2976,6 +4930,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -2993,14 +4950,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Brand"
+                "$ref": "#/components/schemas/BrandUpsertRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/BrandCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -3008,8 +4970,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/BrandEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3027,6 +4994,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -3063,6 +5033,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -3079,6 +5054,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3114,8 +5092,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/ListListEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3133,6 +5116,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -3150,14 +5136,14 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/List"
+                "$ref": "#/components/schemas/ListCreateRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -3165,8 +5151,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/ListEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3184,6 +5175,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3213,8 +5207,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/ListEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3232,6 +5231,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -3261,6 +5263,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3309,6 +5316,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3367,8 +5379,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/SubscriberListEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3386,6 +5403,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -3403,14 +5423,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Subscriber"
+                "$ref": "#/components/schemas/SubscriberCreateRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/SubscriberCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -3418,8 +5443,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/SubscriberEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3437,6 +5467,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -3466,8 +5499,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/SubscriberEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3485,6 +5523,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -3507,14 +5548,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Subscriber"
+                "$ref": "#/components/schemas/SubscriberCreateRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/SubscriberCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -3522,8 +5568,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/SubscriberEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3541,6 +5592,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -3563,14 +5617,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Subscriber"
+                "$ref": "#/components/schemas/SubscriberCreateRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/SubscriberCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -3578,8 +5637,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/SubscriberEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3597,6 +5661,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -3626,6 +5693,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3675,6 +5747,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -3722,6 +5799,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3771,6 +5853,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -3806,14 +5893,14 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Subscriber"
+                "$ref": "#/components/schemas/Envelope"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -3823,6 +5910,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3859,14 +5951,14 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Envelope"
+                "$ref": "#/components/schemas/SubscriberBulkRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -3876,6 +5968,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -3930,6 +6027,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -3983,6 +6085,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -4033,6 +6140,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4087,6 +6199,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -4134,6 +6251,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4186,8 +6308,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/CampaignListEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4205,6 +6332,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -4222,14 +6352,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Campaign"
+                "$ref": "#/components/schemas/CampaignCreateRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/CampaignCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -4237,8 +6372,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/CampaignEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4256,6 +6396,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4275,14 +6418,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Campaign"
+                "$ref": "#/components/schemas/CampaignCreateRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/CampaignCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -4290,8 +6438,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/CampaignEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4309,6 +6462,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -4326,14 +6482,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Campaign"
+                "$ref": "#/components/schemas/CampaignCreateRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/CampaignCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -4341,8 +6502,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/CampaignEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4360,6 +6526,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -4379,14 +6548,14 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Envelope"
+                "$ref": "#/components/schemas/CampaignBulkActionRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -4396,6 +6565,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4434,6 +6608,9 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/Id"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
           }
         ],
         "responses": {
@@ -4444,6 +6621,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4482,6 +6664,9 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/Id"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
           }
         ],
         "responses": {
@@ -4492,6 +6677,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4530,6 +6720,9 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/Id"
+          },
+          {
+            "$ref": "#/components/parameters/IdempotencyKey"
           }
         ],
         "responses": {
@@ -4540,6 +6733,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4589,6 +6787,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -4636,6 +6839,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4685,6 +6893,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -4732,6 +6945,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4781,6 +6999,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -4828,6 +7051,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4877,6 +7105,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -4924,6 +7157,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -4973,6 +7211,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -5020,6 +7263,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5069,6 +7317,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -5116,6 +7369,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5165,6 +7423,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -5208,6 +7471,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -5250,6 +7518,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5302,8 +7575,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/TemplateListEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5321,6 +7599,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -5338,14 +7619,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Template"
+                "$ref": "#/components/schemas/TemplateUpsertRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/TemplateCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -5353,8 +7639,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/TemplateEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5372,6 +7663,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -5401,8 +7695,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/TemplateEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5420,6 +7719,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -5442,14 +7744,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Template"
+                "$ref": "#/components/schemas/TemplateUpsertRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/TemplateCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -5457,8 +7764,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/TemplateEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5476,6 +7788,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -5498,14 +7813,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Template"
+                "$ref": "#/components/schemas/TemplateUpsertRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/TemplateCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -5513,8 +7833,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/TemplateEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5532,6 +7857,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -5561,6 +7889,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5602,14 +7935,14 @@
           }
         ],
         "requestBody": {
+          "required": false,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Template"
+                "$ref": "#/components/schemas/Envelope"
               }
             }
-          },
-          "required": false
+          }
         },
         "responses": {
           "201": {
@@ -5617,8 +7950,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/TemplateEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5636,6 +7974,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -5677,6 +8018,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5725,6 +8071,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5786,6 +8137,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -5828,6 +8184,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5872,6 +8233,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -5914,6 +8280,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -5958,6 +8329,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -6001,6 +8377,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -6043,6 +8424,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6110,8 +8496,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/DoctorReportEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6129,6 +8520,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -6148,14 +8542,32 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Envelope"
+                "type": "object",
+                "properties": {
+                  "checks": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "dry_run": {
+                    "type": "boolean"
+                  }
+                },
+                "example": {
+                  "checks": [
+                    "dns.spf",
+                    "cron.health"
+                  ],
+                  "dry_run": true
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -6163,8 +8575,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/DoctorReportEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6182,6 +8599,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -6213,6 +8633,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6303,6 +8728,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -6356,6 +8786,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -6398,6 +8833,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6450,6 +8890,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -6493,6 +8938,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -6524,14 +8974,19 @@
         "description": "Evaluate readiness. Current contract status: live.",
         "security": [],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ReadinessEvaluateRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/ReadinessEvaluateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -6539,8 +8994,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/ReadinessReportEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6558,6 +9018,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -6573,14 +9036,14 @@
         "description": "Generate inboarding path. Current contract status: live.",
         "security": [],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Envelope"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -6590,6 +9053,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6632,8 +9100,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/ReadinessReportEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6651,6 +9124,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -6675,8 +9151,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/BillingStatusEnvelope"
+                },
+                "examples": {
+                  "default": {
+                    "$ref": "#/components/examples/BillingStatusResponse"
+                  }
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6694,6 +9180,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -6720,6 +9209,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6774,6 +9268,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -6826,6 +9325,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6880,6 +9384,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -6931,8 +9440,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/PaymentListEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -6950,6 +9464,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -6982,8 +9499,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/MachinePaymentReceiptEnvelope"
+                },
+                "examples": {
+                  "default": {
+                    "$ref": "#/components/examples/MachinePaymentReceiptResponse"
+                  }
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7001,6 +9528,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -7016,23 +9546,30 @@
         "description": "Receive Stripe billing webhook. Current contract status: live.",
         "security": [],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Envelope"
+                "type": "object",
+                "additionalProperties": true
+              },
+              "example": {
+                "type": "invoice.paid",
+                "data": {
+                  "object": {
+                    "customer": "cus_Q2abc123"
+                  }
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "Receive Stripe billing webhook",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Envelope"
-                }
+            "description": "Stripe webhook accepted.",
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7088,6 +9625,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -7139,6 +9681,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -7184,8 +9731,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/TenantListEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7203,6 +9755,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -7220,14 +9775,19 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Tenant"
+                "$ref": "#/components/schemas/TenantCreateRequest"
+              },
+              "examples": {
+                "default": {
+                  "$ref": "#/components/examples/TenantCreateRequest"
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -7237,6 +9797,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7254,6 +9819,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -7283,8 +9851,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/TenantEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7302,6 +9875,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -7324,14 +9900,14 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Tenant"
+                "$ref": "#/components/schemas/Envelope"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -7339,8 +9915,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/TenantEnvelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7358,6 +9939,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       },
@@ -7387,6 +9971,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7436,6 +10025,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -7474,14 +10068,14 @@
           }
         ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Envelope"
+                "$ref": "#/components/schemas/TenantKeyCreateRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -7491,6 +10085,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7548,6 +10147,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -7590,6 +10194,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7642,6 +10251,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -7689,6 +10303,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7746,6 +10365,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -7791,6 +10415,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7845,6 +10474,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -7897,6 +10531,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -7951,6 +10590,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -7988,6 +10632,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -8031,6 +10680,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -8088,6 +10742,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8141,6 +10800,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -8196,6 +10860,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8239,6 +10908,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8279,6 +10953,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -8333,6 +11012,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8375,6 +11059,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -8419,6 +11108,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8462,6 +11156,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8504,6 +11203,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -8558,6 +11262,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8611,6 +11320,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8651,6 +11365,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -8705,6 +11424,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8747,6 +11471,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -8801,6 +11530,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8853,6 +11587,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -8907,6 +11646,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -8949,6 +11693,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -8998,6 +11747,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9038,6 +11792,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -9092,6 +11851,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9134,6 +11898,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -9178,6 +11947,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9218,6 +11992,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -9272,6 +12051,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9314,6 +12098,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -9375,6 +12164,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9415,6 +12209,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -9469,6 +12268,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9511,6 +12315,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -9581,6 +12390,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9638,6 +12452,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9685,6 +12504,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -9734,6 +12558,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9782,6 +12611,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9827,6 +12661,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -9881,6 +12720,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -9926,6 +12770,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -9983,6 +12832,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10039,6 +12893,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10086,6 +12945,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -10141,6 +13005,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10188,6 +13057,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -10237,6 +13111,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10285,6 +13164,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10330,6 +13214,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -10379,6 +13268,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10427,6 +13321,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10474,6 +13373,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -10526,6 +13430,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10574,6 +13483,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10619,6 +13533,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -10668,6 +13587,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10715,6 +13639,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -10767,6 +13696,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10818,6 +13752,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10837,6 +13776,9 @@
           },
           "402": {
             "$ref": "#/components/responses/PaymentRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "security": [
@@ -10896,6 +13838,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10924,7 +13871,29 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Envelope"
+                "type": "object",
+                "properties": {
+                  "topic": {
+                    "type": "string"
+                  },
+                  "variants": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "variants"
+                ],
+                "example": {
+                  "topic": "Launch week",
+                  "variants": [
+                    "Launch week is live",
+                    "Your launch week access is ready",
+                    "We just opened SendyKit launch week"
+                  ]
+                }
               }
             }
           }
@@ -10949,6 +13918,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -10977,7 +13951,35 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Envelope"
+                "type": "object",
+                "properties": {
+                  "provider": {
+                    "type": "string"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "topic": {
+                    "type": "string"
+                  },
+                  "context": {
+                    "type": "string"
+                  },
+                  "count": {
+                    "type": "integer"
+                  },
+                  "temperature": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "topic"
+                ],
+                "example": {
+                  "topic": "Product launch follow-up",
+                  "context": "Audience: active trial users",
+                  "count": 5
+                }
               }
             }
           }
@@ -11003,6 +14005,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -11022,6 +14029,9 @@
           },
           "402": {
             "$ref": "#/components/responses/PaymentRequired"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "security": [
@@ -11063,6 +14073,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -11107,6 +14122,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -11147,6 +14167,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -11201,6 +14226,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -11246,6 +14276,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -11294,6 +14329,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -11345,6 +14385,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -11404,6 +14449,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -11462,6 +14512,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -11514,6 +14569,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -11568,6 +14628,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -11620,6 +14685,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -11674,6 +14744,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -11726,6 +14801,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -11780,6 +14860,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -11833,6 +14918,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -11878,6 +14968,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -11936,6 +15031,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -11996,6 +15096,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -12046,6 +15151,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -12105,6 +15215,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -12156,6 +15271,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -12215,6 +15335,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -12263,6 +15388,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -12315,6 +15445,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -12365,6 +15500,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -12417,6 +15557,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -12464,6 +15609,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -12513,6 +15663,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -12560,6 +15715,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -12611,6 +15771,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -12670,6 +15835,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -12728,6 +15898,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -12775,6 +15950,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -12824,6 +16004,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -12872,6 +16057,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -12917,6 +16107,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -12976,6 +16171,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -13024,6 +16224,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -13071,6 +16276,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -13130,6 +16340,11 @@
                   "$ref": "#/components/schemas/Envelope"
                 }
               }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
             }
           },
           "400": {
@@ -13177,6 +16392,11 @@
                 "schema": {
                   "$ref": "#/components/schemas/Envelope"
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -13226,8 +16446,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Envelope"
+                  "$ref": "#/components/schemas/MachinePaymentReceiptEnvelope"
+                },
+                "examples": {
+                  "default": {
+                    "$ref": "#/components/examples/MachinePaymentReceiptResponse"
+                  }
                 }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
               }
             }
           },
@@ -13245,6 +16475,9 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         },
         "security": [
@@ -13263,5 +16496,14 @@
         "deprecated": true
       }
     }
-  }
+  },
+  "externalDocs": {
+    "description": "Canonical docs site",
+    "url": "https://docs.sendykit.dev"
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ]
 }
