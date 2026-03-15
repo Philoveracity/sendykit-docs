@@ -802,7 +802,7 @@
           },
           "secret": {
             "type": "string",
-            "example": "whsec_abc123"
+            "example": "REDACTED_WEBHOOK_SECRET"
           },
           "events": {
             "type": "array",
@@ -1895,7 +1895,7 @@
           },
           "secret": {
             "type": "string",
-            "example": "whsec_abc123"
+            "example": "REDACTED_WEBHOOK_SECRET"
           },
           "events": {
             "type": "array",
@@ -2583,7 +2583,7 @@
     "examples": {
       "AuthTokenRequest": {
         "value": {
-          "api_key": "sk_live_1234567890"
+          "api_key": "REDACTED_API_KEY"
         }
       },
       "AuthTokenResponse": {
@@ -2649,7 +2649,7 @@
       "WebhookCreateRequest": {
         "value": {
           "url": "https://ops.example.com/sendykit/webhooks",
-          "secret": "whsec_abc123",
+          "secret": "REDACTED_WEBHOOK_SECRET",
           "events": [
             "campaign.sent",
             "subscriber.unsubscribed"
