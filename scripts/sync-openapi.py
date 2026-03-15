@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import os
 from pathlib import Path
 
 try:
@@ -7,8 +8,11 @@ try:
 except ImportError as exc:
     raise SystemExit("Missing dependency: pyyaml. Install with `python3 -m pip install pyyaml` or run on the SendyKit server where it is already available.") from exc
 
-CANONICAL = Path('/home/thedream/mail.thedream.rocks/sendykit/docs/openapi/sendykit-v2.yaml')
-OUTPUT = Path('/home/thedream/mail.thedream.rocks/sendykit-docs/api-reference/openapi.json')
+HERE = Path(__file__).resolve().parent
+REPO = HERE.parent
+DEFAULT_CANONICAL = Path('/home/thedream/mail.thedream.rocks/sendykit/docs/openapi/sendykit-v2.yaml')
+CANONICAL = Path(os.environ.get('CANONICAL_OPENAPI', str(DEFAULT_CANONICAL)))
+OUTPUT = Path(os.environ.get('PUBLIC_OPENAPI_OUTPUT', str(REPO / 'api-reference/openapi.json')))
 
 if not CANONICAL.exists():
     raise SystemExit(f'Canonical OpenAPI file not found: {CANONICAL}')
