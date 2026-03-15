@@ -1,9 +1,9 @@
-<svg width="360" height="56" viewBox="0 0 360 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g transform="translate(0,6)">
-    <path d="M3 10.5C3 8.567 4.567 7 6.5 7H35.5C37.433 7 39 8.567 39 10.5V31.5C39 33.433 37.433 35 35.5 35H6.5C4.567 35 3 33.433 3 31.5V10.5Z" fill="#D4A843"/>
-    <path d="M4.5 10L21 22.5L37.5 10" stroke="#111111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<svg width="340" height="44" viewBox="0 0 340 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(0,7)">
+    <path d="M2 8C2 6.34315 3.34315 5 5 5H29C30.6569 5 32 6.34315 32 8V24C32 25.6569 30.6569 27 29 27H5C3.34315 27 2 25.6569 2 24V8Z" fill="#D4A843"/>
+    <path d="M3.5 8.5L17 18.5L30.5 8.5" stroke="#111111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <text x="50" y="36" font-size="32" font-family="Inter, Arial, sans-serif" font-weight="700">
+  <text x="40" y="30" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="-0.02em">
     <tspan fill="#FFFFFF">Sendy</tspan><tspan fill="#D4A843">Kit</tspan>
   </text>
 </svg>
