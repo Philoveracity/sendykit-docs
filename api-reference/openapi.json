@@ -7343,14 +7343,14 @@
       }
     },
     "/analytics/export": {
-      "get": {
+      "post": {
         "tags": [
           "Analytics"
         ],
         "summary": "Export analytics data",
         "operationId": "ExportAnalyticsData",
         "x-status": "live",
-        "description": "Export analytics data. Current contract status: live.",
+        "description": "Trigger an analytics export payload. Current contract status: live.",
         "security": [
           {
             "ApiKeyAuth": []
@@ -8446,6 +8446,76 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Set feature flag",
+        "operationId": "SetFeatureFlag",
+        "x-status": "live",
+        "description": "Set a feature flag key/value pair. Current contract status: live.",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "example": "sendykit.analytics"
+                  },
+                  "value": {
+                    "type": "string",
+                    "example": "true"
+                  }
+                },
+                "required": [
+                  "key",
+                  "value"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Feature flag updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
           }
         }
       }
@@ -10660,7 +10730,160 @@
           {
             "ApiKeyAuth": []
           }
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key to inspect or mutate."
+          }
         ]
+      },
+      "post": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Grant API key capability",
+        "operationId": "GrantApiKeyCapability",
+        "x-status": "live",
+        "description": "Grant one RBAC capability to an API key. Current contract status: live.",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key to inspect or mutate."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "capability": {
+                    "type": "string",
+                    "example": "campaigns.send"
+                  }
+                },
+                "required": [
+                  "capability"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Capability granted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Revoke API key capability",
+        "operationId": "RevokeApiKeyCapability",
+        "x-status": "live",
+        "description": "Revoke one RBAC capability from an API key. Current contract status: live.",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key to inspect or mutate."
+          },
+          {
+            "name": "capability",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Capability to revoke."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Capability revoked.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Envelope"
+                }
+              }
+            },
+            "headers": {
+              "X-Request-ID": {
+                "$ref": "#/components/headers/X-Request-ID"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
       }
     },
     "/system/dlq": {
@@ -16642,6 +16865,1410 @@
     ],
     "ignored_exact_dispatchers": [
       "/billing"
+    ],
+    "routes": [
+      {
+        "path": "/ai/generate",
+        "line": 197,
+        "handler": "aiHandler.GenerateEmail",
+        "receiver_type": "AIHandler",
+        "func_name": "GenerateEmail",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/ai/generate-email",
+        "line": 196,
+        "handler": "aiHandler.GenerateEmail",
+        "receiver_type": "AIHandler",
+        "func_name": "GenerateEmail",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/ai/insights/campaign",
+        "line": 191,
+        "handler": "aiHandler.CampaignInsights",
+        "receiver_type": "AIHandler",
+        "func_name": "CampaignInsights",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/ai/models",
+        "line": 188,
+        "handler": "aiHandler.Models",
+        "receiver_type": "AIHandler",
+        "func_name": "Models",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/ai/rewrite-for-email",
+        "line": 195,
+        "handler": "aiHandler.RewriteForEmail",
+        "receiver_type": "AIHandler",
+        "func_name": "RewriteForEmail",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/ai/subject-lines",
+        "line": 192,
+        "handler": "aiHandler.SubjectLines",
+        "receiver_type": "AIHandler",
+        "func_name": "SubjectLines",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/ai/subject-lines/ab-test",
+        "line": 193,
+        "handler": "aiHandler.SubjectLinesABTest",
+        "receiver_type": "AIHandler",
+        "func_name": "SubjectLinesABTest",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/ai/suggest-subjects",
+        "line": 194,
+        "handler": "aiHandler.SubjectLines",
+        "receiver_type": "AIHandler",
+        "func_name": "SubjectLines",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/ai/summary/weekly",
+        "line": 190,
+        "handler": "aiHandler.WeeklySummary",
+        "receiver_type": "AIHandler",
+        "func_name": "WeeklySummary",
+        "dynamic": false,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/ai/usage",
+        "line": 189,
+        "handler": "aiHandler.UsageReport",
+        "receiver_type": "AIHandler",
+        "func_name": "UsageReport",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/campaign",
+        "line": 162,
+        "handler": "analyticsHandler.CampaignReport",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "CampaignReport",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/campaigns",
+        "line": 169,
+        "handler": "analyticsHandler.Campaigns",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "Campaigns",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/clients",
+        "line": 170,
+        "handler": "analyticsHandler.Clients",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "Clients",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/dashboard",
+        "line": 167,
+        "handler": "analyticsHandler.Dashboard",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "Dashboard",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/engagement",
+        "line": 172,
+        "handler": "analyticsHandler.Engagement",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "Engagement",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/export",
+        "line": 173,
+        "handler": "analyticsHandler.AnalyticsExport",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "AnalyticsExport",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/analytics/geography",
+        "line": 171,
+        "handler": "analyticsHandler.Geography",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "Geography",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/growth",
+        "line": 168,
+        "handler": "analyticsHandler.Growth",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "Growth",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/list",
+        "line": 163,
+        "handler": "analyticsHandler.ListReport",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "ListReport",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/send-time",
+        "line": 165,
+        "handler": "analyticsHandler.SendTimeRecommendation",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "SendTimeRecommendation",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/summary",
+        "line": 164,
+        "handler": "analyticsHandler.SummaryReport",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "SummaryReport",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/analytics/unified",
+        "line": 166,
+        "handler": "analyticsHandler.UnifiedReport",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "UnifiedReport",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/assets",
+        "line": 115,
+        "handler": "templateHandler.UploadAsset",
+        "receiver_type": "TemplateHandler",
+        "func_name": "UploadAsset",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/audit",
+        "line": 272,
+        "handler": "auditHandler.Handle",
+        "receiver_type": "AuditHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/audit/",
+        "line": 273,
+        "handler": "auditHandler.Handle",
+        "receiver_type": "AuditHandler",
+        "func_name": "Handle",
+        "dynamic": true,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/auth/token",
+        "line": 18,
+        "handler": "authHandler.Token",
+        "receiver_type": "AuthHandler",
+        "func_name": "Token",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/automations",
+        "line": 52,
+        "handler": "automationHandler.Handle",
+        "receiver_type": "AutomationHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/automations/",
+        "line": 53,
+        "handler": "automationHandler.HandleSub",
+        "receiver_type": "AutomationHandler",
+        "func_name": "HandleSub",
+        "dynamic": true,
+        "methods": [
+          "delete",
+          "get",
+          "post",
+          "put"
+        ]
+      },
+      {
+        "path": "/automations/runs/approve",
+        "line": 54,
+        "handler": "automationHandler.ApproveRun",
+        "receiver_type": "AutomationHandler",
+        "func_name": "ApproveRun",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/automations/runs/edit",
+        "line": 56,
+        "handler": "automationHandler.EditRun",
+        "receiver_type": "AutomationHandler",
+        "func_name": "EditRun",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/automations/runs/reject",
+        "line": 55,
+        "handler": "automationHandler.RejectRun",
+        "receiver_type": "AutomationHandler",
+        "func_name": "RejectRun",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/autoresponders",
+        "line": 145,
+        "handler": "aresHandler.Handle",
+        "receiver_type": "AutoresponderHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/autoresponders/",
+        "line": 146,
+        "handler": "aresHandler.HandleSub",
+        "receiver_type": "AutoresponderHandler",
+        "func_name": "HandleSub",
+        "dynamic": true,
+        "methods": [
+          "delete",
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/billing",
+        "line": 297,
+        "handler": "billingHandler.Handle",
+        "receiver_type": "BillingHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/billing/",
+        "line": 298,
+        "handler": "billingHandler.Handle",
+        "receiver_type": "BillingHandler",
+        "func_name": "Handle",
+        "dynamic": true,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/brands",
+        "line": 22,
+        "handler": "brandHandler.Handle",
+        "receiver_type": "BrandHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "delete",
+          "get",
+          "post",
+          "put"
+        ]
+      },
+      {
+        "path": "/brands/",
+        "line": 128,
+        "handler": "inline",
+        "receiver_type": null,
+        "func_name": null,
+        "dynamic": true,
+        "methods": []
+      },
+      {
+        "path": "/brands/blocks",
+        "line": 127,
+        "handler": "templateHandler.BrandBlocks",
+        "receiver_type": "TemplateHandler",
+        "func_name": "BrandBlocks",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/bridge/",
+        "line": 250,
+        "handler": "bridgeHandler.Handle",
+        "receiver_type": "BridgeHandler",
+        "func_name": "Handle",
+        "dynamic": true,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/campaigns",
+        "line": 40,
+        "handler": "campHandler.Handle",
+        "receiver_type": "CampaignHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/campaigns/",
+        "line": 49,
+        "handler": "campHandler.HandleSub",
+        "receiver_type": "CampaignHandler",
+        "func_name": "HandleSub",
+        "dynamic": true,
+        "methods": [
+          "delete",
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/campaigns/bulk",
+        "line": 48,
+        "handler": "campHandler.BulkAction",
+        "receiver_type": "CampaignHandler",
+        "func_name": "BulkAction",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/campaigns/draft",
+        "line": 41,
+        "handler": "inline",
+        "receiver_type": null,
+        "func_name": null,
+        "dynamic": false,
+        "methods": [
+          "post",
+          "put"
+        ]
+      },
+      {
+        "path": "/exa/answer",
+        "line": 88,
+        "handler": "exaHandler.Answer",
+        "receiver_type": "ExaHandler",
+        "func_name": "Answer",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/exa/contents",
+        "line": 86,
+        "handler": "exaHandler.Contents",
+        "receiver_type": "ExaHandler",
+        "func_name": "Contents",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/exa/find-similar",
+        "line": 87,
+        "handler": "exaHandler.FindSimilar",
+        "receiver_type": "ExaHandler",
+        "func_name": "FindSimilar",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/exa/health",
+        "line": 84,
+        "handler": "exaHandler.Health",
+        "receiver_type": "ExaHandler",
+        "func_name": "Health",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/exa/research",
+        "line": 89,
+        "handler": "exaHandler.Research",
+        "receiver_type": "ExaHandler",
+        "func_name": "Research",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/exa/search",
+        "line": 85,
+        "handler": "exaHandler.Search",
+        "receiver_type": "ExaHandler",
+        "func_name": "Search",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/exa/settings",
+        "line": 83,
+        "handler": "exaHandler.Settings",
+        "receiver_type": "ExaHandler",
+        "func_name": "Settings",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/funnels",
+        "line": 239,
+        "handler": "funnelHandler.Handle",
+        "receiver_type": "FunnelHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/funnels/",
+        "line": 240,
+        "handler": "funnelHandler.HandleSub",
+        "receiver_type": "FunnelHandler",
+        "func_name": "HandleSub",
+        "dynamic": true,
+        "methods": [
+          "delete",
+          "get",
+          "patch",
+          "put"
+        ]
+      },
+      {
+        "path": "/goals/track",
+        "line": 247,
+        "handler": "goalHandler.TrackGoal",
+        "receiver_type": "GoalHandler",
+        "func_name": "TrackGoal",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/health/doctor",
+        "line": 266,
+        "handler": "doctorHandler.Handle",
+        "receiver_type": "DoctorHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/health/doctor/",
+        "line": 267,
+        "handler": "doctorHandler.Handle",
+        "receiver_type": "DoctorHandler",
+        "func_name": "Handle",
+        "dynamic": true,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/instantly/campaigns",
+        "line": 106,
+        "handler": "instantlyHandler.Campaigns",
+        "receiver_type": "InstantlyHandler",
+        "func_name": "Campaigns",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/instantly/campaigns/analytics",
+        "line": 107,
+        "handler": "instantlyHandler.CampaignAnalytics",
+        "receiver_type": "InstantlyHandler",
+        "func_name": "CampaignAnalytics",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/instantly/compliance",
+        "line": 110,
+        "handler": "instantlyHandler.Compliance",
+        "receiver_type": "InstantlyHandler",
+        "func_name": "Compliance",
+        "dynamic": false,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/instantly/health",
+        "line": 105,
+        "handler": "instantlyHandler.Health",
+        "receiver_type": "InstantlyHandler",
+        "func_name": "Health",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/instantly/settings",
+        "line": 104,
+        "handler": "instantlyHandler.Settings",
+        "receiver_type": "InstantlyHandler",
+        "func_name": "Settings",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/instantly/sync-lead",
+        "line": 108,
+        "handler": "instantlyHandler.SyncLead",
+        "receiver_type": "InstantlyHandler",
+        "func_name": "SyncLead",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/instantly/webhook",
+        "line": 109,
+        "handler": "instantlyHandler.Webhook",
+        "receiver_type": "InstantlyHandler",
+        "func_name": "Webhook",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/lists",
+        "line": 26,
+        "handler": "listHandler.Handle",
+        "receiver_type": "ListHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/lists/",
+        "line": 117,
+        "handler": "inline",
+        "receiver_type": null,
+        "func_name": null,
+        "dynamic": true,
+        "methods": []
+      },
+      {
+        "path": "/lists/fields",
+        "line": 116,
+        "handler": "templateHandler.ListFields",
+        "receiver_type": "TemplateHandler",
+        "func_name": "ListFields",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/migration/",
+        "line": 253,
+        "handler": "migrationHandler.Handle",
+        "receiver_type": "MigrationWizardHandler",
+        "func_name": "Handle",
+        "dynamic": true,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/queue/process",
+        "line": 175,
+        "handler": "analyticsHandler.QueueProcess",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "QueueProcess",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/queue/status",
+        "line": 174,
+        "handler": "analyticsHandler.QueueStatus",
+        "receiver_type": "AnalyticsHandler",
+        "func_name": "QueueStatus",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/rules",
+        "line": 141,
+        "handler": "ruleHandler.Handle",
+        "receiver_type": "RuleHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/rules/",
+        "line": 142,
+        "handler": "ruleHandler.HandleSub",
+        "receiver_type": "RuleHandler",
+        "func_name": "HandleSub",
+        "dynamic": true,
+        "methods": [
+          "delete",
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/segments",
+        "line": 137,
+        "handler": "segmentHandler.Handle",
+        "receiver_type": "SegmentHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/segments/",
+        "line": 138,
+        "handler": "segmentHandler.HandleSub",
+        "receiver_type": "SegmentHandler",
+        "func_name": "HandleSub",
+        "dynamic": true,
+        "methods": [
+          "delete",
+          "get",
+          "patch",
+          "post",
+          "put"
+        ]
+      },
+      {
+        "path": "/sequences",
+        "line": 235,
+        "handler": "seqHandler.Handle",
+        "receiver_type": "SequenceHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/sequences/",
+        "line": 236,
+        "handler": "seqHandler.HandleSub",
+        "receiver_type": "SequenceHandler",
+        "func_name": "HandleSub",
+        "dynamic": true,
+        "methods": [
+          "delete",
+          "get",
+          "patch",
+          "post",
+          "put"
+        ]
+      },
+      {
+        "path": "/subscribers",
+        "line": 30,
+        "handler": "subHandler.Handle",
+        "receiver_type": "SubscriberHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/subscribers/",
+        "line": 31,
+        "handler": "subHandler.HandleSub",
+        "receiver_type": "SubscriberHandler",
+        "func_name": "HandleSub",
+        "dynamic": true,
+        "methods": [
+          "delete",
+          "get",
+          "patch",
+          "post",
+          "put"
+        ]
+      },
+      {
+        "path": "/subscribers/bulk",
+        "line": 33,
+        "handler": "subHandler.BulkSubscribe",
+        "receiver_type": "SubscriberHandler",
+        "func_name": "BulkSubscribe",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/subscribers/bulk-delete",
+        "line": 34,
+        "handler": "subHandler.BulkDelete",
+        "receiver_type": "SubscriberHandler",
+        "func_name": "BulkDelete",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/subscribers/bulk-unsubscribe",
+        "line": 35,
+        "handler": "subHandler.BulkUnsubscribe",
+        "receiver_type": "SubscriberHandler",
+        "func_name": "BulkUnsubscribe",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/subscribers/export",
+        "line": 149,
+        "handler": "ieHandler.Export",
+        "receiver_type": "ImportExportHandler",
+        "func_name": "Export",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/subscribers/import",
+        "line": 150,
+        "handler": "ieHandler.Import",
+        "receiver_type": "ImportExportHandler",
+        "func_name": "Import",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/subscribers/lookup",
+        "line": 36,
+        "handler": "subHandler.Lookup",
+        "receiver_type": "SubscriberHandler",
+        "func_name": "Lookup",
+        "dynamic": false,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/subscribers/unsubscribe",
+        "line": 32,
+        "handler": "subHandler.UnsubscribeByEmail",
+        "receiver_type": "SubscriberHandler",
+        "func_name": "UnsubscribeByEmail",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/suppressions",
+        "line": 153,
+        "handler": "suppressionHandler.Handle",
+        "receiver_type": "SuppressionHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/system/db-check",
+        "line": 202,
+        "handler": "systemHandler.DBCheck",
+        "receiver_type": "SystemHandler",
+        "func_name": "DBCheck",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/system/dlq",
+        "line": 208,
+        "handler": "systemHandler.DLQList",
+        "receiver_type": "SystemHandler",
+        "func_name": "DLQList",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/system/dlq/discard",
+        "line": 227,
+        "handler": "systemHandler.DLQDiscard",
+        "receiver_type": "SystemHandler",
+        "func_name": "DLQDiscard",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/system/dlq/resolve",
+        "line": 226,
+        "handler": "systemHandler.DLQResolve",
+        "receiver_type": "SystemHandler",
+        "func_name": "DLQResolve",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/system/flags",
+        "line": 206,
+        "handler": "systemHandler.FeatureFlags",
+        "receiver_type": "SystemHandler",
+        "func_name": "FeatureFlags",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/system/info",
+        "line": 200,
+        "handler": "systemHandler.Info",
+        "receiver_type": "SystemHandler",
+        "func_name": "Info",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/system/metrics",
+        "line": 203,
+        "handler": "systemHandler.Metrics",
+        "receiver_type": "SystemHandler",
+        "func_name": "Metrics",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/system/migration/legacy-inventory",
+        "line": 228,
+        "handler": "systemHandler.LegacyInventory",
+        "receiver_type": "SystemHandler",
+        "func_name": "LegacyInventory",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/system/migration/mirror-now",
+        "line": 231,
+        "handler": "systemHandler.MigrationMirrorNow",
+        "receiver_type": "SystemHandler",
+        "func_name": "MigrationMirrorNow",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/system/migration/mirror-stats",
+        "line": 230,
+        "handler": "systemHandler.MigrationMirrorStats",
+        "receiver_type": "SystemHandler",
+        "func_name": "MigrationMirrorStats",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/system/migration/mode",
+        "line": 229,
+        "handler": "systemHandler.MigrationMode",
+        "receiver_type": "SystemHandler",
+        "func_name": "MigrationMode",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/adopt-from-brand/",
+        "line": 218,
+        "handler": "outboundTransportHandler.AdoptFromBrand",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "AdoptFromBrand",
+        "dynamic": true,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/apply",
+        "line": 214,
+        "handler": "outboundTransportHandler.HandleApply",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "HandleApply",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/apply/",
+        "line": 215,
+        "handler": "outboundTransportHandler.HandleApply",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "HandleApply",
+        "dynamic": true,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/bounce/brands/",
+        "line": 220,
+        "handler": "outboundTransportHandler.HandleBounceBrandSettings",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "HandleBounceBrandSettings",
+        "dynamic": true,
+        "methods": [
+          "get",
+          "put"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/bounce/dlq",
+        "line": 224,
+        "handler": "smtpFeedbackOps.HandleDLQ",
+        "receiver_type": "SMTPFeedbackOpsHandler",
+        "func_name": "HandleDLQ",
+        "dynamic": false,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/bounce/dlq/",
+        "line": 225,
+        "handler": "smtpFeedbackOps.HandleDLQSub",
+        "receiver_type": "SMTPFeedbackOpsHandler",
+        "func_name": "HandleDLQSub",
+        "dynamic": true,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/bounce/events",
+        "line": 222,
+        "handler": "smtpFeedbackOps.HandleEvents",
+        "receiver_type": "SMTPFeedbackOpsHandler",
+        "func_name": "HandleEvents",
+        "dynamic": false,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/bounce/events/",
+        "line": 223,
+        "handler": "smtpFeedbackOps.HandleEventsSub",
+        "receiver_type": "SMTPFeedbackOpsHandler",
+        "func_name": "HandleEventsSub",
+        "dynamic": true,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/bounce/settings",
+        "line": 219,
+        "handler": "outboundTransportHandler.HandleBounceSettings",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "HandleBounceSettings",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "put"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/brands",
+        "line": 216,
+        "handler": "outboundTransportHandler.HandleBrands",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "HandleBrands",
+        "dynamic": false,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/brands/",
+        "line": 217,
+        "handler": "outboundTransportHandler.HandleBrands",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "HandleBrands",
+        "dynamic": true,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/global",
+        "line": 210,
+        "handler": "outboundTransportHandler.HandleGlobal",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "HandleGlobal",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "put"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/global/presets",
+        "line": 211,
+        "handler": "outboundTransportHandler.GlobalPresets",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "GlobalPresets",
+        "dynamic": false,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/global/test-connection",
+        "line": 212,
+        "handler": "outboundTransportHandler.TestConnection",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "TestConnection",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/system/outbound-transport/global/test-send",
+        "line": 213,
+        "handler": "outboundTransportHandler.TestSend",
+        "receiver_type": "OutboundTransportHandler",
+        "func_name": "TestSend",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/system/rbac/capabilities",
+        "line": 207,
+        "handler": "systemHandler.APIKeyCapabilities",
+        "receiver_type": "SystemHandler",
+        "func_name": "APIKeyCapabilities",
+        "dynamic": false,
+        "methods": [
+          "delete",
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/system/readiness/evaluate",
+        "line": 282,
+        "handler": "readinessHandler.Evaluate",
+        "receiver_type": "ReadinessHandler",
+        "func_name": "Evaluate",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/system/readiness/inboarding",
+        "line": 283,
+        "handler": "readinessHandler.Inboarding",
+        "receiver_type": "ReadinessHandler",
+        "func_name": "Inboarding",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/system/readiness/report/",
+        "line": 284,
+        "handler": "readinessHandler.Report",
+        "receiver_type": "ReadinessHandler",
+        "func_name": "Report",
+        "dynamic": true,
+        "methods": [
+          "get"
+        ]
+      },
+      {
+        "path": "/system/rollout/evaluate",
+        "line": 205,
+        "handler": "systemHandler.RolloutEvaluate",
+        "receiver_type": "SystemHandler",
+        "func_name": "RolloutEvaluate",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      },
+      {
+        "path": "/system/ses-quota",
+        "line": 201,
+        "handler": "systemHandler.SESQuota",
+        "receiver_type": "SystemHandler",
+        "func_name": "SESQuota",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/system/settings",
+        "line": 277,
+        "handler": "settingsHandler.Handle",
+        "receiver_type": "SettingsHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "put"
+        ]
+      },
+      {
+        "path": "/system/settings/",
+        "line": 278,
+        "handler": "settingsHandler.Handle",
+        "receiver_type": "SettingsHandler",
+        "func_name": "Handle",
+        "dynamic": true,
+        "methods": [
+          "get",
+          "put"
+        ]
+      },
+      {
+        "path": "/system/slo",
+        "line": 204,
+        "handler": "systemHandler.SLO",
+        "receiver_type": "SystemHandler",
+        "func_name": "SLO",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/tags",
+        "line": 243,
+        "handler": "tagHandler.Handle",
+        "receiver_type": "TagHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/tags/",
+        "line": 244,
+        "handler": "tagHandler.HandleSub",
+        "receiver_type": "TagHandler",
+        "func_name": "HandleSub",
+        "dynamic": true,
+        "methods": [
+          "delete",
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/templates",
+        "line": 113,
+        "handler": "templateHandler.Handle",
+        "receiver_type": "TemplateHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/templates/",
+        "line": 114,
+        "handler": "templateHandler.HandleSub",
+        "receiver_type": "TemplateHandler",
+        "func_name": "HandleSub",
+        "dynamic": true,
+        "methods": [
+          "delete",
+          "get",
+          "patch",
+          "post",
+          "put"
+        ]
+      },
+      {
+        "path": "/tenants",
+        "line": 306,
+        "handler": "tenantHandler.Handle",
+        "receiver_type": "TenantHandler",
+        "func_name": "Handle",
+        "dynamic": false,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/tenants/",
+        "line": 307,
+        "handler": "tenantHandler.Handle",
+        "receiver_type": "TenantHandler",
+        "func_name": "Handle",
+        "dynamic": true,
+        "methods": [
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/webhooks",
+        "line": 62,
+        "handler": "inline",
+        "receiver_type": null,
+        "func_name": null,
+        "dynamic": false,
+        "methods": [
+          "delete",
+          "get",
+          "post"
+        ]
+      },
+      {
+        "path": "/webhooks/events",
+        "line": 74,
+        "handler": "webhookHandler.ListEvents",
+        "receiver_type": "WebhookHandler",
+        "func_name": "ListEvents",
+        "dynamic": false,
+        "methods": []
+      },
+      {
+        "path": "/webhooks/trigger",
+        "line": 75,
+        "handler": "webhookHandler.Trigger",
+        "receiver_type": "WebhookHandler",
+        "func_name": "Trigger",
+        "dynamic": false,
+        "methods": [
+          "post"
+        ]
+      }
     ]
   }
 }
