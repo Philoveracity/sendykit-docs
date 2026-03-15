@@ -1,55 +1,50 @@
-# Mintlify Starter Kit
+# SendyKit Public Docs
 
-Use the starter kit to get your docs deployed and ready to customize.
+Public Mintlify repo for `docs.sendykit.dev`.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+## Source of truth
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+This repo is the **public publishing surface**.
+The canonical product/docs source lives in the main SendyKit repo:
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+- product/docs repo: `/home/thedream/mail.thedream.rocks/sendykit`
+- canonical docs content: `/home/thedream/mail.thedream.rocks/sendykit/docs-site`
+- canonical OpenAPI spec: `/home/thedream/mail.thedream.rocks/sendykit/docs/openapi/sendykit-v2.yaml`
 
-## AI-assisted writing
+## Efficient workflow
 
-Set up your AI coding tool to work with Mintlify:
+Use this split:
+
+- **OpenAPI** for API truth
+- **Mintlify** for public rendering
+- **MDX** for guides, concepts, pricing, readiness, and operator explanation
+
+### Sync OpenAPI
 
 ```bash
-npx skills add https://mintlify.com/docs
+cd /home/thedream/mail.thedream.rocks/sendykit-docs
+python3 scripts/sync-openapi.py
 ```
 
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
+That updates:
 
-See the [AI tools guides](/ai-tools) for tool-specific setup.
+- `api-reference/openapi.json`
 
-## Development
+from the canonical spec in the main SendyKit repo.
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+## Preview locally
 
-```
+```bash
 npm i -g mint
-```
-
-Run the following command at the root of your documentation, where your `docs.json` is located:
-
-```
 mint dev
 ```
 
-View your local preview at `http://localhost:3000`.
+## Publish
 
-## Publishing changes
+Push to the default branch:
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+```bash
+git push origin main
+```
 
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+Mintlify/Vercel should sync from the public repo automatically.
