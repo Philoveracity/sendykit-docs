@@ -1,0 +1,30 @@
+name: Docs Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Mintlify CLI
+        run: npm i -g mint
+
+      - name: Validate Mintlify config
+        run: mint validate
+
+      - name: Validate OpenAPI artifact
+        run: mint openapi-check api-reference/openapi.json --local-schema
+
+      - name: Check broken links
+        run: mint broken-links
