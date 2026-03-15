@@ -1,7 +1,7 @@
 <svg width="340" height="44" viewBox="0 0 340 44" fill="none" xmlns="http://www.w3.org/2000/svg">
   <g transform="translate(0,7)">
-    <path d="M2 8C2 6.34315 3.34315 5 5 5H29C30.6569 5 32 6.34315 32 8V24C32 25.6569 30.6569 27 29 27H5C3.34315 27 2 25.6569 2 24V8Z" fill="#D4A843"/>
-    <path d="M3.5 8.5L17 18.5L30.5 8.5V10.8L17 20.6L3.5 10.8V8.5Z" fill="#111111"/>
+    <rect x="2.5" y="5.5" width="29" height="22" rx="3.5" stroke="#D4A843" stroke-width="2.5"/>
+    <path d="M4.5 9L17 18.5L29.5 9" stroke="#D4A843" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
   <text x="40" y="30" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="700" letter-spacing="-0.02em">
     <tspan fill="#111111">Sendy</tspan><tspan fill="#D4A843">Kit</tspan>

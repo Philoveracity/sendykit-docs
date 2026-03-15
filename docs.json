@@ -8,6 +8,10 @@
     "dark": "#B8922E"
   },
   "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/sendykit-light.svg",
+    "dark": "/logo/sendykit-dark.svg"
+  },
   "navbar": {
     "links": [
       {
