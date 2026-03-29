@@ -2877,7 +2877,7 @@
             "description": "Skill definitions"
           }
         },
-        "description": "List skill definitions."
+        "description": "Returns all skill definitions available to agents in the current tenant. Skills are reusable strategy templates that combine tool hints, prompts, and execution patterns. See Spec 65 for the skills contract."
       }
     },
     "/agent/skills/{id}": {
@@ -2904,7 +2904,7 @@
             "description": "Skill not found"
           }
         },
-        "description": "Get a skill definition."
+        "description": "Returns a single skill definition by ID, including its SKILL.md content, tool hints, and version metadata."
       }
     },
     "/agent/skills/attach": {
@@ -2956,7 +2956,7 @@
             "description": "Skill attachment created"
           }
         },
-        "description": "Attach a skill."
+        "description": "Attaches a skill bundle to an agent. The skill's tool hints become available to the agent during runs, narrowing (never widening) the agent's existing tool grants. See Spec 59 \u00a76.5."
       }
     },
     "/agent/skills/detach": {
@@ -2988,7 +2988,7 @@
             "description": "Skill attachment detached"
           }
         },
-        "description": "Detach a skill attachment."
+        "description": "Detaches a skill bundle from an agent. The agent loses access to the skill's tool hints and execution patterns."
       }
     },
     "/agent/skills/validate": {
@@ -3020,7 +3020,7 @@
             "description": "Skill attachment validation result"
           }
         },
-        "description": "Validate a skill attachment."
+        "description": "Validates a skill definition without attaching it. Checks SKILL.md syntax, tool hint references, and version compatibility."
       }
     },
     "/agent/runs": {
@@ -3034,7 +3034,7 @@
             "description": "Canonical agent runs for the current tenant"
           }
         },
-        "description": "List canonical agent runs."
+        "description": "Returns canonical agent runs for the current tenant. Each run represents one orchestrated attempt to accomplish a goal \u2014 from planning through execution to completion or failure. See Spec 59 \u00a76.2."
       }
     },
     "/agent/runs/{id}": {
@@ -3061,7 +3061,7 @@
             "description": "Run not found"
           }
         },
-        "description": "Get a canonical agent run."
+        "description": "Returns a single agent run with full metadata: goal, entrypoint, status, cost tracking, approval state, and checkpoint references."
       }
     },
     "/agent/runs/{id}/actions": {
@@ -3085,7 +3085,7 @@
             "description": "Canonical run actions"
           }
         },
-        "description": "List canonical actions for a run."
+        "description": "Returns the ordered list of actions (steps) within a run. Each action has a type, tool reference, status, input/output payloads, and timing data."
       }
     },
     "/agent/runs/{id}/approvals": {
@@ -3109,7 +3109,7 @@
             "description": "Canonical run approvals"
           }
         },
-        "description": "List canonical approvals for a run."
+        "description": "Returns approval requests for a run. When an agent's action requires human approval (per the agent's approval policy), it creates an approval request that must be resolved before the run continues."
       }
     },
     "/agent/artifacts": {
@@ -3133,7 +3133,7 @@
             "description": "Canonical run artifacts"
           }
         },
-        "description": "List artifacts for a run."
+        "description": "Returns artifacts produced by a run. Artifacts are versioned output objects (reports, drafts, summaries) with type, payload, and checksum."
       }
     },
     "/agent/artifacts/latest": {
@@ -3168,7 +3168,7 @@
             "description": "Artifact not found"
           }
         },
-        "description": "Get latest artifact by type for a run."
+        "description": "Returns the latest artifact of a given type for a run. Useful for getting the most recent draft or summary without listing all artifacts."
       }
     },
     "/agent/checkpoints": {
@@ -3195,7 +3195,7 @@
             "description": "Checkpoint not found"
           }
         },
-        "description": "Get latest checkpoint for a run."
+        "description": "Returns the latest checkpoint for a run. Checkpoints capture the run's resumable state \u2014 step position, serialized context, and resume token."
       }
     },
     "/agent/checkpoints/resolve": {
@@ -3222,7 +3222,7 @@
             "description": "Checkpoint not found"
           }
         },
-        "description": "Resolve a resume token to a checkpoint."
+        "description": "Resolves a resume token to its checkpoint. Used to restore a run's state from a previously issued resume token."
       }
     },
     "/agent/approvals/{id}/resolve": {
@@ -3275,7 +3275,7 @@
             "description": "Approval resolved"
           }
         },
-        "description": "Resolve an approval request."
+        "description": "Resolves a pending approval request by approving, rejecting, or cancelling it. The resolved_by field records who made the decision. Rejected approvals halt the run."
       }
     },
     "/agent-send/setups": {
@@ -3356,7 +3356,7 @@
             "description": "Setup suspended"
           }
         },
-        "description": "Suspend branded-send setup.",
+        "description": "Pauses a branded agent-send setup. The agent retains its sender domain but cannot send until resumed. Provide an optional reason for audit.",
         "requestBody": {
           "required": false,
           "content": {
@@ -3397,7 +3397,7 @@
             "description": "Setup resumed"
           }
         },
-        "description": "Resume branded-send setup.",
+        "description": "Resumes a paused branded agent-send setup, restoring the agent's ability to send through its verified sender domain.",
         "requestBody": {
           "required": false,
           "content": {
@@ -3438,7 +3438,7 @@
             "description": "Setup revoked"
           }
         },
-        "description": "Revoke branded-send setup.",
+        "description": "Permanently revokes a branded agent-send setup. The sender domain and associated DNS records are decommissioned. This action cannot be undone.",
         "requestBody": {
           "required": false,
           "content": {
@@ -4003,7 +4003,7 @@
             "description": "Canonical tool catalog"
           }
         },
-        "description": "List canonical tool definitions."
+        "description": "Returns the canonical tool catalog \u2014 all versioned tool definitions available in the system. Each tool declares its risk class, network class, scope type, execution mode, and idempotency contract. See Spec 61."
       }
     },
     "/agent/tools/{id}": {
@@ -4031,7 +4031,7 @@
             "description": "Tool not found"
           }
         },
-        "description": "Get a canonical tool definition."
+        "description": "Returns a single tool definition with full schema (input_schema, output_schema) and policy metadata (risk class, exposure class, provider channels)."
       }
     },
     "/agent/grants": {
@@ -4066,7 +4066,7 @@
             "description": "Canonical grants for the requested subject"
           }
         },
-        "description": "List grants for an agent subject."
+        "description": "Returns standing permission grants for an agent. Grants define which tools an agent may use, in what scope, at what mode (forbidden/simulate_only/execute), and whether approval is required. See Spec 59 \u00a76.4."
       }
     },
     "/agent/schedules": {
@@ -4090,7 +4090,7 @@
             "description": "Schedules for the requested agent"
           }
         },
-        "description": "List schedules for an agent."
+        "description": "Returns schedules for an agent. Each schedule defines when the agent wakes up \u2014 cron, event trigger, or threshold \u2014 with overlap, retry, and misfire policies. See Spec 62."
       },
       "post": {
         "summary": "Create a schedule",
@@ -4112,7 +4112,7 @@
             "description": "Schedule created"
           }
         },
-        "description": "Create a schedule."
+        "description": "Creates a new schedule for an agent. Requires a run template, trigger type, timezone, and policy configuration. The schedule starts in active status."
       }
     },
     "/agent/schedules/{id}": {
@@ -4136,7 +4136,7 @@
             "description": "Canonical schedule"
           }
         },
-        "description": "Get a schedule."
+        "description": "Returns a single schedule with full configuration: trigger type, cron expression, overlap policy, retry policy, misfire policy, and run template reference."
       },
       "patch": {
         "summary": "Patch a schedule",
@@ -4168,7 +4168,7 @@
             "description": "Schedule updated"
           }
         },
-        "description": "Patch a schedule."
+        "description": "Partially updates a schedule's configuration. Can modify cron expression, policies, timezone, or max active runs without recreating the schedule."
       }
     },
     "/agent/schedules/{id}/pause": {
@@ -4192,7 +4192,7 @@
             "description": "Schedule paused"
           }
         },
-        "description": "Pause a schedule.",
+        "description": "Pauses an active schedule. No new trigger deliveries are created while paused. Existing in-flight runs continue to completion.",
         "requestBody": {
           "required": false,
           "content": {
@@ -4232,7 +4232,7 @@
             "description": "Schedule resumed"
           }
         },
-        "description": "Resume a schedule.",
+        "description": "Resumes a paused schedule. Trigger deliveries resume according to the schedule's cron or event configuration. Misfired triggers are handled per the misfire policy.",
         "requestBody": {
           "required": false,
           "content": {
@@ -4272,7 +4272,7 @@
             "description": "Trigger deliveries for the requested schedule"
           }
         },
-        "description": "List trigger deliveries for a schedule."
+        "description": "Returns trigger deliveries for a schedule \u2014 concrete wake occurrences showing when the schedule fired, whether it created a run, retry count, and any errors."
       }
     },
     "/agent/actions/execute": {
