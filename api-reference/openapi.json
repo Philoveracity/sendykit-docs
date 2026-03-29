@@ -2877,7 +2877,8 @@
             "description": "Skill definitions"
           }
         },
-        "description": "Returns all skill definitions available to agents in the current tenant. Skills are reusable strategy templates that combine tool hints, prompts, and execution patterns. See Spec 65 for the skills contract."
+        "description": "Returns all skill definitions available to agents in the current tenant. Skills are reusable strategy templates that combine tool hints, prompts, and execution patterns. See Spec 65 for the skills contract.",
+        "operationId": "getAgentSkills"
       }
     },
     "/agent/skills/{id}": {
@@ -2904,7 +2905,8 @@
             "description": "Skill not found"
           }
         },
-        "description": "Returns a single skill definition by ID, including its SKILL.md content, tool hints, and version metadata."
+        "description": "Returns a single skill definition by ID, including its SKILL.md content, tool hints, and version metadata.",
+        "operationId": "getAgentSkillsId"
       }
     },
     "/agent/skills/attach": {
@@ -2956,7 +2958,8 @@
             "description": "Skill attachment created"
           }
         },
-        "description": "Attaches a skill bundle to an agent. The skill's tool hints become available to the agent during runs, narrowing (never widening) the agent's existing tool grants. See Spec 59 \u00a76.5."
+        "description": "Attaches a skill bundle to an agent. The skill's tool hints become available to the agent during runs, narrowing (never widening) the agent's existing tool grants. See Spec 59 \u00a76.5.",
+        "operationId": "postAgentSkillsAttach"
       }
     },
     "/agent/skills/detach": {
@@ -2988,7 +2991,8 @@
             "description": "Skill attachment detached"
           }
         },
-        "description": "Detaches a skill bundle from an agent. The agent loses access to the skill's tool hints and execution patterns."
+        "description": "Detaches a skill bundle from an agent. The agent loses access to the skill's tool hints and execution patterns.",
+        "operationId": "postAgentSkillsDetach"
       }
     },
     "/agent/skills/validate": {
@@ -3020,7 +3024,8 @@
             "description": "Skill attachment validation result"
           }
         },
-        "description": "Validates a skill definition without attaching it. Checks SKILL.md syntax, tool hint references, and version compatibility."
+        "description": "Validates a skill definition without attaching it. Checks SKILL.md syntax, tool hint references, and version compatibility.",
+        "operationId": "postAgentSkillsValidate"
       }
     },
     "/agent/runs": {
@@ -3034,7 +3039,8 @@
             "description": "Canonical agent runs for the current tenant"
           }
         },
-        "description": "Returns canonical agent runs for the current tenant. Each run represents one orchestrated attempt to accomplish a goal \u2014 from planning through execution to completion or failure. See Spec 59 \u00a76.2."
+        "description": "Returns canonical agent runs for the current tenant. Each run represents one orchestrated attempt to accomplish a goal \u2014 from planning through execution to completion or failure. See Spec 59 \u00a76.2.",
+        "operationId": "getAgentRuns"
       }
     },
     "/agent/runs/{id}": {
@@ -3061,7 +3067,8 @@
             "description": "Run not found"
           }
         },
-        "description": "Returns a single agent run with full metadata: goal, entrypoint, status, cost tracking, approval state, and checkpoint references."
+        "description": "Returns a single agent run with full metadata: goal, entrypoint, status, cost tracking, approval state, and checkpoint references.",
+        "operationId": "getAgentRunsId"
       }
     },
     "/agent/runs/{id}/actions": {
@@ -3085,7 +3092,8 @@
             "description": "Canonical run actions"
           }
         },
-        "description": "Returns the ordered list of actions (steps) within a run. Each action has a type, tool reference, status, input/output payloads, and timing data."
+        "description": "Returns the ordered list of actions (steps) within a run. Each action has a type, tool reference, status, input/output payloads, and timing data.",
+        "operationId": "getAgentRunsIdActions"
       }
     },
     "/agent/runs/{id}/approvals": {
@@ -3109,7 +3117,8 @@
             "description": "Canonical run approvals"
           }
         },
-        "description": "Returns approval requests for a run. When an agent's action requires human approval (per the agent's approval policy), it creates an approval request that must be resolved before the run continues."
+        "description": "Returns approval requests for a run. When an agent's action requires human approval (per the agent's approval policy), it creates an approval request that must be resolved before the run continues.",
+        "operationId": "getAgentRunsIdApprovals"
       }
     },
     "/agent/artifacts": {
@@ -3133,7 +3142,8 @@
             "description": "Canonical run artifacts"
           }
         },
-        "description": "Returns artifacts produced by a run. Artifacts are versioned output objects (reports, drafts, summaries) with type, payload, and checksum."
+        "description": "Returns artifacts produced by a run. Artifacts are versioned output objects (reports, drafts, summaries) with type, payload, and checksum.",
+        "operationId": "getAgentArtifacts"
       }
     },
     "/agent/artifacts/latest": {
@@ -3168,7 +3178,8 @@
             "description": "Artifact not found"
           }
         },
-        "description": "Returns the latest artifact of a given type for a run. Useful for getting the most recent draft or summary without listing all artifacts."
+        "description": "Returns the latest artifact of a given type for a run. Useful for getting the most recent draft or summary without listing all artifacts.",
+        "operationId": "getAgentArtifactsLatest"
       }
     },
     "/agent/checkpoints": {
@@ -3195,7 +3206,8 @@
             "description": "Checkpoint not found"
           }
         },
-        "description": "Returns the latest checkpoint for a run. Checkpoints capture the run's resumable state \u2014 step position, serialized context, and resume token."
+        "description": "Returns the latest checkpoint for a run. Checkpoints capture the run's resumable state \u2014 step position, serialized context, and resume token.",
+        "operationId": "getAgentCheckpoints"
       }
     },
     "/agent/checkpoints/resolve": {
@@ -3222,7 +3234,8 @@
             "description": "Checkpoint not found"
           }
         },
-        "description": "Resolves a resume token to its checkpoint. Used to restore a run's state from a previously issued resume token."
+        "description": "Resolves a resume token to its checkpoint. Used to restore a run's state from a previously issued resume token.",
+        "operationId": "getAgentCheckpointsResolve"
       }
     },
     "/agent/approvals/{id}/resolve": {
@@ -3275,7 +3288,8 @@
             "description": "Approval resolved"
           }
         },
-        "description": "Resolves a pending approval request by approving, rejecting, or cancelling it. The resolved_by field records who made the decision. Rejected approvals halt the run."
+        "description": "Resolves a pending approval request by approving, rejecting, or cancelling it. The resolved_by field records who made the decision. Rejected approvals halt the run.",
+        "operationId": "postAgentApprovalsIdResolve"
       }
     },
     "/agent-send/setups": {
@@ -3303,7 +3317,8 @@
           "400": {
             "$ref": "#/components/responses/BadRequest"
           }
-        }
+        },
+        "operationId": "postAgentSendSetups"
       }
     },
     "/agent-send/setups/{id}": {
@@ -3331,7 +3346,8 @@
           "404": {
             "$ref": "#/components/responses/NotFound"
           }
-        }
+        },
+        "operationId": "getAgentSendSetupsId"
       }
     },
     "/agent-send/setups/{id}/pause": {
@@ -3372,7 +3388,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "postAgentSendSetupsIdPause"
       }
     },
     "/agent-send/setups/{id}/resume": {
@@ -3413,7 +3430,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "postAgentSendSetupsIdResume"
       }
     },
     "/agent-send/setups/{id}/revoke": {
@@ -3454,7 +3472,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "postAgentSendSetupsIdRevoke"
       }
     },
     "/internal/agent-send/setups/{id}/reserve-slot": {
@@ -3496,7 +3515,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "postInternalAgentSendSetupsIdReserveSlot"
       }
     },
     "/internal/agent-send/setups/{id}/provision-brand": {
@@ -3540,7 +3560,8 @@
           "200": {
             "description": "Provisioning recorded"
           }
-        }
+        },
+        "operationId": "postInternalAgentSendSetupsIdProvisionBrand"
       }
     },
     "/internal/agent-send/setups/{id}/apply-dns": {
@@ -3587,7 +3608,8 @@
           "200": {
             "description": "DNS requirements recorded"
           }
-        }
+        },
+        "operationId": "postInternalAgentSendSetupsIdApplyDns"
       }
     },
     "/internal/agent-send/setups/{id}/verify": {
@@ -3638,7 +3660,8 @@
           "200": {
             "description": "Verification result recorded"
           }
-        }
+        },
+        "operationId": "postInternalAgentSendSetupsIdVerify"
       }
     },
     "/internal/agent-send/setups/{id}/smoke": {
@@ -3685,7 +3708,8 @@
           "200": {
             "description": "Smoke result recorded"
           }
-        }
+        },
+        "operationId": "postInternalAgentSendSetupsIdSmoke"
       }
     },
     "/internal/agent/leases/issue": {
@@ -3746,7 +3770,8 @@
           "201": {
             "description": "Lease issued"
           }
-        }
+        },
+        "operationId": "postInternalAgentLeasesIssue"
       }
     },
     "/internal/agent/leases/revoke": {
@@ -3780,7 +3805,8 @@
           "200": {
             "description": "Lease revoked"
           }
-        }
+        },
+        "operationId": "postInternalAgentLeasesRevoke"
       }
     },
     "/internal/agent/harness/launch": {
@@ -3806,7 +3832,8 @@
           "200": {
             "description": "Launch accepted"
           }
-        }
+        },
+        "operationId": "postInternalAgentHarnessLaunch"
       }
     },
     "/internal/agent/harness/resume": {
@@ -3832,7 +3859,8 @@
           "200": {
             "description": "Resume accepted"
           }
-        }
+        },
+        "operationId": "postInternalAgentHarnessResume"
       }
     },
     "/internal/agent/harness/cancel": {
@@ -3858,7 +3886,8 @@
           "200": {
             "description": "Cancel accepted"
           }
-        }
+        },
+        "operationId": "postInternalAgentHarnessCancel"
       }
     },
     "/internal/agent/harness/callbacks/heartbeat": {
@@ -3884,7 +3913,8 @@
           "200": {
             "description": "Heartbeat recorded"
           }
-        }
+        },
+        "operationId": "postInternalAgentHarnessCallbacksHeartbeat"
       }
     },
     "/internal/agent/harness/callbacks/checkpoint": {
@@ -3910,7 +3940,8 @@
           "201": {
             "description": "Checkpoint recorded"
           }
-        }
+        },
+        "operationId": "postInternalAgentHarnessCallbacksCheckpoint"
       }
     },
     "/internal/agent/harness/callbacks/artifact": {
@@ -3936,7 +3967,8 @@
           "201": {
             "description": "Artifact recorded"
           }
-        }
+        },
+        "operationId": "postInternalAgentHarnessCallbacksArtifact"
       }
     },
     "/internal/agent/harness/callbacks/complete": {
@@ -3962,7 +3994,8 @@
           "200": {
             "description": "Completion recorded"
           }
-        }
+        },
+        "operationId": "postInternalAgentHarnessCallbacksComplete"
       }
     },
     "/internal/agent/harness/callbacks/failed": {
@@ -3988,7 +4021,8 @@
           "200": {
             "description": "Failure recorded"
           }
-        }
+        },
+        "operationId": "postInternalAgentHarnessCallbacksFailed"
       }
     },
     "/agent/tools": {
@@ -4003,7 +4037,8 @@
             "description": "Canonical tool catalog"
           }
         },
-        "description": "Returns the canonical tool catalog \u2014 all versioned tool definitions available in the system. Each tool declares its risk class, network class, scope type, execution mode, and idempotency contract. See Spec 61."
+        "description": "Returns the canonical tool catalog \u2014 all versioned tool definitions available in the system. Each tool declares its risk class, network class, scope type, execution mode, and idempotency contract. See Spec 61.",
+        "operationId": "getAgentTools"
       }
     },
     "/agent/tools/{id}": {
@@ -4031,7 +4066,8 @@
             "description": "Tool not found"
           }
         },
-        "description": "Returns a single tool definition with full schema (input_schema, output_schema) and policy metadata (risk class, exposure class, provider channels)."
+        "description": "Returns a single tool definition with full schema (input_schema, output_schema) and policy metadata (risk class, exposure class, provider channels).",
+        "operationId": "getAgentToolsId"
       }
     },
     "/agent/grants": {
@@ -4066,7 +4102,8 @@
             "description": "Canonical grants for the requested subject"
           }
         },
-        "description": "Returns standing permission grants for an agent. Grants define which tools an agent may use, in what scope, at what mode (forbidden/simulate_only/execute), and whether approval is required. See Spec 59 \u00a76.4."
+        "description": "Returns standing permission grants for an agent. Grants define which tools an agent may use, in what scope, at what mode (forbidden/simulate_only/execute), and whether approval is required. See Spec 59 \u00a76.4.",
+        "operationId": "getAgentGrants"
       }
     },
     "/agent/schedules": {
@@ -4090,7 +4127,8 @@
             "description": "Schedules for the requested agent"
           }
         },
-        "description": "Returns schedules for an agent. Each schedule defines when the agent wakes up \u2014 cron, event trigger, or threshold \u2014 with overlap, retry, and misfire policies. See Spec 62."
+        "description": "Returns schedules for an agent. Each schedule defines when the agent wakes up \u2014 cron, event trigger, or threshold \u2014 with overlap, retry, and misfire policies. See Spec 62.",
+        "operationId": "getAgentSchedules"
       },
       "post": {
         "summary": "Create a schedule",
@@ -4112,7 +4150,8 @@
             "description": "Schedule created"
           }
         },
-        "description": "Creates a new schedule for an agent. Requires a run template, trigger type, timezone, and policy configuration. The schedule starts in active status."
+        "description": "Creates a new schedule for an agent. Requires a run template, trigger type, timezone, and policy configuration. The schedule starts in active status.",
+        "operationId": "postAgentSchedules"
       }
     },
     "/agent/schedules/{id}": {
@@ -4136,7 +4175,8 @@
             "description": "Canonical schedule"
           }
         },
-        "description": "Returns a single schedule with full configuration: trigger type, cron expression, overlap policy, retry policy, misfire policy, and run template reference."
+        "description": "Returns a single schedule with full configuration: trigger type, cron expression, overlap policy, retry policy, misfire policy, and run template reference.",
+        "operationId": "getAgentSchedulesId"
       },
       "patch": {
         "summary": "Patch a schedule",
@@ -4168,7 +4208,8 @@
             "description": "Schedule updated"
           }
         },
-        "description": "Partially updates a schedule's configuration. Can modify cron expression, policies, timezone, or max active runs without recreating the schedule."
+        "description": "Partially updates a schedule's configuration. Can modify cron expression, policies, timezone, or max active runs without recreating the schedule.",
+        "operationId": "patchAgentSchedulesId"
       }
     },
     "/agent/schedules/{id}/pause": {
@@ -4208,7 +4249,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "postAgentSchedulesIdPause"
       }
     },
     "/agent/schedules/{id}/resume": {
@@ -4248,7 +4290,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "postAgentSchedulesIdResume"
       }
     },
     "/agent/triggers/deliveries": {
@@ -4272,7 +4315,8 @@
             "description": "Trigger deliveries for the requested schedule"
           }
         },
-        "description": "Returns trigger deliveries for a schedule \u2014 concrete wake occurrences showing when the schedule fired, whether it created a run, retry count, and any errors."
+        "description": "Returns trigger deliveries for a schedule \u2014 concrete wake occurrences showing when the schedule fired, whether it created a run, retry count, and any errors.",
+        "operationId": "getAgentTriggersDeliveries"
       }
     },
     "/agent/actions/execute": {
@@ -4304,7 +4348,8 @@
           "200": {
             "description": "Execution result with step-by-step outcomes"
           }
-        }
+        },
+        "operationId": "postAgentActionsExecute"
       }
     },
     "/agent/actions/plan": {
@@ -4352,7 +4397,8 @@
           "200": {
             "description": "Execution plan with policy check and steps"
           }
-        }
+        },
+        "operationId": "postAgentActionsPlan"
       }
     },
     "/agent/actions/simulate": {
@@ -4396,13 +4442,14 @@
           "200": {
             "description": "Simulation result with predicted side effects"
           }
-        }
+        },
+        "operationId": "postAgentActionsSimulate"
       }
     },
     "/agent/actions/{id}": {
       "get": {
         "summary": "Get agent action",
-        "description": "Retrieve a specific agent action by ID.",
+        "description": "Retrieves agent runtime data. Identified by id. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "Agent Runtime"
         ],
@@ -4420,7 +4467,8 @@
           "200": {
             "description": "Action details including intent, plan, result, and status"
           }
-        }
+        },
+        "operationId": "getAgentActionsId"
       }
     },
     "/agent/cards": {
@@ -4495,7 +4543,7 @@
           "Core"
         ],
         "summary": "Close virtual card",
-        "description": "Close and deactivate a virtual card.",
+        "description": "Creates or executes a core operation. Accepts JSON request body with the required fields.",
         "responses": {
           "200": {
             "description": "Placeholder success response.",
@@ -4778,7 +4826,8 @@
           "200": {
             "description": "Policy evaluation result"
           }
-        }
+        },
+        "operationId": "postAgentPoliciesEvaluate"
       }
     },
     "/agents": {
@@ -4789,7 +4838,7 @@
           "Core"
         ],
         "summary": "List agents",
-        "description": "List all registered AI agents.",
+        "description": "Retrieves core data. Returns JSON with the resource representation including all public fields.",
         "responses": {
           "200": {
             "description": "Placeholder success response.",
@@ -4844,7 +4893,7 @@
     "/agents/{id}": {
       "get": {
         "summary": "Get agent",
-        "description": "Retrieve agent account by ID.",
+        "description": "Retrieves agents data. Identified by id. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "Agents"
         ],
@@ -4862,11 +4911,12 @@
           "200": {
             "description": "Agent details"
           }
-        }
+        },
+        "operationId": "getAgentsId"
       },
       "put": {
         "summary": "Update agent",
-        "description": "Update agent account.",
+        "description": "Updates a agents resource. Identified by id. Replaces the resource with the provided JSON body.",
         "tags": [
           "Agents"
         ],
@@ -4894,11 +4944,12 @@
           "200": {
             "description": "Updated"
           }
-        }
+        },
+        "operationId": "putAgentsId"
       },
       "delete": {
         "summary": "Delete agent",
-        "description": "Delete agent account.",
+        "description": "Removes a agents resource. Identified by id. This action may be irreversible.",
         "tags": [
           "Agents"
         ],
@@ -4916,7 +4967,8 @@
           "200": {
             "description": "Deleted"
           }
-        }
+        },
+        "operationId": "deleteAgentsId"
       }
     },
     "/ai/generate": {
@@ -7925,7 +7977,8 @@
           "200": {
             "description": "Billing data"
           }
-        }
+        },
+        "operationId": "getBillingAction"
       }
     },
     "/brands": {
@@ -8700,7 +8753,8 @@
           "200": {
             "description": "Proxied response"
           }
-        }
+        },
+        "operationId": "getBridgePath"
       }
     },
     "/campaigns": {
@@ -9785,7 +9839,8 @@
           "200": {
             "description": "List of compliance incidents"
           }
-        }
+        },
+        "operationId": "getComplianceIncidents"
       }
     },
     "/compliance/incidents/{id}/resolve": {
@@ -9834,7 +9889,8 @@
           "200": {
             "description": "Incident resolved"
           }
-        }
+        },
+        "operationId": "postComplianceIncidentsIdResolve"
       }
     },
     "/compliance/lead/verify": {
@@ -9876,7 +9932,8 @@
           "200": {
             "description": "Verification result with per-check verdicts"
           }
-        }
+        },
+        "operationId": "postComplianceLeadVerify"
       }
     },
     "/compliance/policies/evaluate": {
@@ -9912,7 +9969,8 @@
           "200": {
             "description": "Policy evaluation result"
           }
-        }
+        },
+        "operationId": "postCompliancePoliciesEvaluate"
       }
     },
     "/compliance/sends/preflight": {
@@ -9956,7 +10014,8 @@
           "200": {
             "description": "Preflight result with allowed flag, warnings, blockers"
           }
-        }
+        },
+        "operationId": "postComplianceSendsPreflight"
       }
     },
     "/connected-sites": {
@@ -10026,7 +10085,7 @@
     "/connected-sites/{id}": {
       "get": {
         "summary": "Get connected site",
-        "description": "Retrieve connected site by ID.",
+        "description": "Retrieves connected sites data. Identified by id. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "Connected Sites"
         ],
@@ -10044,11 +10103,12 @@
           "200": {
             "description": "Site details"
           }
-        }
+        },
+        "operationId": "getConnectedSitesId"
       },
       "put": {
         "summary": "Update connected site",
-        "description": "Update connected site config.",
+        "description": "Updates a connected sites resource. Identified by id. Replaces the resource with the provided JSON body.",
         "tags": [
           "Connected Sites"
         ],
@@ -10076,11 +10136,12 @@
           "200": {
             "description": "Updated"
           }
-        }
+        },
+        "operationId": "putConnectedSitesId"
       },
       "delete": {
         "summary": "Delete connected site",
-        "description": "Remove connected site.",
+        "description": "Removes a connected sites resource. Identified by id. This action may be irreversible.",
         "tags": [
           "Connected Sites"
         ],
@@ -10098,7 +10159,8 @@
           "200": {
             "description": "Deleted"
           }
-        }
+        },
+        "operationId": "deleteConnectedSitesId"
       }
     },
     "/content/score": {
@@ -10357,7 +10419,7 @@
           "Core"
         ],
         "summary": "List credentials",
-        "description": "List stored API credentials.",
+        "description": "Retrieves core data. Returns JSON with the resource representation including all public fields.",
         "responses": {
           "200": {
             "description": "Placeholder success response.",
@@ -10380,7 +10442,7 @@
           "Core"
         ],
         "summary": "Store credential",
-        "description": "Store an encrypted API credential.",
+        "description": "Creates or executes a core operation. Accepts JSON request body with the required fields.",
         "responses": {
           "200": {
             "description": "Placeholder success response.",
@@ -10484,7 +10546,8 @@
           "500": {
             "$ref": "#/components/responses/InternalError"
           }
-        }
+        },
+        "operationId": "getCredentialsOauthCallback"
       }
     },
     "/credentials/providers": {
@@ -10503,13 +10566,14 @@
           "200": {
             "description": "Per-provider connection status"
           }
-        }
+        },
+        "operationId": "getCredentialsStatus"
       }
     },
     "/credentials/{id}": {
       "get": {
         "summary": "Get credential",
-        "description": "Retrieve stored credential by ID.",
+        "description": "Retrieves credentials data. Identified by id. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "Credentials"
         ],
@@ -10527,11 +10591,12 @@
           "200": {
             "description": "Credential details (key masked)"
           }
-        }
+        },
+        "operationId": "getCredentialsId"
       },
       "delete": {
         "summary": "Delete credential",
-        "description": "Delete stored credential.",
+        "description": "Removes a credentials resource. Identified by id. This action may be irreversible.",
         "tags": [
           "Credentials"
         ],
@@ -10549,7 +10614,8 @@
           "200": {
             "description": "Deleted"
           }
-        }
+        },
+        "operationId": "deleteCredentialsId"
       }
     },
     "/events": {
@@ -11445,7 +11511,8 @@
           "200": {
             "description": "Check result"
           }
-        }
+        },
+        "operationId": "getHealthDoctorCheck"
       }
     },
     "/inbox/signals": {
@@ -11511,7 +11578,7 @@
     "/inbox/signals/{id}": {
       "get": {
         "summary": "Get inbox signal",
-        "description": "Retrieve inbox signal by ID.",
+        "description": "Retrieves inbox data. Identified by id. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "Inbox"
         ],
@@ -11529,7 +11596,8 @@
           "200": {
             "description": "Signal details"
           }
-        }
+        },
+        "operationId": "getInboxSignalsId"
       }
     },
     "/instantly/campaigns": {
@@ -11664,7 +11732,8 @@
           "200": {
             "description": "Compliance status"
           }
-        }
+        },
+        "operationId": "getInstantlyCompliance"
       }
     },
     "/instantly/health": {
@@ -12301,7 +12370,8 @@
           "200": {
             "description": "JSON-RPC response"
           }
-        }
+        },
+        "operationId": "postMcp"
       }
     },
     "/mcp/config": {
@@ -12330,7 +12400,8 @@
           "200": {
             "description": "Config JSON for the requested client"
           }
-        }
+        },
+        "operationId": "getMcpConfig"
       }
     },
     "/mcp/config/snippet": {
@@ -12359,7 +12430,8 @@
           "200": {
             "description": "Plain text config snippet"
           }
-        }
+        },
+        "operationId": "getMcpConfigSnippet"
       }
     },
     "/mcp/sse": {
@@ -12373,7 +12445,8 @@
           "200": {
             "description": "SSE stream"
           }
-        }
+        },
+        "operationId": "getMcpSse"
       },
       "post": {
         "summary": "MCP SSE message",
@@ -12395,7 +12468,8 @@
           "200": {
             "description": "SSE event with JSON-RPC response"
           }
-        }
+        },
+        "operationId": "postMcpSse"
       }
     },
     "/metrics": {
@@ -12409,7 +12483,8 @@
           "200": {
             "description": "Prometheus text/plain metrics"
           }
-        }
+        },
+        "operationId": "getMetrics"
       }
     },
     "/migration/cutover": {
@@ -12633,7 +12708,7 @@
     "/migration/{action}": {
       "get": {
         "summary": "Migration action",
-        "description": "Dynamic migration sub-route.",
+        "description": "Retrieves migration data. Identified by action. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "Migration"
         ],
@@ -12651,7 +12726,8 @@
           "200": {
             "description": "Migration data"
           }
-        }
+        },
+        "operationId": "getMigrationAction"
       }
     },
     "/migrations/importers/{provider}/analyze": {
@@ -12702,7 +12778,8 @@
           "200": {
             "description": "Analysis result with gap report and recommendations"
           }
-        }
+        },
+        "operationId": "postMigrationsImportersProviderAnalyze"
       }
     },
     "/migrations/importers/{provider}/run": {
@@ -12769,7 +12846,8 @@
           "200": {
             "description": "Import result with record counts"
           }
-        }
+        },
+        "operationId": "postMigrationsImportersProviderRun"
       }
     },
     "/migrations/jobs/{id}": {
@@ -12793,7 +12871,8 @@
           "200": {
             "description": "Job details with status and record counts"
           }
-        }
+        },
+        "operationId": "getMigrationsJobsId"
       }
     },
     "/migrations/jobs/{id}/report": {
@@ -12829,7 +12908,8 @@
           "200": {
             "description": "Detailed report with gap analysis"
           }
-        }
+        },
+        "operationId": "getMigrationsJobsIdReport"
       }
     },
     "/onboarding/signup": {
@@ -12999,7 +13079,8 @@
           "200": {
             "description": "Reputation lookup result"
           }
-        }
+        },
+        "operationId": "getReputationLookup"
       }
     },
     "/reputation/senders": {
@@ -13074,7 +13155,8 @@
           "200": {
             "description": "Sender reputation details"
           }
-        }
+        },
+        "operationId": "getReputationSendersId"
       }
     },
     "/routing/decisions/{id}": {
@@ -13098,7 +13180,8 @@
           "200": {
             "description": "Decision details with provider, cost, reason"
           }
-        }
+        },
+        "operationId": "getRoutingDecisionsId"
       }
     },
     "/routing/forecast": {
@@ -13122,7 +13205,8 @@
           "200": {
             "description": "Forecast with per-provider stats and recommendations"
           }
-        }
+        },
+        "operationId": "getRoutingForecast"
       }
     },
     "/routing/policies": {
@@ -13136,7 +13220,8 @@
           "200": {
             "description": "List of routing policies"
           }
-        }
+        },
+        "operationId": "getRoutingPolicies"
       },
       "post": {
         "summary": "Create routing policy",
@@ -13181,13 +13266,14 @@
           "201": {
             "description": "Policy created with ID"
           }
-        }
+        },
+        "operationId": "postRoutingPolicies"
       }
     },
     "/routing/policies/{id}": {
       "get": {
         "summary": "Get routing policy",
-        "description": "Retrieve a routing policy by ID.",
+        "description": "Retrieves routing data. Identified by id. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "Routing"
         ],
@@ -13205,7 +13291,8 @@
           "200": {
             "description": "Policy details"
           }
-        }
+        },
+        "operationId": "getRoutingPoliciesId"
       }
     },
     "/routing/simulate": {
@@ -13251,7 +13338,8 @@
           "200": {
             "description": "Simulation result with recommended provider and alternatives"
           }
-        }
+        },
+        "operationId": "postRoutingSimulate"
       }
     },
     "/rules": {
@@ -15480,7 +15568,8 @@
           "200": {
             "description": "List of service providers with key schemas"
           }
-        }
+        },
+        "operationId": "getServicesRegistry"
       },
       "post": {
         "summary": "Create service provider",
@@ -15526,7 +15615,8 @@
           "201": {
             "description": "Provider created"
           }
-        }
+        },
+        "operationId": "postServicesRegistry"
       }
     },
     "/ses/bounces": {
@@ -17078,7 +17168,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "postSystemDoctorShare"
       }
     },
     "/system/export": {
@@ -17114,7 +17205,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "getSystemExport"
       }
     },
     "/system/features": {
@@ -19419,7 +19511,7 @@
     "/system/settings/{key}": {
       "get": {
         "summary": "Get setting",
-        "description": "Retrieve system setting by key.",
+        "description": "Retrieves system data. Identified by key. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "System"
         ],
@@ -19437,11 +19529,12 @@
           "200": {
             "description": "Setting value"
           }
-        }
+        },
+        "operationId": "getSystemSettingsKey"
       },
       "put": {
         "summary": "Update setting",
-        "description": "Update system setting.",
+        "description": "Updates a system resource. Identified by key. Replaces the resource with the provided JSON body.",
         "tags": [
           "System"
         ],
@@ -19469,7 +19562,8 @@
           "200": {
             "description": "Updated"
           }
-        }
+        },
+        "operationId": "putSystemSettingsKey"
       }
     },
     "/system/slo": {
@@ -19530,7 +19624,8 @@
           "200": {
             "description": "Pool status with providers, brands, and SES info"
           }
-        }
+        },
+        "operationId": "getSystemSmtpPool"
       },
       "post": {
         "summary": "Apply pool SMTP to brand",
@@ -19561,7 +19656,8 @@
           "200": {
             "description": "Brand SMTP configured to use pool"
           }
-        }
+        },
+        "operationId": "postSystemSmtpPool"
       }
     },
     "/system/update-check": {
@@ -19727,7 +19823,7 @@
         ],
         "summary": "Get tag",
         "operationId": "GetTag",
-        "description": "Get tag. Current contract status: live.",
+        "description": "Retrieves tags data. Returns JSON with the resource representation including all public fields.",
         "responses": {
           "200": {
             "description": "Get tag",
@@ -20960,7 +21056,7 @@
         ],
         "summary": "Batch send",
         "operationId": "tx_batch_send_post",
-        "description": "Send a batch of transactional emails.",
+        "description": "Creates or executes a core operation. Accepts JSON request body with the required fields.",
         "responses": {
           "200": {
             "description": "Placeholder success response.",
@@ -21009,7 +21105,8 @@
             "description": "Message details"
           }
         },
-        "description": "Get transactional message by ID"
+        "description": "Get transactional message by ID. Part of the Transactional API surface. See the endpoint summary for usage details.",
+        "operationId": "getTxMessagesId"
       }
     },
     "/tx/send": {
@@ -21021,7 +21118,7 @@
         ],
         "summary": "Send transactional",
         "operationId": "tx_send_post",
-        "description": "Send a transactional email immediately.",
+        "description": "Creates or executes a core operation. Accepts JSON request body with the required fields.",
         "responses": {
           "200": {
             "description": "Placeholder success response.",
@@ -21058,7 +21155,7 @@
         ],
         "summary": "Create template",
         "operationId": "tx_templates_post",
-        "description": "Create a transactional email template.",
+        "description": "Creates or executes a core operation. Accepts JSON request body with the required fields.",
         "responses": {
           "200": {
             "description": "Placeholder success response.",
@@ -21107,7 +21204,8 @@
             "description": "Template details"
           }
         },
-        "description": "Get transactional template by ID"
+        "description": "Get transactional template by ID. Part of the Transactional API surface. See the endpoint summary for usage details.",
+        "operationId": "getTxTemplatesId"
       },
       "put": {
         "summary": "Update transactional template",
@@ -21129,7 +21227,7 @@
             "description": "Updated"
           }
         },
-        "description": "Update transactional template",
+        "description": "Update transactional template. Part of the Transactional API surface. See the endpoint summary for usage details.",
         "requestBody": {
           "required": true,
           "content": {
@@ -21139,7 +21237,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "putTxTemplatesId"
       },
       "delete": {
         "summary": "Delete transactional template",
@@ -21161,7 +21260,8 @@
             "description": "Deleted"
           }
         },
-        "description": "Delete transactional template"
+        "description": "Delete transactional template. Part of the Transactional API surface. See the endpoint summary for usage details.",
+        "operationId": "deleteTxTemplatesId"
       }
     },
     "/tx/templates/{id}/versions": {
@@ -21185,7 +21285,8 @@
             }
           }
         ],
-        "description": "List template versions"
+        "description": "List template versions. Part of the Transactional API surface. See the endpoint summary for usage details.",
+        "operationId": "getTxTemplatesIdVersions"
       }
     },
     "/webhooks": {
@@ -21487,7 +21588,7 @@
     "/webhooks/{id}": {
       "get": {
         "summary": "Get webhook",
-        "description": "Retrieve webhook endpoint by ID.",
+        "description": "Retrieves webhooks data. Identified by id. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "Webhooks"
         ],
@@ -21505,11 +21606,12 @@
           "200": {
             "description": "Webhook details"
           }
-        }
+        },
+        "operationId": "getWebhooksId"
       },
       "put": {
         "summary": "Update webhook",
-        "description": "Update webhook endpoint.",
+        "description": "Updates a webhooks resource. Identified by id. Replaces the resource with the provided JSON body.",
         "tags": [
           "Webhooks"
         ],
@@ -21537,11 +21639,12 @@
           "200": {
             "description": "Updated"
           }
-        }
+        },
+        "operationId": "putWebhooksId"
       },
       "delete": {
         "summary": "Delete webhook",
-        "description": "Remove webhook endpoint.",
+        "description": "Removes a webhooks resource. Identified by id. This action may be irreversible.",
         "tags": [
           "Webhooks"
         ],
@@ -21559,7 +21662,8 @@
           "200": {
             "description": "Deleted"
           }
-        }
+        },
+        "operationId": "deleteWebhooksId"
       }
     },
     "/workflows/apply": {
@@ -21571,7 +21675,7 @@
         ],
         "summary": "Apply workflow",
         "operationId": "workflows_apply_post",
-        "description": "Apply a validated workflow definition.",
+        "description": "Creates or executes a core operation. Accepts JSON request body with the required fields.",
         "responses": {
           "200": {
             "description": "Placeholder success response.",
@@ -21719,7 +21823,7 @@
         ],
         "summary": "Validate workflow",
         "operationId": "workflows_validate_post",
-        "description": "Validate a workflow YAML definition.",
+        "description": "Creates or executes a core operation. Accepts JSON request body with the required fields.",
         "responses": {
           "200": {
             "description": "Placeholder success response.",
@@ -21768,7 +21872,8 @@
             "description": "Workflow details"
           }
         },
-        "description": "Get workflow by ID"
+        "description": "Get workflow by ID. Part of the Workflows API surface. See the endpoint summary for usage details.",
+        "operationId": "getWorkflowsId"
       },
       "put": {
         "summary": "Update workflow",
@@ -21790,7 +21895,7 @@
             "description": "Updated"
           }
         },
-        "description": "Update workflow",
+        "description": "Update workflow. Part of the Workflows API surface. See the endpoint summary for usage details.",
         "requestBody": {
           "required": true,
           "content": {
@@ -21800,7 +21905,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "putWorkflowsId"
       },
       "delete": {
         "summary": "Delete workflow",
@@ -21822,7 +21928,8 @@
             "description": "Deleted"
           }
         },
-        "description": "Delete workflow"
+        "description": "Delete workflow. Part of the Workflows API surface. See the endpoint summary for usage details.",
+        "operationId": "deleteWorkflowsId"
       }
     },
     "/workflows/{id}/pause": {
@@ -21846,7 +21953,7 @@
             }
           }
         ],
-        "description": "Pause workflow",
+        "description": "Pause workflow. Part of the Workflows API surface. See the endpoint summary for usage details.",
         "requestBody": {
           "required": true,
           "content": {
@@ -21856,7 +21963,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "postWorkflowsIdPause"
       }
     },
     "/workflows/{id}/resume": {
@@ -21880,7 +21988,7 @@
             }
           }
         ],
-        "description": "Resume workflow",
+        "description": "Resume workflow. Part of the Workflows API surface. See the endpoint summary for usage details.",
         "requestBody": {
           "required": true,
           "content": {
@@ -21890,7 +21998,8 @@
               }
             }
           }
-        }
+        },
+        "operationId": "postWorkflowsIdResume"
       }
     },
     "/workflows/{id}/runs": {
@@ -21914,7 +22023,8 @@
             }
           }
         ],
-        "description": "List workflow runs"
+        "description": "List workflow runs. Part of the Workflows API surface. See the endpoint summary for usage details.",
+        "operationId": "getWorkflowsIdRuns"
       }
     },
     "/workflows/{id}/runs/{run_id}/trace": {
@@ -21946,7 +22056,8 @@
             }
           }
         ],
-        "description": "Get workflow run trace"
+        "description": "Get workflow run trace. Part of the Workflows API surface. See the endpoint summary for usage details.",
+        "operationId": "getWorkflowsIdRunsRun_idTrace"
       }
     },
     "/wp/heartbeat": {
@@ -22613,7 +22724,7 @@
     "/automation/rules": {
       "get": {
         "summary": "List auto-action rules",
-        "description": "Returns all automation rules.",
+        "description": "Retrieves automation data. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "automation"
         ],
@@ -22626,7 +22737,7 @@
       },
       "post": {
         "summary": "Create auto-action rule",
-        "description": "Creates a new automation rule.",
+        "description": "Creates or executes a automation operation. Accepts JSON request body with the required fields.",
         "tags": [
           "automation"
         ],
@@ -22651,7 +22762,7 @@
     "/automation/log": {
       "get": {
         "summary": "Auto-action execution log",
-        "description": "Returns recent auto-action executions.",
+        "description": "Retrieves automation data. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "automation"
         ],
@@ -22691,7 +22802,7 @@
     "/automation/rules/{id}": {
       "get": {
         "summary": "Get auto-action rule",
-        "description": "Returns a single automation rule by ID.",
+        "description": "Retrieves automation data. Identified by id. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "automation"
         ],
@@ -22714,7 +22825,7 @@
       },
       "put": {
         "summary": "Update auto-action rule",
-        "description": "Updates an automation rule.",
+        "description": "Updates a automation resource. Identified by id. Replaces the resource with the provided JSON body.",
         "tags": [
           "automation"
         ],
@@ -22747,7 +22858,7 @@
       },
       "delete": {
         "summary": "Delete auto-action rule",
-        "description": "Deletes an automation rule.",
+        "description": "Removes a automation resource. Identified by id. This action may be irreversible.",
         "tags": [
           "automation"
         ],
@@ -22772,7 +22883,7 @@
     "/automation/rules/": {
       "get": {
         "summary": "List auto-action rules",
-        "description": "Returns all automation rules.",
+        "description": "Retrieves automation data. Returns JSON with the resource representation including all public fields.",
         "tags": [
           "automation"
         ],
@@ -22785,7 +22896,7 @@
       },
       "post": {
         "summary": "Create auto-action rule",
-        "description": "Creates a new automation rule.",
+        "description": "Creates or executes a automation operation. Accepts JSON request body with the required fields.",
         "tags": [
           "automation"
         ],
